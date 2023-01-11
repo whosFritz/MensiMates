@@ -1,4 +1,4 @@
-# mensapp
+# essensgetterapp
 
 A new Flutter project.
 
