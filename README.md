@@ -6,7 +6,6 @@ Displays meals and meal types of a Mensa
 Includes a rating system for meals
 User-friendly interface
 Scrollable list of meals
-Image in the app bar
 Built using Flutter and Dart
 
 ## Getting started
