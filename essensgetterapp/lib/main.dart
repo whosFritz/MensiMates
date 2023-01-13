@@ -1,7 +1,12 @@
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import "package:intl/intl.dart";
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]
+  );
   runApp(const MyApp());
 }
 
@@ -113,31 +118,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Row(
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _date = _date.subtract(
-                                                  const Duration(days: 1));
-                                            });
-                                          },
-                                          child: const Icon(
-                                              Icons.arrow_left_rounded),
-                                        ),
-                                        Text(DateFormat("E. d.MM.yyyy")
-                                            .format(_date)),
-                                        TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _date = _date
-                                                  .add(const Duration(days: 1));
-                                            });
-                                          },
-                                          child: const Icon(
-                                              Icons.arrow_right_rounded),
-                                        ),
-                                      ],
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _date = _date.subtract(
+                                              const Duration(days: 1));
+                                        });
+                                      },
+                                      child:
+                                          const Icon(Icons.arrow_left_rounded),
+                                    ),
+                                    Text(DateFormat("E. d.MM.yyyy")
+                                        .format(_date)),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _date = _date
+                                              .add(const Duration(days: 1));
+                                        });
+                                      },
+                                      child:
+                                          const Icon(Icons.arrow_right_rounded),
                                     ),
                                   ],
                                 ),
@@ -170,7 +171,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                30, 30, 30, 30),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -438,13 +440,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               )),
                         ),
                       ],
-                    ),Row(
+                    ),
+                    Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                30, 30, 30, 30),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -576,13 +580,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                         ),
                       ],
-                    ),Row(
+                    ),
+                    Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                30, 30, 30, 30),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -714,13 +720,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                         ),
                       ],
-                    ),Row(
+                    ),
+                    Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                30, 30, 30, 30),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -852,13 +860,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                         ),
                       ],
-                    ),Row(
+                    ),
+                    Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                30, 30, 30, 30),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -990,13 +1000,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                         ),
                       ],
-                    ),Row(
+                    ),
+                    Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                30, 30, 30, 30),
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
