@@ -35,12 +35,37 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: const Text("Mensa Speiseplan"),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(4, 2, 4, 2),
+                child: Text(
+                  "Mensa Speiseplan",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontFamily: "Open Sans",
+                        color: Colors.black,
+                        fontSize: 19,
+                        letterSpacing: 3,
+                      ),
+                ),
+              ),
+            ),
+          ],
+        ),
         actions: const [],
         flexibleSpace: FlexibleSpaceBar(
           background: Image.network(
-            "https://picsum.photos/id/206/600",
+            "https://www.studentenwerk-leipzig.de/sites/default/files/styles/hr_crop_cinema_xl/public/media/adobestock_301989312_web_1.jpg?itok=8kMp-8ZL",
             fit: BoxFit.cover,
           ),
         ),
@@ -90,33 +115,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   children: [
                                     Row(
                                       children: [
-                                        Expanded(
-                                          child: TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _date = _date.subtract(
-                                                    Duration(days: 1));
-                                              });
-                                            },
-                                            child:
-                                                Icon(Icons.arrow_left_rounded),
-                                          ),
+                                        TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _date = _date.subtract(
+                                                  const Duration(days: 1));
+                                            });
+                                          },
+                                          child: const Icon(
+                                              Icons.arrow_left_rounded),
                                         ),
-                                        Expanded(
-                                          child: Text(DateFormat("dd/MM/yyyy")
-                                              .format(_date)),
-                                        ),
-                                        Expanded(
-                                          child: TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _date = _date.subtract(
-                                                    Duration(days: 1));
-                                              });
-                                            },
-                                            child:
-                                                Icon(Icons.arrow_right_rounded),
-                                          ),
+                                        Text(DateFormat("E. d.MM.yyyy")
+                                            .format(_date)),
+                                        TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _date = _date
+                                                  .add(const Duration(days: 1));
+                                            });
+                                          },
+                                          child: const Icon(
+                                              Icons.arrow_right_rounded),
                                         ),
                                       ],
                                     ),
@@ -456,7 +475,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           .textTheme
                                           .headline6
                                           ?.copyWith(
-                                            fontFamily: 'Open Sans',
+                                            fontFamily: "Open Sans",
                                             fontSize: 15,
                                           )),
                                 ),
@@ -491,7 +510,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           .textTheme
                                           .headline6
                                           ?.copyWith(
-                                            fontFamily: 'Open Sans',
+                                            fontFamily: "Open Sans",
                                             fontSize: 15,
                                           )),
                                 ),
