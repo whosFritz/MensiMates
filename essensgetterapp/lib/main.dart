@@ -64,8 +64,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
         actions: const [],
         flexibleSpace: FlexibleSpaceBar(
-          background: Image.network(
-            "https://www.studentenwerk-leipzig.de/sites/default/files/styles/hr_crop_cinema_xl/public/media/adobestock_301989312_web_1.jpg?itok=8kMp-8ZL",
+          background: Image.asset(
+            "assets/images/appbar-header-brokoli.jpg",
             fit: BoxFit.cover,
           ),
         ),
@@ -209,8 +209,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           Row(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
-                                              Image.network(
-                                                "https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/vegan-icon.png",
+                                              Image.asset(
+                                                "assets/images/vegan-icon.png",
                                                 width: 25,
                                                 height: 25,
                                                 fit: BoxFit.cover,
@@ -225,12 +225,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                       .textTheme
                                                       .titleLarge
                                                       ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 14,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .underline),
+                                                        fontFamily: "Open Sans",
+                                                        fontSize: 14,
+                                                      ),
                                                 ),
                                               ),
                                             ],
@@ -351,8 +348,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
-                                                Image.network(
-                                                  "https://findicons.com/files/icons/2770/ios_7_icons/512/chicken.png",
+                                                Image.asset(
+                                                  "assets/images/chicken-icon.png",
                                                   width: 25,
                                                   height: 25,
                                                   fit: BoxFit.cover,
