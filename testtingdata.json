@@ -1,0 +1,16 @@
+[
+    {
+        "Date" : "13.01.2023",
+        "Mealtype" : "vegan",
+        "Beilagen" : "Veganes Schnitzel",
+        "Allergene" : "13, 13a, 18",
+        "Bewertung" : 4.6
+    },
+    {
+        "Date" : "13.01.2023",
+        "Mealtype" : "fleisch",
+        "Beilagen" : "Bandnudeln",
+        "Allergene" : "13, 13a, 19",
+        "Bewertung" : 3.5
+    }
+]
