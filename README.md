@@ -24,9 +24,6 @@ You can then run the app on an emulator or on a physical device connected to you
 ## Contribution
 If you would like to contribute to this project, please fork the repository, make your changes and create a pull request. We will review the changes and merge them if they are appropriate.
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Contact
 If you have any questions or issues, please feel free to contact me.
 
