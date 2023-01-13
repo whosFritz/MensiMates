@@ -55,7 +55,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         fontFamily: "Open Sans",
                         color: Colors.black,
                         fontSize: 19,
-                        letterSpacing: 3,
+                        letterSpacing: 2,
                       ),
                 ),
               ),
