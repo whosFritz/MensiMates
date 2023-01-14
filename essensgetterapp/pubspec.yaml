@@ -11,6 +11,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   build_runner: ^2.3.3
   intl: ^0.18.0
+  http: ^0.13.5
+  flutter_datetime_picker: ^1.5.1
   
 
 
