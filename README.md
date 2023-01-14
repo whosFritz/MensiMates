@@ -1,5 +1,6 @@
-# Mensa Speiseplan
-This is a simple Flutter app that displays the meals and meal types of a Mensa (canteen) with a rating system. The app was built using Dart programming language and the Flutter framework.The app also includes a rating system that allows users to rate the meals.
+# Mensa Speiseplan (Still in Development)
+## in cooperation with olech2412
+This is a simple Flutter app that displays the meals and meal types of a Mensa (canteen) with a rating system.  The app is beeing built using Dart programming language and the Flutter framework.The app also includes a rating system that allows users to rate the meals.
 
 ## Features
 Displays meals and meal types of a Mensa
