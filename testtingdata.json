@@ -1,18 +1,47 @@
 [
-    {
-        "Date" : "13.01.2023",
-        "Mealtype" : "vegan",
-        "Preis" : "2,65 € / 4,40 € / 6,10 €",
-        "Beilagen" : "Veganes Schnitzel",
-        "Allergene" : "13, 13a, 18",
-        "Bewertung" : 4.6
-    },
-    {
-        "Date" : "13.01.2023",
-        "Mealtype" : "fleisch",
-        "Preis" : "3,05 € / 4,90 € / 6,70 €",
-        "Beilagen" : "Bandnudeln",
-        "Allergene" : "13, 13a, 19",
-        "Bewertung" : 3.5
-    }
+  {
+    "Gerichtname": "Veganes Schnitzel",
+    "Date": "16.01.2023",
+    "Mealtype": "vegan",
+    "Preise": "2,65 € / 4,40 € / 6,10 €",
+    "Beilagen": "Pommes und Ketchup",
+    "Allergene": "13, 13a, 18",
+    "Bewertung": "4.6"
+  },
+  {
+    "Gerichtname": "Hühnchenbrust",
+    "Date": "16.01.2023",
+    "Mealtype": "chicken",
+    "Preis": "3,05 € / 4,90 € / 6,70 €",
+    "Beilagen": "Bandnudeln mit Gulaschsoße",
+    "Allergene": "14, 16, 20",
+    "Bewertung": "3.5"
+  },
+  {
+    "Gerichtname": "Ratatouille",
+    "Date": "17.01.2023",
+    "Mealtype": "vegetarian",
+    "Preis": "2,15 € / 4,25 € / 5,85 €",
+    "Beilagen": "Tomatensauce",
+    "Allergene": "14, 16a, 17",
+    "Bewertung": "4.9"
+  },
+  {
+    "Gerichtname": "Wiener Schnitzel",
+    "Date": "18.01.2023",
+    "Mealtype": "meat",
+    "Preis": "3,15 € / 4,95 € / 6,80 €",
+    "Beilagen": "Pommes und Majo oder Ketchup",
+    "Allergene": "11, 17, 19",
+    "Bewertung": "3,7"
+  },
+  {
+    "Gerichtname": "SeelachsFilet",
+    "Date": "18.01.2023",
+    "Mealtype": "fish",
+    "Preis": "2,90 € / 4,65 € / 6,25 €",
+    "Beilagen": "Kartoffeln und Sahnesoße",
+    "Allergene": "10, 15, 15",
+    "Bewertung": "4,1"
+  }
 ]
