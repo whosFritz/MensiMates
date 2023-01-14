@@ -1,6 +1,5 @@
 import "dart:async";
 import "dart:convert";
-
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:intl/intl.dart";
@@ -100,6 +99,7 @@ List<Color> decideContainerColor(String mealtype) {
 
 class _HomePageWidgetState extends State<HomePageWidget> {
   List jsondata = [];
+  bool _isLoading = true;
 
   DateTime _date = DateTime.now();
   List<dynamic> _filteredMeals = [];
@@ -119,15 +119,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   Future loadData() async {
     try {
-      final response = await http.get(
-          Uri.parse("https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"));
+      final response = await http.get(Uri.parse(
+          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"));
       if (response.statusCode == 200) {
         setState(() {
+          _isLoading = false;
           jsondata = jsonDecode(response.body);
-        }); 
+        });
       }
     } on Exception catch (e) {
-      print(e); 
+      print(e);
     }
   }
 
@@ -154,7 +155,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontFamily: "Open Sans",
                         color: Colors.black,
-                        fontSize: 19,
+                        fontSize: 20,
                         letterSpacing: 2,
                       ),
                 ),
@@ -274,166 +275,193 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 color: Color(0xFFFA9C00),
               ),
               Expanded(
-                  child: ListView.builder(
-                itemCount: _filteredMeals.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                30, 30, 30, 30),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(2, 2),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: LinearGradient(
-                                  colors: decideContainerColor(
-                                      _filteredMeals[index]["Mealtype"]),
-                                  stops: const [0, 1],
-                                  begin: const AlignmentDirectional(0, -1),
-                                  end: const AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              decideIconFile(
-                                                  _filteredMeals[index]
-                                                      ["Mealtype"]),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 0, 0, 0),
-                                                child: Text(
-                                                  _filteredMeals[index]
-                                                      ["Gerichtname"],
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge
-                                                      ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Preis: ${_filteredMeals[index]["Preis"]}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Beilagen: ${_filteredMeals[index]["Beilagen"]}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: ${_filteredMeals[index]["Allergene"]}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                  child: RefreshIndicator(
+                onRefresh: () async {
+                  await loadData();
+                },
+                child: ListView.builder(
+                  itemCount: _filteredMeals.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (_isLoading) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 30),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        blurRadius: 4,
+                                        color: Color(0x33000000),
+                                        offset: Offset(2, 2),
+                                        spreadRadius: 2,
                                       ),
+                                    ],
+                                    gradient: LinearGradient(
+                                      colors: decideContainerColor(
+                                          _filteredMeals[index]["Mealtype"]),
+                                      stops: const [0, 1],
+                                      begin: const AlignmentDirectional(0, -1),
+                                      end: const AlignmentDirectional(0, 1),
                                     ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(8, 8, 8, 8),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  decideIconFile(
+                                                      _filteredMeals[index]
+                                                          ["Mealtype"]),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            8, 0, 0, 0),
+                                                    child: Text(
+                                                      _filteredMeals[index]
+                                                          ["Gerichtname"],
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleLarge
+                                                          ?.copyWith(
+                                                            fontFamily:
+                                                                "Open Sans",
+                                                            fontSize: 18,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 4, 4, 0),
+                                                    child: Text(
+                                                      "Preis: ${_filteredMeals[index]["Preis"]}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  "Open Sans",
+                                                              fontSize: 13),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 4, 4, 0),
+                                                    child: Text(
+                                                      "Beilagen: ${_filteredMeals[index]["Beilagen"]}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  "Open Sans",
+                                                              fontSize: 13),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 4, 4, 0),
+                                                    child: Text(
+                                                      "Allergene: ${_filteredMeals[index]["Allergene"]}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  "Open Sans",
+                                                              fontSize: 13),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(8, 8, 8, 8),
+                                        child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            const Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.star_rounded,
+                                                    color: Color(0xFFE47B13),
+                                                    size: 24,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 0, 4, 0),
+                                                    child: Text(
+                                                        _filteredMeals[index]
+                                                            ["Bewertung"]),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            Text(_filteredMeals[index]
-                                                ["Bewertung"]),
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ]);
-                },
+                          ]);
+                    }
+                  },
+                ),
               )),
               Row(
                 mainAxisSize: MainAxisSize.max,
