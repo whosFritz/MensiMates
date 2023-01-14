@@ -4,6 +4,7 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:intl/intl.dart";
+import "package:http/http.dart" as http;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,19 +44,19 @@ class MensenApp extends StatelessWidget {
 }
 
 Image decideIconFile(String iconmealtype) {
-  if (iconmealtype == 'vegan') {
+  if (iconmealtype == "vegan") {
     return Image.asset("assets/images/vegan-icon.png",
         width: 25, height: 25, fit: BoxFit.cover);
-  } else if (iconmealtype == 'vegetarian') {
+  } else if (iconmealtype == "vegetarian") {
     return Image.asset("assets/images/vegetarian-icon.png",
         width: 25, height: 25, fit: BoxFit.cover);
-  } else if (iconmealtype == 'chicken') {
+  } else if (iconmealtype == "chicken") {
     return Image.asset("assets/images/chicken-icon.png",
         width: 25, height: 25, fit: BoxFit.cover);
-  } else if (iconmealtype == 'meat') {
+  } else if (iconmealtype == "meat") {
     return Image.asset("assets/images/meat-icon.png",
         width: 25, height: 25, fit: BoxFit.cover);
-  } else if (iconmealtype == 'fish') {
+  } else if (iconmealtype == "fish") {
     return Image.asset("assets/images/fish-icon.png",
         width: 25, height: 25, fit: BoxFit.cover);
   } else {
@@ -66,27 +67,27 @@ Image decideIconFile(String iconmealtype) {
 
 List<Color> decideContainerColor(String mealtype) {
   List<Color> colors = [];
-  if (mealtype == 'vegan') {
+  if (mealtype == "vegan") {
     colors = [
       const Color.fromARGB(255, 0, 218, 65),
       const Color.fromARGB(255, 0, 255, 42)
     ];
-  } else if (mealtype == 'vegetarian') {
+  } else if (mealtype == "vegetarian") {
     colors = [
       const Color.fromARGB(255, 59, 215, 67),
       const Color.fromARGB(255, 18, 213, 151)
     ];
-  } else if (mealtype == 'chicken') {
+  } else if (mealtype == "chicken") {
     colors = [
       const Color.fromARGB(255, 207, 141, 66),
       const Color.fromARGB(255, 201, 129, 48)
     ];
-  } else if (mealtype == 'meat') {
+  } else if (mealtype == "meat") {
     colors = [
       const Color.fromARGB(255, 244, 120, 32),
       const Color.fromARGB(255, 220, 102, 13)
     ];
-  } else if (mealtype == 'fish') {
+  } else if (mealtype == "fish") {
     colors = [
       const Color.fromARGB(255, 18, 176, 255),
       const Color.fromARGB(255, 9, 142, 194)
@@ -106,7 +107,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void _filterMeals() {
     _filteredMeals = jsondata.where((jsondata) {
       String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
-      return jsondata['Date'] == formattedDate;
+      return jsondata["Date"] == formattedDate;
     }).toList();
   }
 
@@ -116,15 +117,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     loadData();
   }
 
-  Future<String> loadAsset() async {
-    return await rootBundle.loadString("assets/testtingdata.json");
-  }
-
   Future loadData() async {
-    String jsonString = await loadAsset();
-    setState(() {
-      jsondata = jsonDecode(jsonString);
-    });
+    try {
+      final response = await http.get(
+          Uri.parse("https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"));
+      if (response.statusCode == 200) {
+        setState(() {
+          jsondata = jsonDecode(response.body);
+        }); 
+      }
+    } on Exception catch (e) {
+      print(e); 
+    }
   }
 
   @override
