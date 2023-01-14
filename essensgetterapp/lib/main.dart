@@ -108,7 +108,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
       return jsondata['Date'] == formattedDate;
     }).toList();
-    print(_filteredMeals);
   }
 
   @override
