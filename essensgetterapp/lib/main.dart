@@ -45,22 +45,22 @@ class MensenApp extends StatelessWidget {
 Image decideIconFile(String iconmealtype) {
   if (iconmealtype == "vegan") {
     return Image.asset("assets/images/vegan-icon.png",
-        width: 25, height: 25, fit: BoxFit.cover);
+        width: 40, height: 40, fit: BoxFit.cover);
   } else if (iconmealtype == "vegetarian") {
     return Image.asset("assets/images/vegetarian-icon.png",
-        width: 25, height: 25, fit: BoxFit.cover);
+        width: 40, height: 40, fit: BoxFit.cover);
   } else if (iconmealtype == "chicken") {
     return Image.asset("assets/images/chicken-icon.png",
-        width: 25, height: 25, fit: BoxFit.cover);
+        width: 40, height: 40, fit: BoxFit.cover);
   } else if (iconmealtype == "meat") {
     return Image.asset("assets/images/meat-icon.png",
-        width: 25, height: 25, fit: BoxFit.cover);
+        width: 40, height: 40, fit: BoxFit.cover);
   } else if (iconmealtype == "fish") {
     return Image.asset("assets/images/fish-icon.png",
-        width: 25, height: 25, fit: BoxFit.cover);
+        width: 40, height: 40, fit: BoxFit.cover);
   } else {
     return Image.asset("assets/images/default-icon.png",
-        width: 25, height: 25, fit: BoxFit.cover);
+        width: 40, height: 40, fit: BoxFit.cover);
   }
 }
 
@@ -342,74 +342,80 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                           ?.copyWith(
                                                             fontFamily:
                                                                 "Open Sans",
-                                                            fontSize: 18,
+                                                            fontSize: 19,
                                                           ),
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                            0, 4, 4, 0),
-                                                    child: Text(
-                                                      "Preis: ${_filteredMeals[index]["Preis"]}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontFamily:
-                                                                  "Open Sans",
-                                                              fontSize: 13),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(0, 4, 4, 0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        "Preis: ${_filteredMeals[index]["Preis"]}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            ?.copyWith(
+                                                                fontFamily:
+                                                                    "Open Sans",
+                                                                fontSize: 13),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                            0, 4, 4, 0),
-                                                    child: Text(
-                                                      "Beilagen: ${_filteredMeals[index]["Beilagen"]}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontFamily:
-                                                                  "Open Sans",
-                                                              fontSize: 13),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(0, 4, 4, 0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        "Beilagen: ${_filteredMeals[index]["Beilagen"]}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            ?.copyWith(
+                                                                fontFamily:
+                                                                    "Open Sans",
+                                                                fontSize: 13),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                            0, 4, 4, 0),
-                                                    child: Text(
-                                                      "Allergene: ${_filteredMeals[index]["Allergene"]}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontFamily:
-                                                                  "Open Sans",
-                                                              fontSize: 13),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(0, 4, 4, 0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        "Allergene: ${_filteredMeals[index]["Allergene"]}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            ?.copyWith(
+                                                                fontFamily:
+                                                                    "Open Sans",
+                                                                fontSize: 13),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -441,8 +447,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 .fromSTEB(
                                                             0, 0, 4, 0),
                                                     child: Text(
-                                                        _filteredMeals[index]
-                                                            ["Bewertung"]),
+                                                      _filteredMeals[index]
+                                                          ["Bewertung"],
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  "Open Sans",
+                                                              fontSize: 15),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
