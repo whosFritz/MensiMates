@@ -1,12 +1,12 @@
 [
   {
-    "gerichtname": "Veganes Schnitzel",
-    "datum": "16.01.2023",
-    "mealtype": "vegan",
-    "preis": "2,65 € / 4,40 € / 6,10 €",
-    "beilagen": "Pommes und Ketchup",
-    "allergene": "13, 13a, 18",
-    "bewertung": "4.6"
+    "Gerichtname": "Veganes Schnitzel",
+    "Date": "16.01.2023",
+    "Mealtype": "vegan",
+    "Preis": "2,65 € / 4,40 € / 6,10 €",
+    "Beilagen": "Pommes und Ketchup",
+    "Allergene": "13, 13a, 18",
+    "Bewertung": "4.6"
   },
   {
     "gerichtname": "Hühnchenbrust",
