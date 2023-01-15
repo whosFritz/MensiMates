@@ -119,10 +119,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   Future loadData() async {
     try {
-      final response = await http.get(
-          Uri.parse(
-              "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"),
-          headers: {'Cache-Control': 'no-cache'});
+      final response = await http.get(Uri.parse(
+          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/essensgetterapp/assets/testtingdata.json"));
       if (response.statusCode == 200) {
         setState(() {
           _isLoading = false;
@@ -187,8 +185,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
+                    padding: const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
@@ -217,17 +214,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   TextButton(
                                     onPressed: () {
                                       setState(() {
-                                        _date = _date.subtract(
-                                            const Duration(days: 1));
+                                        _date = _date
+                                            .subtract(const Duration(days: 1));
                                         _filterMeals();
                                       });
                                     },
-                                    child:
-                                        const Icon(Icons.arrow_left_rounded),
+                                    child: const Icon(Icons.arrow_left_rounded),
                                   ),
                                   InkWell(
-                                    child: Text(DateFormat("dd.MM.yyyy")
-                                        .format(_date)),
+                                    child: Text(
+                                        DateFormat("dd.MM.yyyy").format(_date)),
                                     onTap: () async {
                                       final DateTime? picked =
                                           await showDatePicker(
@@ -247,8 +243,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   TextButton(
                                     onPressed: () {
                                       setState(() {
-                                        _date = _date
-                                            .add(const Duration(days: 1));
+                                        _date =
+                                            _date.add(const Duration(days: 1));
                                         _filterMeals();
                                       });
                                     },
