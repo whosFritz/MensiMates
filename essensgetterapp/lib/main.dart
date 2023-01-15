@@ -1,5 +1,6 @@
 import "dart:async";
 import "dart:convert";
+import 'package:audioplayers/audioplayers.dart';
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:intl/intl.dart";
@@ -42,62 +43,8 @@ class MensenApp extends StatelessWidget {
   }
 }
 
-Image decideIconFile(String iconmealtype) {
-  if (iconmealtype == "vegan") {
-    return Image.asset("assets/images/vegan-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "vegetarian") {
-    return Image.asset("assets/images/vegetarian-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "chicken") {
-    return Image.asset("assets/images/chicken-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "meat") {
-    return Image.asset("assets/images/meat-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "fish") {
-    return Image.asset("assets/images/fish-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else {
-    return Image.asset("assets/images/default-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  }
-}
-
-List<Color> decideContainerColor(String mealtype) {
-  List<Color> colors = [];
-  if (mealtype == "vegan") {
-    colors = [
-      const Color.fromARGB(255, 0, 218, 65),
-      const Color.fromARGB(255, 0, 255, 42)
-    ];
-  } else if (mealtype == "vegetarian") {
-    colors = [
-      const Color.fromARGB(255, 59, 215, 67),
-      const Color.fromARGB(255, 18, 213, 151)
-    ];
-  } else if (mealtype == "chicken") {
-    colors = [
-      const Color.fromARGB(255, 207, 141, 66),
-      const Color.fromARGB(255, 201, 129, 48)
-    ];
-  } else if (mealtype == "meat") {
-    colors = [
-      const Color.fromARGB(255, 244, 120, 32),
-      const Color.fromARGB(255, 220, 102, 13)
-    ];
-  } else if (mealtype == "fish") {
-    colors = [
-      const Color.fromARGB(255, 18, 176, 255),
-      const Color.fromARGB(255, 9, 142, 194)
-    ];
-  } else {
-    colors = [Colors.white, Colors.white];
-  }
-  return colors;
-}
-
 class _HomePageWidgetState extends State<HomePageWidget> {
+  final player = AudioPlayer();
   List jsondata = [];
   bool _isLoading = true;
 
@@ -211,15 +158,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _date = _date
-                                            .subtract(const Duration(days: 1));
-                                        _filterMeals();
-                                      });
-                                    },
-                                    child: const Icon(Icons.arrow_left_rounded),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 0, 10, 0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _date = _date.subtract(
+                                              const Duration(days: 1));
+                                          _filterMeals();
+                                        });
+                                      },
+                                      child:
+                                          const Icon(Icons.arrow_left_rounded),
+                                    ),
                                   ),
                                   InkWell(
                                     child: Text(
@@ -240,16 +193,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       }
                                     },
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _date =
-                                            _date.add(const Duration(days: 1));
-                                        _filterMeals();
-                                      });
-                                    },
-                                    child:
-                                        const Icon(Icons.arrow_right_rounded),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10, 0, 10, 0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _date = _date
+                                              .add(const Duration(days: 1));
+                                          _filterMeals();
+                                        });
+                                      },
+                                      child:
+                                          const Icon(Icons.arrow_right_rounded),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -575,4 +533,59 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       ),
     );
   }
+}
+
+Image decideIconFile(String iconmealtype) {
+  if (iconmealtype == "vegan") {
+    return Image.asset("assets/images/vegan-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  } else if (iconmealtype == "vegetarian") {
+    return Image.asset("assets/images/vegetarian-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  } else if (iconmealtype == "chicken") {
+    return Image.asset("assets/images/chicken-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  } else if (iconmealtype == "meat") {
+    return Image.asset("assets/images/meat-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  } else if (iconmealtype == "fish") {
+    return Image.asset("assets/images/fish-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  } else {
+    return Image.asset("assets/images/default-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  }
+}
+
+List<Color> decideContainerColor(String mealtype) {
+  List<Color> colors = [];
+  if (mealtype == "vegan") {
+    colors = [
+      const Color.fromARGB(255, 0, 218, 65),
+      const Color.fromARGB(255, 0, 255, 42)
+    ];
+  } else if (mealtype == "vegetarian") {
+    colors = [
+      const Color.fromARGB(255, 59, 215, 67),
+      const Color.fromARGB(255, 18, 213, 151)
+    ];
+  } else if (mealtype == "chicken") {
+    colors = [
+      const Color.fromARGB(255, 207, 141, 66),
+      const Color.fromARGB(255, 201, 129, 48)
+    ];
+  } else if (mealtype == "meat") {
+    colors = [
+      const Color.fromARGB(255, 244, 120, 32),
+      const Color.fromARGB(255, 220, 102, 13)
+    ];
+  } else if (mealtype == "fish") {
+    colors = [
+      const Color.fromARGB(255, 18, 176, 255),
+      const Color.fromARGB(255, 9, 142, 194)
+    ];
+  } else {
+    colors = [Colors.white, Colors.white];
+  }
+  return colors;
 }
