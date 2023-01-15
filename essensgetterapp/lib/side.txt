@@ -1,0 +1,22 @@
+
+  Future loadData() async {
+    
+      final response = await http.get(Uri.parse(
+          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/essensgetterapp/assets/testtingdata.json"));
+      
+    
+  }
+
+@override
+  void initState() {
+    super.initState();
+      }
+
+void _filterMeals() {
+    _filteredMeals = dishesdata.where((dishesdata) {
+      String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
+      return dishesdata["datum"] == formattedDate;
+    }).toList();
+  }
+
+List<dynamic> _filteredMeals = [];

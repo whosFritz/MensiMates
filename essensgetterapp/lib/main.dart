@@ -1,10 +1,9 @@
-import "dart:async";
-import "dart:convert";
-import 'package:audioplayers/audioplayers.dart';
+import 'dart:convert';
+
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:intl/intl.dart";
 import "package:http/http.dart" as http;
+import "package:intl/intl.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,14 +12,14 @@ void main() {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight
   ]);
+
   runApp(const MensenApp());
 }
 
 class HomePageWidget extends StatefulWidget {
-  final List<dynamic> jsondata;
+  const HomePageWidget({super.key, required this.title});
+
   final String title;
-  const HomePageWidget(
-      {super.key, required this.title, required this.jsondata});
 
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
@@ -35,48 +34,41 @@ class MensenApp extends StatelessWidget {
     return MaterialApp(
       title: "MensaApp",
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Open Sans"),
-      home: const HomePageWidget(
-        title: "Speiseplan",
-        jsondata: [],
-      ),
+      home: const HomePageWidget(title: "Speiseplan"),
     );
   }
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  final player = AudioPlayer();
-  List jsondata = [];
-  bool _isLoading = true;
-
-  DateTime _date = DateTime.now();
-  List<dynamic> _filteredMeals = [];
-
-  void _filterMeals() {
-    _filteredMeals = jsondata.where((jsondata) {
-      String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
-      return jsondata["Date"] == formattedDate;
-    }).toList();
-  }
-
   @override
   void initState() {
     super.initState();
-    loadData();
   }
 
-  Future loadData() async {
-    try {
-      final response = await http.get(Uri.parse(
-          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/essensgetterapp/assets/testtingdata.json"));
-      if (response.statusCode == 200) {
-        setState(() {
-          _isLoading = false;
-          jsondata = jsonDecode(response.body);
-        });
-      }
-    } on Exception catch (e) {
-      print(e);
+  DateTime _date = DateTime.now();
+
+  Future<List<Dish>> futuredishes = getDishes();
+  late Future<List<Dish>> filteredDishes = _filterDishes();
+
+  static Future<List<Dish>> getDishes() async {
+    final response = await http.get(
+      Uri.parse(
+          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/essensgetterapp/assets/testtingdata.json"),
+    );
+    if (response.statusCode == 200) {
+      final jsondata = jsonDecode(response.body);
+      return jsondata.map<Dish>(Dish.fromJson).toList();
+    } else {
+      throw Exception();
     }
+  }
+
+  Future<List<Dish>> _filterDishes() async {
+    final dishes = await futuredishes;
+    String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
+    return dishes.where((dish) {
+      return dish.datum == formattedDate;
+    }).toList();
   }
 
   @override
@@ -167,7 +159,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         setState(() {
                                           _date = _date.subtract(
                                               const Duration(days: 1));
-                                          _filterMeals();
+                                          filteredDishes = _filterDishes();
                                         });
                                       },
                                       child:
@@ -182,13 +174,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           await showDatePicker(
                                         context: context,
                                         initialDate: _date,
-                                        firstDate: DateTime(2010),
-                                        lastDate: DateTime(2100),
+                                        firstDate: DateTime(2023),
+                                        lastDate: DateTime(2024),
                                       );
                                       if (picked != _date) {
                                         setState(() {
                                           _date = picked!;
-                                          _filterMeals();
+                                          filteredDishes = _filterDishes();
                                         });
                                       }
                                     },
@@ -202,7 +194,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         setState(() {
                                           _date = _date
                                               .add(const Duration(days: 1));
-                                          _filterMeals();
+                                          filteredDishes = _filterDishes();
                                         });
                                       },
                                       child:
@@ -228,210 +220,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 color: Color(0xFFFA9C00),
               ),
               Expanded(
-                  child: RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {
-                    loadData();
-                  });
-                },
-                child: ListView.builder(
-                  itemCount: _filteredMeals.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (_isLoading) {
-                      return const CircularProgressIndicator();
-                    } else {
-                      return Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    30, 30, 30, 30),
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        blurRadius: 4,
-                                        color: Color(0x33000000),
-                                        offset: Offset(2, 2),
-                                        spreadRadius: 2,
-                                      ),
-                                    ],
-                                    gradient: LinearGradient(
-                                      colors: decideContainerColor(
-                                          _filteredMeals[index]["Mealtype"]),
-                                      stops: const [0, 1],
-                                      begin: const AlignmentDirectional(0, -1),
-                                      end: const AlignmentDirectional(0, 1),
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(8, 8, 8, 8),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  decideIconFile(
-                                                      _filteredMeals[index]
-                                                          ["Mealtype"]),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                            8, 0, 0, 0),
-                                                    child: Text(
-                                                      _filteredMeals[index]
-                                                          ["Gerichtname"],
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleLarge
-                                                          ?.copyWith(
-                                                            fontFamily:
-                                                                "Open Sans",
-                                                            fontSize: 19,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        "Preis: ${_filteredMeals[index]["Preis"]}",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1
-                                                            ?.copyWith(
-                                                                fontFamily:
-                                                                    "Open Sans",
-                                                                fontSize: 13),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        "Beilagen: ${_filteredMeals[index]["Beilagen"]}",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1
-                                                            ?.copyWith(
-                                                                fontFamily:
-                                                                    "Open Sans",
-                                                                fontSize: 13),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        "Allergene: ${_filteredMeals[index]["Allergene"]}",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1
-                                                            ?.copyWith(
-                                                                fontFamily:
-                                                                    "Open Sans",
-                                                                fontSize: 13),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8, 8, 8, 8),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(6),
-                                              ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star_rounded,
-                                                    color: Color(0xFFE47B13),
-                                                    size: 24,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                            0, 0, 4, 0),
-                                                    child: Text(
-                                                      _filteredMeals[index]
-                                                          ["Bewertung"],
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontFamily:
-                                                                  "Open Sans",
-                                                              fontSize: 15),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]);
-                    }
-                  },
-                ),
-              )),
+                  child: FutureBuilder(
+                      future: filteredDishes,
+                      builder: ((context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        } else if (snapshot.hasData) {
+                          final dishes = snapshot.data!;
+                          return buildDishes(dishes);
+                        } else {
+                          return const Text("no data");
+                        }
+                      }))),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -533,6 +336,186 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       ),
     );
   }
+
+  Widget buildDishes(List<Dish> dishes) {
+    return RefreshIndicator(
+      onRefresh: () async {},
+      child: ListView.builder(
+          itemCount: dishes.length,
+          itemBuilder: (context, index) {
+            final dish = dishes[index];
+            return Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Color(0x33000000),
+                              offset: Offset(2, 2),
+                              spreadRadius: 2,
+                            ),
+                          ],
+                          gradient: LinearGradient(
+                            colors: decideContainerColor(dish.mealtype),
+                            stops: const [0, 1],
+                            begin: const AlignmentDirectional(0, -1),
+                            end: const AlignmentDirectional(0, 1),
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    8, 8, 8, 8),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        decideIconFile(dish.mealtype),
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(8, 0, 0, 0),
+                                          child: Text(
+                                            dish.gerichtname,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge
+                                                ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 19,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 4, 4, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Preis: ${dish.preis}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(
+                                                      fontFamily: "Open Sans",
+                                                      fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 4, 4, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Beilagen: ${dish.beilagen}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(
+                                                      fontFamily: "Open Sans",
+                                                      fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 4, 4, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Allergene: ${dish.allergene}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(
+                                                      fontFamily: "Open Sans",
+                                                      fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  8, 8, 8, 8),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        const Icon(
+                                          Icons.star_rounded,
+                                          color: Color(0xFFE47B13),
+                                          size: 24,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0, 0, 4, 0),
+                                          child: Text(
+                                            dish.bewertung,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                ?.copyWith(
+                                                    fontFamily: "Open Sans",
+                                                    fontSize: 15),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ]);
+          }),
+    );
+  }
 }
 
 Image decideIconFile(String iconmealtype) {
@@ -588,4 +571,44 @@ List<Color> decideContainerColor(String mealtype) {
     colors = [Colors.white, Colors.white];
   }
   return colors;
+}
+
+class Dish {
+  final String allergene;
+  final String beilagen;
+  final String bewertung;
+  final String datum;
+  final String gerichtname;
+  final String mealtype;
+  final String preis;
+
+  Dish({
+    required this.gerichtname,
+    required this.datum,
+    required this.mealtype,
+    required this.preis,
+    required this.beilagen,
+    required this.allergene,
+    required this.bewertung,
+  });
+  static Dish fromJson(json) {
+    return Dish(
+      gerichtname: json['gerichtname'],
+      datum: json['datum'],
+      mealtype: json['mealtype'],
+      preis: json['preis'],
+      beilagen: json['beilagen'],
+      allergene: json['allergene'],
+      bewertung: json['bewertung'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Gerich: Es gibt am $datum $gerichtname mit $beilagen zum Preis von $preis mit einer Bewrtung von $bewertung Sternen';
+  }
+}
+
+class Gerichte {
+  late final List<Dish> fliste;
 }
