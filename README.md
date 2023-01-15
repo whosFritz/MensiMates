@@ -1,6 +1,8 @@
 # Mensa Speiseplan (Still in Development)
 ## in cooperation with olech2412
-This is a simple Flutter app that displays the meals and meal types of a Mensa (canteen) with a rating system.  The app is beeing built using Dart programming language and the Flutter framework.The app also includes a rating system that allows users to rate the meals.
+This is a simple Flutter app that displays the meals and meal types of a Mensa (canteen) with a rating system.
+The app is beeing built using Dart programming language and the Flutter framework.
+The app also includes a rating system that allows users to rate the meals.
 
 ## Features
 Displays meals and meal types of a Mensa
@@ -11,10 +13,8 @@ Built using Flutter and Dart
 
 ## Getting started
 To get started with this app, you will need to have the following installed on your local machine:
+Flutter SDK,Android Studio and Visual Studio Code. In VSCode I recommend installing the Flutter and Dart extensions.
 
-Flutter SDK
-Android Studio or Visual Studio Code
-Dart SDK
 You can find instructions on how to install these dependencies on the official Flutter and Dart documentation.
 
 Once you have the dependencies installed, you can clone this repository to your local machine and open the project in Android Studio or Visual Studio Code.
