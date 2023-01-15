@@ -149,7 +149,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(4, 2, 4, 2),
+                padding: const EdgeInsetsDirectional.fromSTEB(7, 3, 7, 3),
                 child: Text(
                   "Mensa Speiseplan",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -272,7 +272,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               Expanded(
                   child: RefreshIndicator(
                 onRefresh: () async {
-                  await loadData();
+                  setState(() {
+                    loadData();
+                  });
                 },
                 child: ListView.builder(
                   itemCount: _filteredMeals.length,
