@@ -1,12 +1,12 @@
 [
   {
-    "Gerichtname": "Kichererbsen-Gemüse-Ragout in Kokosmilch",
-    "Date": "16.01.2023",
-    "Mealtype": "vegetarian",
-    "Preis": "2,65 € / 4,40 € / 6,10 €",
-    "Beilagen": "Basmatireis",
-    "Allergene": "21",
-    "Bewertung": "4,8"
+    "gerichtname": "Kichererbsen-Gemüse-Ragout in Kokosmilch",
+    "datum": "16.01.2023",
+    "mealtype": "vegetarian",
+    "preis": "2,65 € / 4,40 € / 6,10 €",
+    "beilagen": "Basmatireis",
+    "allergene": "21",
+    "bewertung": "4,8"
   },
   {
     "gerichtname": "Schweinerückensteak in Sesam-Eihülle",
