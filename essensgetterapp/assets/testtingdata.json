@@ -3,7 +3,7 @@
     "Gerichtname": "Veganes Schnitzel",
     "Date": "16.01.2023",
     "Mealtype": "vegan",
-    "Preise": "2,65 € / 4,40 € / 6,10 €",
+    "Preis": "2,65 € / 4,40 € / 6,10 €",
     "Beilagen": "Pommes und Ketchup",
     "Allergene": "13, 13a, 18",
     "Bewertung": "4.6"
@@ -18,7 +18,7 @@
     "Bewertung": "3.5"
   },
   {
-    "Gerichtname": "Ratatatatatatouille",
+    "Gerichtname": "Ratatouille",
     "Date": "17.01.2023",
     "Mealtype": "vegetarian",
     "Preis": "2,15 € / 4,25 € / 5,85 €",
@@ -36,7 +36,7 @@
     "Bewertung": "3,7"
   },
   {
-    "Gerichtname": "SeelachsFilet",
+    "Gerichtname": "Seelachs-Fillet",
     "Date": "18.01.2023",
     "Mealtype": "fish",
     "Preis": "2,90 € / 4,65 € / 6,25 €",
