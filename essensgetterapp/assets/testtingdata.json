@@ -1,14 +1,5 @@
 [
   {
-    "gerichtname": "Kichererbsen-Gemüse-Ragout in Kokosmilch",
-    "datum": "16.01.2023",
-    "mealtype": "vegetarian",
-    "preis": "2,65 € / 4,40 € / 6,10 €",
-    "beilagen": "Basmatireis",
-    "allergene": "21",
-    "bewertung": "4,8"
-  },
-  {
     "gerichtname": "Schweinerückensteak in Sesam-Eihülle",
     "datum": "16.01.2023",
     "mealtype": "meat",
@@ -17,6 +8,16 @@
     "allergene": "13, 13a, 15, 19, 23",
     "bewertung": "3.5"
   },
+  {
+    "gerichtname": "Kichererbsen-Gemüse-Ragout in Kokosmilch",
+    "datum": "16.01.2023",
+    "mealtype": "vegetarian",
+    "preis": "2,65 € / 4,40 € / 6,10 €",
+    "beilagen": "Basmatireis",
+    "allergene": "21",
+    "bewertung": "4,8"
+  },
+
   {
     "gerichtname": "Putenschnitzel",
     "datum": "17.01.2023",
@@ -29,7 +30,7 @@
   {
     "gerichtname": "3 Eier",
     "datum": "17.01.2023",
-    "mealtype": "chicken",
+    "mealtype": "vegetarian",
     "preis": "2,15 € / 4,00 € / 5,70 €",
     "beilagen": "Senfsoße mit Schnittlauch, Petersilienkartoffeln, frisches Obst",
     "allergene": "13, 13a, 15, 19, 22",

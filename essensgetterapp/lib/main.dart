@@ -168,7 +168,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                   InkWell(
                                     child: Text(
-                                        DateFormat("dd.MM.yyyy").format(_date)),
+                                        DateFormat("E. dd.MM.yyyy").format(_date)),
                                     onTap: () async {
                                       final DateTime? picked =
                                           await showDatePicker(
