@@ -13,10 +13,10 @@ Built using Flutter and Dart
 
 ## Getting started
 To get started with this app, you will need to have the following installed on your local machine:
-
 Flutter SDK
 Android Studio or Visual Studio Code
 Dart SDK
+
 You can find instructions on how to install these dependencies on the official Flutter and Dart documentation.
 
 Once you have the dependencies installed, you can clone this repository to your local machine and open the project in Android Studio or Visual Studio Code.
