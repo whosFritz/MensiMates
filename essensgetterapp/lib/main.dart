@@ -167,8 +167,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     ),
                                   ),
                                   InkWell(
-                                    child: Text(
-                                        DateFormat("E. dd.MM.yyyy").format(_date)),
+                                    child: Text(DateFormat("E. dd.MM.yyyy")
+                                        .format(_date)),
                                     onTap: () async {
                                       final DateTime? picked =
                                           await showDatePicker(
@@ -380,25 +380,32 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      decideIconFile(dish.mealtype),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8, 0, 0, 0),
-                                        child: Text(
-                                          dish.gerichtname,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge
-                                              ?.copyWith(
-                                                fontFamily: "Open Sans",
-                                                fontSize: 19,
-                                              ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8, 0, 0, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0, 0, 8, 0),
+                                          child: decideIconFile(dish.mealtype),
                                         ),
-                                      ),
-                                    ],
+                                        Expanded(
+                                          child: Text(
+                                            dish.gerichtname,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge
+                                                ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 19,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Padding(
                                     padding:
@@ -521,7 +528,7 @@ Image decideIconFile(String iconmealtype) {
         width: 40, height: 40, fit: BoxFit.cover);
   } else if (iconmealtype == "vegetarian") {
     return Image.asset("assets/images/vegetarian-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
+        width: 45, height: 45, fit: BoxFit.cover);
   } else if (iconmealtype == "chicken") {
     return Image.asset("assets/images/chicken-icon.png",
         width: 40, height: 40, fit: BoxFit.cover);
