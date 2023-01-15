@@ -119,8 +119,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   Future loadData() async {
     try {
-      final response = await http.get(Uri.parse(
-          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"));
+      final response = await http.get(
+          Uri.parse(
+              "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"),
+          headers: {'Cache-Control': 'no-cache'});
       if (response.statusCode == 200) {
         setState(() {
           _isLoading = false;
@@ -184,83 +186,80 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              blurRadius: 4,
-                              color: Color(0x33000000),
-                              offset: Offset(0, 2),
-                              spreadRadius: 2,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 4,
+                            color: Color(0x33000000),
+                            offset: Offset(0, 2),
+                            spreadRadius: 2,
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _date = _date.subtract(
+                                            const Duration(days: 1));
+                                        _filterMeals();
+                                      });
+                                    },
+                                    child:
+                                        const Icon(Icons.arrow_left_rounded),
+                                  ),
+                                  InkWell(
+                                    child: Text(DateFormat("dd.MM.yyyy")
+                                        .format(_date)),
+                                    onTap: () async {
+                                      final DateTime? picked =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: _date,
+                                        firstDate: DateTime(2010),
+                                        lastDate: DateTime(2100),
+                                      );
+                                      if (picked != _date) {
                                         setState(() {
-                                          _date = _date.subtract(
-                                              const Duration(days: 1));
+                                          _date = picked!;
                                           _filterMeals();
                                         });
-                                      },
-                                      child:
-                                          const Icon(Icons.arrow_left_rounded),
-                                    ),
-                                    InkWell(
-                                      child: Text(DateFormat("dd.MM.yyyy")
-                                          .format(_date)),
-                                      onTap: () async {
-                                        final DateTime? picked =
-                                            await showDatePicker(
-                                          context: context,
-                                          initialDate: _date,
-                                          firstDate: DateTime(2010),
-                                          lastDate: DateTime(2100),
-                                        );
-                                        if (picked != _date) {
-                                          setState(() {
-                                            _date = picked!;
-                                            _filterMeals();
-                                          });
-                                        }
-                                      },
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _date = _date
-                                              .add(const Duration(days: 1));
-                                          _filterMeals();
-                                        });
-                                      },
-                                      child:
-                                          const Icon(Icons.arrow_right_rounded),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                      }
+                                    },
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _date = _date
+                                            .add(const Duration(days: 1));
+                                        _filterMeals();
+                                      });
+                                    },
+                                    child:
+                                        const Icon(Icons.arrow_right_rounded),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
