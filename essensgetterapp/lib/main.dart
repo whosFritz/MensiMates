@@ -1,41 +1,139 @@
+import "dart:async";
+import "dart:convert";
 import "package:flutter/material.dart";
-import 'package:flutter/services.dart';
+import "package:flutter/services.dart";
 import "package:intl/intl.dart";
+import "package:http/http.dart" as http;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]
-  );
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight
+  ]);
+  runApp(const MensenApp());
 }
 
 class HomePageWidget extends StatefulWidget {
+  final List<dynamic> jsondata;
   final String title;
-  const HomePageWidget({super.key, required this.title});
+  const HomePageWidget(
+      {super.key, required this.title, required this.jsondata});
 
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MensenApp extends StatelessWidget {
+  const MensenApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "MensaApp",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Open Sans"),
+      home: const HomePageWidget(
+        title: "Speiseplan",
+        jsondata: [],
       ),
-      home: const HomePageWidget(title: "Speiseplan"),
     );
   }
 }
 
+Image decideIconFile(String iconmealtype) {
+  if (iconmealtype == "vegan") {
+    return Image.asset("assets/images/vegan-icon.png",
+        width: 25, height: 25, fit: BoxFit.cover);
+  } else if (iconmealtype == "vegetarian") {
+    return Image.asset("assets/images/vegetarian-icon.png",
+        width: 25, height: 25, fit: BoxFit.cover);
+  } else if (iconmealtype == "chicken") {
+    return Image.asset("assets/images/chicken-icon.png",
+        width: 25, height: 25, fit: BoxFit.cover);
+  } else if (iconmealtype == "meat") {
+    return Image.asset("assets/images/meat-icon.png",
+        width: 25, height: 25, fit: BoxFit.cover);
+  } else if (iconmealtype == "fish") {
+    return Image.asset("assets/images/fish-icon.png",
+        width: 25, height: 25, fit: BoxFit.cover);
+  } else {
+    return Image.asset("assets/images/default-icon.png",
+        width: 25, height: 25, fit: BoxFit.cover);
+  }
+}
+
+List<Color> decideContainerColor(String mealtype) {
+  List<Color> colors = [];
+  if (mealtype == "vegan") {
+    colors = [
+      const Color.fromARGB(255, 0, 218, 65),
+      const Color.fromARGB(255, 0, 255, 42)
+    ];
+  } else if (mealtype == "vegetarian") {
+    colors = [
+      const Color.fromARGB(255, 59, 215, 67),
+      const Color.fromARGB(255, 18, 213, 151)
+    ];
+  } else if (mealtype == "chicken") {
+    colors = [
+      const Color.fromARGB(255, 207, 141, 66),
+      const Color.fromARGB(255, 201, 129, 48)
+    ];
+  } else if (mealtype == "meat") {
+    colors = [
+      const Color.fromARGB(255, 244, 120, 32),
+      const Color.fromARGB(255, 220, 102, 13)
+    ];
+  } else if (mealtype == "fish") {
+    colors = [
+      const Color.fromARGB(255, 18, 176, 255),
+      const Color.fromARGB(255, 9, 142, 194)
+    ];
+  } else {
+    colors = [Colors.white, Colors.white];
+  }
+  return colors;
+}
+
 class _HomePageWidgetState extends State<HomePageWidget> {
+  List jsondata = [];
+  bool _isLoading = true;
+
   DateTime _date = DateTime.now();
+  List<dynamic> _filteredMeals = [];
+
+  void _filterMeals() {
+    _filteredMeals = jsondata.where((jsondata) {
+      String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
+      return jsondata["Date"] == formattedDate;
+    }).toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  Future loadData() async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"),
+          headers: {'Cache-Control': 'no-cache'});
+      if (response.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+          jsondata = jsonDecode(response.body);
+        });
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +157,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontFamily: "Open Sans",
                         color: Colors.black,
-                        fontSize: 19,
+                        fontSize: 20,
                         letterSpacing: 2,
                       ),
                 ),
@@ -88,64 +186,80 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              blurRadius: 4,
-                              color: Color(0x33000000),
-                              offset: Offset(0, 2),
-                              spreadRadius: 2,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _date = _date.subtract(
-                                              const Duration(days: 1));
-                                        });
-                                      },
-                                      child:
-                                          const Icon(Icons.arrow_left_rounded),
-                                    ),
-                                    Text(DateFormat("E. d.MM.yyyy")
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 4,
+                            color: Color(0x33000000),
+                            offset: Offset(0, 2),
+                            spreadRadius: 2,
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _date = _date.subtract(
+                                            const Duration(days: 1));
+                                        _filterMeals();
+                                      });
+                                    },
+                                    child:
+                                        const Icon(Icons.arrow_left_rounded),
+                                  ),
+                                  InkWell(
+                                    child: Text(DateFormat("dd.MM.yyyy")
                                         .format(_date)),
-                                    TextButton(
-                                      onPressed: () {
+                                    onTap: () async {
+                                      final DateTime? picked =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: _date,
+                                        firstDate: DateTime(2010),
+                                        lastDate: DateTime(2100),
+                                      );
+                                      if (picked != _date) {
                                         setState(() {
-                                          _date = _date
-                                              .add(const Duration(days: 1));
+                                          _date = picked!;
+                                          _filterMeals();
                                         });
-                                      },
-                                      child:
-                                          const Icon(Icons.arrow_right_rounded),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                      }
+                                    },
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _date = _date
+                                            .add(const Duration(days: 1));
+                                        _filterMeals();
+                                      });
+                                    },
+                                    child:
+                                        const Icon(Icons.arrow_right_rounded),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -160,990 +274,194 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 color: Color(0xFFFA9C00),
               ),
               Expanded(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                30, 30, 30, 30),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(2, 2),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 0, 218, 65),
-                                    Color.fromARGB(255, 0, 255, 42)
-                                  ],
-                                  stops: [0, 1],
-                                  begin: AlignmentDirectional(0, -1),
-                                  end: AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Image.asset(
-                                                "assets/images/vegan-icon.png",
-                                                width: 25,
-                                                height: 25,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 0, 0, 0),
-                                                child: Text(
-                                                  "Veganes Schnitzel",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge
-                                                      ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: Pommes mit Ketchup",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: 13, 13a, 18",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                  child: RefreshIndicator(
+                onRefresh: () async {
+                  await loadData();
+                },
+                child: ListView.builder(
+                  itemCount: _filteredMeals.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (_isLoading) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    30, 30, 30, 30),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        blurRadius: 4,
+                                        color: Color(0x33000000),
+                                        offset: Offset(2, 2),
+                                        spreadRadius: 2,
                                       ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: const [
-                                            Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
-                                            ),
-                                            Text("4,3"),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  30, 30, 30, 30),
-                              child: Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      blurRadius: 4,
-                                      color: Color(0x33000000),
-                                      offset: Offset(2, 2),
-                                      spreadRadius: 2,
-                                    ),
-                                  ],
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color.fromARGB(255, 207, 141, 66),
-                                      Color.fromARGB(255, 201, 129, 48)
                                     ],
-                                    stops: [0, 1],
-                                    begin: AlignmentDirectional(0, -1),
-                                    end: AlignmentDirectional(0, 1),
+                                    gradient: LinearGradient(
+                                      colors: decideContainerColor(
+                                          _filteredMeals[index]["Mealtype"]),
+                                      stops: const [0, 1],
+                                      begin: const AlignmentDirectional(0, -1),
+                                      end: const AlignmentDirectional(0, 1),
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(8, 8, 8, 8),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  decideIconFile(
+                                                      _filteredMeals[index]
+                                                          ["Mealtype"]),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            8, 0, 0, 0),
+                                                    child: Text(
+                                                      _filteredMeals[index]
+                                                          ["Gerichtname"],
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleLarge
+                                                          ?.copyWith(
+                                                            fontFamily:
+                                                                "Open Sans",
+                                                            fontSize: 18,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 4, 4, 0),
+                                                    child: Text(
+                                                      "Preis: ${_filteredMeals[index]["Preis"]}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  "Open Sans",
+                                                              fontSize: 13),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 4, 4, 0),
+                                                    child: Text(
+                                                      "Beilagen: ${_filteredMeals[index]["Beilagen"]}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  "Open Sans",
+                                                              fontSize: 13),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 4, 4, 0),
+                                                    child: Text(
+                                                      "Allergene: ${_filteredMeals[index]["Allergene"]}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  "Open Sans",
+                                                              fontSize: 13),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
                                         padding: const EdgeInsetsDirectional
                                             .fromSTEB(8, 8, 8, 8),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/chicken-icon.png",
-                                                  width: 25,
-                                                  height: 25,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(8, 0, 0, 0),
-                                                  child: Text("Hünchengulasch",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleLarge
-                                                          ?.copyWith(
-                                                              fontFamily:
-                                                                  "Open Sans",
-                                                              fontSize: 14)),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(0, 4, 4, 0),
-                                                  child: Text(
-                                                    "Beilagen: Bandnudeln",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontFamily:
-                                                                "Open Sans",
-                                                            fontSize: 12),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.star_rounded,
+                                                    color: Color(0xFFE47B13),
+                                                    size: 24,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(0, 4, 4, 0),
-                                                  child: Text(
-                                                    "Allergene: 13, 13a, 19",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontFamily:
-                                                                "Open Sans",
-                                                            fontSize: 12),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                            0, 0, 4, 0),
+                                                    child: Text(
+                                                        _filteredMeals[index]
+                                                            ["Bewertung"]),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: const [
-                                              Icon(
-                                                Icons.star_rounded,
-                                                color: Color(0xFFE47B13),
-                                                size: 24,
-                                              ),
-                                              Text("3,9"),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              )),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                30, 30, 30, 30),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(2, 2),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 0, 218, 65),
-                                    Color.fromARGB(255, 0, 255, 42)
-                                  ],
-                                  stops: [0, 1],
-                                  begin: AlignmentDirectional(0, -1),
-                                  end: AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Image.asset(
-                                                "assets/images/vegan-icon.png",
-                                                width: 25,
-                                                height: 25,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 0, 0, 0),
-                                                child: Text(
-                                                  "Veganes Schnitzel",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge
-                                                      ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: Pommes mit Ketchup",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: 13, 13a, 18",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: const [
-                                            Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
-                                            ),
-                                            Text("4,3"),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                30, 30, 30, 30),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(2, 2),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 0, 218, 65),
-                                    Color.fromARGB(255, 0, 255, 42)
-                                  ],
-                                  stops: [0, 1],
-                                  begin: AlignmentDirectional(0, -1),
-                                  end: AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Image.asset(
-                                                "assets/images/vegan-icon.png",
-                                                width: 25,
-                                                height: 25,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 0, 0, 0),
-                                                child: Text(
-                                                  "Veganes Schnitzel",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge
-                                                      ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: Pommes mit Ketchup",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: 13, 13a, 18",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: const [
-                                            Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
-                                            ),
-                                            Text("4,3"),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                30, 30, 30, 30),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(2, 2),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 0, 218, 65),
-                                    Color.fromARGB(255, 0, 255, 42)
-                                  ],
-                                  stops: [0, 1],
-                                  begin: AlignmentDirectional(0, -1),
-                                  end: AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Image.asset(
-                                                "assets/images/vegan-icon.png",
-                                                width: 25,
-                                                height: 25,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 0, 0, 0),
-                                                child: Text(
-                                                  "Veganes Schnitzel",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge
-                                                      ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: Pommes mit Ketchup",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: 13, 13a, 18",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: const [
-                                            Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
-                                            ),
-                                            Text("4,3"),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                30, 30, 30, 30),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(2, 2),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 0, 218, 65),
-                                    Color.fromARGB(255, 0, 255, 42)
-                                  ],
-                                  stops: [0, 1],
-                                  begin: AlignmentDirectional(0, -1),
-                                  end: AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Image.asset(
-                                                "assets/images/vegan-icon.png",
-                                                width: 25,
-                                                height: 25,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 0, 0, 0),
-                                                child: Text(
-                                                  "Veganes Schnitzel",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge
-                                                      ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: Pommes mit Ketchup",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: 13, 13a, 18",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: const [
-                                            Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
-                                            ),
-                                            Text("4,3"),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                30, 30, 30, 30),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(2, 2),
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 0, 218, 65),
-                                    Color.fromARGB(255, 0, 255, 42)
-                                  ],
-                                  stops: [0, 1],
-                                  begin: AlignmentDirectional(0, -1),
-                                  end: AlignmentDirectional(0, 1),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              8, 8, 8, 8),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Image.asset(
-                                                "assets/images/vegan-icon.png",
-                                                width: 25,
-                                                height: 25,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 0, 0, 0),
-                                                child: Text(
-                                                  "Veganes Schnitzel",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge
-                                                      ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: Pommes mit Ketchup",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 4, 4, 0),
-                                                child: Text(
-                                                  "Allergene: 13, 13a, 18",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: const [
-                                            Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
-                                            ),
-                                            Text("4,3"),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          ]);
+                    }
+                  },
                 ),
-              ),
+              )),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
