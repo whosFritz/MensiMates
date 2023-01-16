@@ -41,16 +41,18 @@ class MensenApp extends StatelessWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  // Variablen
+  DateTime _date = DateTime.now();
+  Future<List<Dish>> futuredishes = getDishes();
+  late Future<List<Dish>> filteredDishes = _filterDishes();
+
+  // Initierung
   @override
   void initState() {
     super.initState();
   }
 
-  DateTime _date = DateTime.now();
-  bool isloading = false;
-  Future<List<Dish>> futuredishes = getDishes();
-  late Future<List<Dish>> filteredDishes = _filterDishes();
-
+  // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishes() async {
     final response = await http.get(
       Uri.parse(
@@ -64,6 +66,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }
   }
 
+  // Methode um Gerichte nach Datum zu filtern
   Future<List<Dish>> _filterDishes() async {
     final dishes = await futuredishes;
     String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
@@ -72,6 +75,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }).toList();
   }
 
+  // Methde, welche Aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
       futuredishes = getDishes();
@@ -699,8 +703,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .titleLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color:
-                                                const Color.fromARGB(255, 36, 234, 10),
+                                            color: const Color.fromARGB(
+                                                255, 36, 234, 10),
                                             fontSize: 30,
                                             letterSpacing: 2,
                                           ),
@@ -715,7 +719,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
                                             fontSize: 14,
                                             letterSpacing: 2,
                                           ),
@@ -730,7 +735,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
                                             fontSize: 15,
                                             letterSpacing: 2,
                                           ),
@@ -745,11 +751,12 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
                                             fontSize: 14,
                                             letterSpacing: 2,
-                                            
-                                          ), textAlign: TextAlign.center,
+                                          ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   )
                                 ],
