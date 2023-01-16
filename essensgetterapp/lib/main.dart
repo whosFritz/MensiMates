@@ -237,7 +237,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       future: filteredDishes,
                       builder: ((context, snapshot) {
                         if (snapshot.hasError) {
-                          return Text("${snapshot.error}");
+                          return Text("🤮${snapshot.error}");
                         } else if (snapshot.hasData) {
                           final dishes = snapshot.data!;
                           return buildDishes(dishes);
