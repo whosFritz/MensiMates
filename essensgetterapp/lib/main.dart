@@ -61,7 +61,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     print("vor statuscode abfrage");
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(response.body);
-      print(response.body);
       return jsondata.map<Dish>(Dish.fromJson).toList();
     } else {
       throw Exception();
@@ -71,7 +70,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   // Methode um Gerichte nach Datum zu filtern
   Future<List<Dish>> _filterDishes() async {
     final dishes = await futuredishes;
-    String formattedDate = DateFormat("yyyy-mm-dd").format(_date);
+    String formattedDate = DateFormat("yyyy-MM-dd").format(_date);
     return dishes.where((dish) {
       return dish.creationDate == formattedDate;
     }).toList();
@@ -546,7 +545,7 @@ Image decideIconFile(String iconmealtype) {
   if (iconmealtype == "Vegetarisches Gericht") {
     return Image.asset("assets/images/vegetarian-icon.png",
         width: 45, height: 45, fit: BoxFit.cover);
-    } else if (iconmealtype == "Fleischgericht") {
+  } else if (iconmealtype == "Fleischgericht") {
     return Image.asset("assets/images/meat-icon.png",
         width: 40, height: 40, fit: BoxFit.cover);
   } else {
