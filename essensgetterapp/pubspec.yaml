@@ -18,6 +18,8 @@ dependencies:
   audioplayers: ^2.0.0
   audio_service: ^0.18.9
   flutter_launcher_icons: ^0.11.0
+  flutter_local_notifications: ^13.0.0
+  timezone: ^0.9.1
   
 
 
