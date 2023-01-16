@@ -41,21 +41,24 @@ class MensenApp extends StatelessWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  // Variablen
+  DateTime _date = DateTime.now();
+  Future<List<Dish>> futuredishes = getDishes();
+  late Future<List<Dish>> filteredDishes = _filterDishes();
+
+  // Initierung
   @override
   void initState() {
     super.initState();
   }
 
-  DateTime _date = DateTime.now();
-  bool isloading = false;
-  Future<List<Dish>> futuredishes = getDishes();
-  late Future<List<Dish>> filteredDishes = _filterDishes();
-
+  // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishes() async {
     final response = await http.get(
       Uri.parse(
-          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/essensgetterapp/assets/testtingdata.json"),
+          "https://api.olech2412.de/essensGetter/mealToday?code=YCfe0F9opiNwCKOelCSb"),
     );
+    print("vor statuscode abfrage");
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(response.body);
       return jsondata.map<Dish>(Dish.fromJson).toList();
@@ -64,14 +67,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }
   }
 
+  // Methode um Gerichte nach Datum zu filtern
   Future<List<Dish>> _filterDishes() async {
     final dishes = await futuredishes;
-    String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
+    String formattedDate = DateFormat("yyyy-MM-dd").format(_date);
     return dishes.where((dish) {
-      return dish.datum == formattedDate;
+      return dish.creationDate == formattedDate;
     }).toList();
   }
 
+  // Methde, welche Aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
       futuredishes = getDishes();
@@ -395,7 +400,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                           ],
                           gradient: LinearGradient(
-                            colors: decideContainerColor(dish.mealtype),
+                            colors: decideContainerColor(dish.category),
                             stops: const [0, 1],
                             begin: const AlignmentDirectional(0, -1),
                             end: const AlignmentDirectional(0, 1),
@@ -424,11 +429,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 0, 8, 0),
                                             child:
-                                                decideIconFile(dish.mealtype),
+                                                decideIconFile(dish.category),
                                           ),
                                           Expanded(
                                             child: Text(
-                                              dish.gerichtname,
+                                              dish.name,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleLarge
@@ -450,7 +455,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "Preis: ${dish.preis}",
+                                              "Preis: ${dish.price}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -471,28 +476,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "Beilagen: ${dish.beilagen}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  ?.copyWith(
-                                                      fontFamily: "Open Sans",
-                                                      fontSize: 13),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 4, 4, 0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              "Allergene: ${dish.allergene}",
+                                              "Beilagen & Zutaten: ${dish.description}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -531,7 +515,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(0, 0, 4, 0),
                                           child: Text(
-                                            dish.bewertung,
+                                            "5",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1
@@ -558,20 +542,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 }
 
 Image decideIconFile(String iconmealtype) {
-  if (iconmealtype == "vegan") {
-    return Image.asset("assets/images/vegan-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "vegetarian") {
+  if (iconmealtype == "Vegetarisches Gericht") {
     return Image.asset("assets/images/vegetarian-icon.png",
         width: 45, height: 45, fit: BoxFit.cover);
-  } else if (iconmealtype == "chicken") {
-    return Image.asset("assets/images/chicken-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "meat") {
+  } else if (iconmealtype == "Fleischgericht") {
     return Image.asset("assets/images/meat-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "fish") {
-    return Image.asset("assets/images/fish-icon.png",
         width: 40, height: 40, fit: BoxFit.cover);
   } else {
     return Image.asset("assets/images/default-icon.png",
@@ -579,32 +554,17 @@ Image decideIconFile(String iconmealtype) {
   }
 }
 
-List<Color> decideContainerColor(String mealtype) {
+List<Color> decideContainerColor(String category) {
   List<Color> colors = [];
-  if (mealtype == "vegan") {
-    colors = [
-      const Color.fromARGB(255, 0, 218, 65),
-      const Color.fromARGB(255, 0, 255, 42)
-    ];
-  } else if (mealtype == "vegetarian") {
+  if (category == "Vegetarisches Gericht") {
     colors = [
       const Color.fromARGB(255, 59, 215, 67),
       const Color.fromARGB(255, 18, 213, 151)
     ];
-  } else if (mealtype == "chicken") {
-    colors = [
-      const Color.fromARGB(255, 207, 141, 66),
-      const Color.fromARGB(255, 201, 129, 48)
-    ];
-  } else if (mealtype == "meat") {
+  } else if (category == "Fleischgericht") {
     colors = [
       const Color.fromARGB(255, 244, 120, 32),
       const Color.fromARGB(255, 220, 102, 13)
-    ];
-  } else if (mealtype == "fish") {
-    colors = [
-      const Color.fromARGB(255, 18, 176, 255),
-      const Color.fromARGB(255, 9, 142, 194)
     ];
   } else {
     colors = [Colors.white, Colors.white];
@@ -613,38 +573,32 @@ List<Color> decideContainerColor(String mealtype) {
 }
 
 class Dish {
-  final String allergene;
-  final String beilagen;
-  final String bewertung;
-  final String datum;
-  final String gerichtname;
-  final String mealtype;
-  final String preis;
+  final String name;
+  final String creationDate;
+  final String category;
+  final String price;
+  final String description;
 
   Dish({
-    required this.gerichtname,
-    required this.datum,
-    required this.mealtype,
-    required this.preis,
-    required this.beilagen,
-    required this.allergene,
-    required this.bewertung,
+    required this.name,
+    required this.creationDate,
+    required this.category,
+    required this.price,
+    required this.description,
   });
   static Dish fromJson(json) {
     return Dish(
-      gerichtname: json["gerichtname"],
-      datum: json["datum"],
-      mealtype: json["mealtype"],
-      preis: json["preis"],
-      beilagen: json["beilagen"],
-      allergene: json["allergene"],
-      bewertung: json["bewertung"],
+      name: json["name"],
+      creationDate: json["creationDate"],
+      category: json["category"],
+      price: json["price"],
+      description: json["description"],
     );
   }
 
   @override
   String toString() {
-    return "Gerich: Es gibt am $datum $gerichtname mit $beilagen zum Preis von $preis mit einer Bewrtung von $bewertung Sternen";
+    return "Gerich: Es gibt am $creationDate $name mit $description zum Preis von $price.";
   }
 }
 
@@ -699,8 +653,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .titleLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color:
-                                                const Color.fromARGB(255, 36, 234, 10),
+                                            color: const Color.fromARGB(
+                                                255, 36, 234, 10),
                                             fontSize: 30,
                                             letterSpacing: 2,
                                           ),
@@ -715,7 +669,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
                                             fontSize: 14,
                                             letterSpacing: 2,
                                           ),
@@ -730,7 +685,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
                                             fontSize: 15,
                                             letterSpacing: 2,
                                           ),
@@ -745,11 +701,12 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
                                             fontSize: 14,
                                             letterSpacing: 2,
-                                            
-                                          ), textAlign: TextAlign.center,
+                                          ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   )
                                 ],
