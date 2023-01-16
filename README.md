@@ -7,11 +7,11 @@ The app also includes a rating system that allows users to rate the meals.
 ![Screenshot_20230116-191144](https://user-images.githubusercontent.com/97552289/212743088-15131e0c-d002-4d4a-ab21-65a06fac445e.jpg)
 
 ## Features
-Displays meals and meal types of a Mensa
-Will include a rating system for meals
-User-friendly interface
-Scrollable list of meals
-Built using Flutter and Dart
+<p>Displays meals and meal types of a Mensa</p>
+<p>Will include a rating system for meals</p>
+<p>User-friendly interface</p>
+<p>Scrollable list of meals</p>
+<p>Built using Flutter and Dart</p>
 
 ## Getting started
 To get started with this app, you will need to have the following installed on your local machine:
