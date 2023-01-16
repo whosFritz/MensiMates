@@ -56,10 +56,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   static Future<List<Dish>> getDishes() async {
     final response = await http.get(
       Uri.parse(
-          "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/essensgetterapp/assets/testtingdata.json"),
+          "https://api.olech2412.de/essensGetter/mealToday?code=YCfe0F9opiNwCKOelCSb"),
     );
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(response.body);
+      print("alles super");
       return jsondata.map<Dish>(Dish.fromJson).toList();
     } else {
       throw Exception();
@@ -69,9 +70,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   // Methode um Gerichte nach Datum zu filtern
   Future<List<Dish>> _filterDishes() async {
     final dishes = await futuredishes;
-    String formattedDate = DateFormat("dd.MM.yyyy").format(_date);
+    String formattedDate = DateFormat("yyyy-mm-dd").format(_date);
     return dishes.where((dish) {
-      return dish.datum == formattedDate;
+      return dish.creationDate == formattedDate;
     }).toList();
   }
 
@@ -399,7 +400,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                           ],
                           gradient: LinearGradient(
-                            colors: decideContainerColor(dish.mealtype),
+                            colors: decideContainerColor(dish.category),
                             stops: const [0, 1],
                             begin: const AlignmentDirectional(0, -1),
                             end: const AlignmentDirectional(0, 1),
@@ -428,11 +429,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 0, 8, 0),
                                             child:
-                                                decideIconFile(dish.mealtype),
+                                                decideIconFile(dish.category),
                                           ),
                                           Expanded(
                                             child: Text(
-                                              dish.gerichtname,
+                                              dish.name,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleLarge
@@ -454,7 +455,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "Preis: ${dish.preis}",
+                                              "Preis: ${dish.price}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -475,28 +476,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "Beilagen: ${dish.beilagen}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  ?.copyWith(
-                                                      fontFamily: "Open Sans",
-                                                      fontSize: 13),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 4, 4, 0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              "Allergene: ${dish.allergene}",
+                                              "Beilagen & Zutaten: ${dish.description}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -535,7 +515,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(0, 0, 4, 0),
                                           child: Text(
-                                            dish.bewertung,
+                                            "5",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1
@@ -583,29 +563,29 @@ Image decideIconFile(String iconmealtype) {
   }
 }
 
-List<Color> decideContainerColor(String mealtype) {
+List<Color> decideContainerColor(String category) {
   List<Color> colors = [];
-  if (mealtype == "vegan") {
+  if (category == "vegan") {
     colors = [
       const Color.fromARGB(255, 0, 218, 65),
       const Color.fromARGB(255, 0, 255, 42)
     ];
-  } else if (mealtype == "vegetarian") {
+  } else if (category == "vegetarian") {
     colors = [
       const Color.fromARGB(255, 59, 215, 67),
       const Color.fromARGB(255, 18, 213, 151)
     ];
-  } else if (mealtype == "chicken") {
+  } else if (category == "chicken") {
     colors = [
       const Color.fromARGB(255, 207, 141, 66),
       const Color.fromARGB(255, 201, 129, 48)
     ];
-  } else if (mealtype == "meat") {
+  } else if (category == "meat") {
     colors = [
       const Color.fromARGB(255, 244, 120, 32),
       const Color.fromARGB(255, 220, 102, 13)
     ];
-  } else if (mealtype == "fish") {
+  } else if (category == "fish") {
     colors = [
       const Color.fromARGB(255, 18, 176, 255),
       const Color.fromARGB(255, 9, 142, 194)
@@ -617,38 +597,32 @@ List<Color> decideContainerColor(String mealtype) {
 }
 
 class Dish {
-  final String allergene;
-  final String beilagen;
-  final String bewertung;
-  final String datum;
-  final String gerichtname;
-  final String mealtype;
-  final String preis;
+  final String name;
+  final String creationDate;
+  final String category;
+  final String price;
+  final String description;
 
   Dish({
-    required this.gerichtname,
-    required this.datum,
-    required this.mealtype,
-    required this.preis,
-    required this.beilagen,
-    required this.allergene,
-    required this.bewertung,
+    required this.name,
+    required this.creationDate,
+    required this.category,
+    required this.price,
+    required this.description,
   });
   static Dish fromJson(json) {
     return Dish(
-      gerichtname: json["gerichtname"],
-      datum: json["datum"],
-      mealtype: json["mealtype"],
-      preis: json["preis"],
-      beilagen: json["beilagen"],
-      allergene: json["allergene"],
-      bewertung: json["bewertung"],
+      name: json["name"],
+      creationDate: json["creationDate"],
+      category: json["category"],
+      price: json["price"],
+      description: json["description"],
     );
   }
 
   @override
   String toString() {
-    return "Gerich: Es gibt am $datum $gerichtname mit $beilagen zum Preis von $preis mit einer Bewrtung von $bewertung Sternen";
+    return "Gerich: Es gibt am $creationDate $name mit $description zum Preis von $price.";
   }
 }
 
