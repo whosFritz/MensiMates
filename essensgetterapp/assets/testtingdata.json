@@ -13,7 +13,7 @@
     "datum": "16.01.2023",
     "mealtype": "vegetarian",
     "preis": "2,65 € / 4,40 € / 6,10 €",
-    "beilagen": "",
+    "beilagen": "Bastmatireis",
     "allergene": "21",
     "bewertung": "4,8"
   },
@@ -86,7 +86,7 @@
     "datum": "20.01.2023",
     "mealtype": "vegetarian",
     "preis": "2,15 € / 4,00 € / 5,70 €",
-    "beilagen": "keine",
+    "beilagen": "",
     "allergene": "19, 21",
     "bewertung": "4,0"
   },
