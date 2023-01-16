@@ -11,7 +11,6 @@ void main() {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight
   ]);
-
   runApp(const MensenApp());
 }
 
@@ -54,13 +53,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishes() async {
-    final response = await http.get(
-      Uri.parse(
-          "https://api.olech2412.de/essensGetter/mealToday?code=YCfe0F9opiNwCKOelCSb"),
-    );
-    print("vor statuscode abfrage");
+    final response = await http.get(Uri.parse(
+        "https://api.olech2412.de/essensGetter/mealToday?code=YCfe0F9opiNwCKOelCSb"));
     if (response.statusCode == 200) {
-      final jsondata = jsonDecode(response.body);
+      final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
       return jsondata.map<Dish>(Dish.fromJson).toList();
     } else {
       throw Exception();
@@ -72,6 +68,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     final dishes = await futuredishes;
     String formattedDate = DateFormat("yyyy-MM-dd").format(_date);
     return dishes.where((dish) {
+      print(dish.name);
       return dish.creationDate == formattedDate;
     }).toList();
   }
