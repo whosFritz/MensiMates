@@ -622,7 +622,3 @@ class Dish {
     return 'Gerich: Es gibt am $datum $gerichtname mit $beilagen zum Preis von $preis mit einer Bewrtung von $bewertung Sternen';
   }
 }
-
-class Gerichte {
-  late final List<Dish> fliste;
-}
