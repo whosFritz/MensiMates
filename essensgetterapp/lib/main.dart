@@ -58,9 +58,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       Uri.parse(
           "https://api.olech2412.de/essensGetter/mealToday?code=YCfe0F9opiNwCKOelCSb"),
     );
+    print("vor statuscode abfrage");
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(response.body);
-      print("alles super");
+      print(response.body);
       return jsondata.map<Dish>(Dish.fromJson).toList();
     } else {
       throw Exception();
@@ -542,20 +543,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 }
 
 Image decideIconFile(String iconmealtype) {
-  if (iconmealtype == "vegan") {
-    return Image.asset("assets/images/vegan-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "vegetarian") {
+  if (iconmealtype == "Vegetarisches Gericht") {
     return Image.asset("assets/images/vegetarian-icon.png",
         width: 45, height: 45, fit: BoxFit.cover);
-  } else if (iconmealtype == "chicken") {
-    return Image.asset("assets/images/chicken-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "meat") {
+    } else if (iconmealtype == "Fleischgericht") {
     return Image.asset("assets/images/meat-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "fish") {
-    return Image.asset("assets/images/fish-icon.png",
         width: 40, height: 40, fit: BoxFit.cover);
   } else {
     return Image.asset("assets/images/default-icon.png",
@@ -565,30 +557,15 @@ Image decideIconFile(String iconmealtype) {
 
 List<Color> decideContainerColor(String category) {
   List<Color> colors = [];
-  if (category == "vegan") {
-    colors = [
-      const Color.fromARGB(255, 0, 218, 65),
-      const Color.fromARGB(255, 0, 255, 42)
-    ];
-  } else if (category == "vegetarian") {
+  if (category == "Vegetarisches Gericht") {
     colors = [
       const Color.fromARGB(255, 59, 215, 67),
       const Color.fromARGB(255, 18, 213, 151)
     ];
-  } else if (category == "chicken") {
-    colors = [
-      const Color.fromARGB(255, 207, 141, 66),
-      const Color.fromARGB(255, 201, 129, 48)
-    ];
-  } else if (category == "meat") {
+  } else if (category == "Fleischgericht") {
     colors = [
       const Color.fromARGB(255, 244, 120, 32),
       const Color.fromARGB(255, 220, 102, 13)
-    ];
-  } else if (category == "fish") {
-    colors = [
-      const Color.fromARGB(255, 18, 176, 255),
-      const Color.fromARGB(255, 9, 142, 194)
     ];
   } else {
     colors = [Colors.white, Colors.white];
