@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import "dart:convert";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
@@ -17,9 +16,7 @@ void main() {
 }
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({super.key, required this.title});
-
-  final String title;
+  const HomePageWidget({super.key});
 
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
@@ -32,9 +29,13 @@ class MensenApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        "/home": (context) => const HomePageWidget(),
+        "/infoscreen": (context) => const InfoScreen(),
+      },
       title: "MensaApp",
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Open Sans"),
-      home: const HomePageWidget(title: "Speiseplan"),
+      home: const HomePageWidget(),
     );
   }
 }
@@ -131,7 +132,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
                       child: Container(
                         width: 300,
                         height: 50,
@@ -170,8 +172,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             filteredDishes = _filterDishes();
                                           });
                                         },
-                                        child:
-                                            const Icon(Icons.arrow_left_rounded),
+                                        child: const Icon(
+                                            Icons.arrow_left_rounded),
                                       ),
                                     ),
                                     InkWell(
@@ -205,8 +207,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             filteredDishes = _filterDishes();
                                           });
                                         },
-                                        child:
-                                            const Icon(Icons.arrow_right_rounded),
+                                        child: const Icon(
+                                            Icons.arrow_right_rounded),
                                       ),
                                     ),
                                   ],
@@ -253,84 +255,107 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           color: const Color.fromARGB(255, 224, 224, 224),
                           borderRadius: BorderRadius.circular(0),
                           shape: BoxShape.rectangle),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 0, 0),
-                                  child: Text("Öffnungszeiten:",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          ?.copyWith(
-                                            fontFamily: "Open Sans",
-                                            fontSize: 15,
-                                          )),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    "Mo - Fr: 8.30-15.45 Uhr",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(
-                                            fontFamily: "Open Sans",
-                                            fontSize: 12),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  7, 7, 7, 7),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 0, 0, 0),
+                                        child: Text("Öffnungszeiten:",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6
+                                                ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 15,
+                                                )),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 0, 0),
-                                  child: Text("Mittagessen:",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          ?.copyWith(
-                                            fontFamily: "Open Sans",
-                                            fontSize: 15,
-                                          )),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Text(
-                                    "Mo - Fr: 11.30-14.00 Uhr",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(
-                                            fontFamily: "Open Sans",
-                                            fontSize: 13),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(8, 0, 0, 0),
+                                        child: Text(
+                                          "Mo - Fr: 8.30-15.45 Uhr",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 12),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 0, 0, 0),
+                                        child: Text("Mittagessen:",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6
+                                                ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 15,
+                                                )),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(8, 0, 0, 0),
+                                        child: Text(
+                                          "Mo - Fr: 11.30-14.00 Uhr",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 13),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                7, 7, 14, 7),
+                            child: Column(
+                              children: [
+                                Row(children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.info_outline),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, "/infoscreen");
+                                    },
+                                  ),
+                                ]),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -607,18 +632,140 @@ class Dish {
   });
   static Dish fromJson(json) {
     return Dish(
-      gerichtname: json['gerichtname'],
-      datum: json['datum'],
-      mealtype: json['mealtype'],
-      preis: json['preis'],
-      beilagen: json['beilagen'],
-      allergene: json['allergene'],
-      bewertung: json['bewertung'],
+      gerichtname: json["gerichtname"],
+      datum: json["datum"],
+      mealtype: json["mealtype"],
+      preis: json["preis"],
+      beilagen: json["beilagen"],
+      allergene: json["allergene"],
+      bewertung: json["bewertung"],
     );
   }
 
   @override
   String toString() {
-    return 'Gerich: Es gibt am $datum $gerichtname mit $beilagen zum Preis von $preis mit einer Bewrtung von $bewertung Sternen';
+    return "Gerich: Es gibt am $datum $gerichtname mit $beilagen zum Preis von $preis mit einer Bewrtung von $bewertung Sternen";
+  }
+}
+
+class InfoScreen extends StatefulWidget {
+  const InfoScreen({super.key});
+
+  @override
+  State<InfoScreen> createState() => _InfoScreenState();
+}
+
+class _InfoScreenState extends State<InfoScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Info-Screen"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: SafeArea(
+        child: GestureDetector(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            10, 10, 10, 10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "MensApp",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
+                                            fontFamily: "Open Sans",
+                                            color:
+                                                Color.fromARGB(255, 36, 234, 10),
+                                            fontSize: 30,
+                                            letterSpacing: 2,
+                                          ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Diese App wurde entwickelt von Fritz Schubert in der Zusammenarbeit mit Ole Einar Christoph.",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                            fontFamily: "Open Sans",
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                            fontSize: 14,
+                                            letterSpacing: 2,
+                                          ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Viel Spaß",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                            fontFamily: "Open Sans",
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                            fontSize: 15,
+                                            letterSpacing: 2,
+                                          ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "🥰 Ich freue mich über jeden Verbesserungsvorschlag.",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                            fontFamily: "Open Sans",
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                            fontSize: 14,
+                                            letterSpacing: 2,
+                                            
+                                          ), textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
