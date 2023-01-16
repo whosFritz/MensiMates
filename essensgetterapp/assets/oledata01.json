@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Schweinerückensteak in Sesam-Eihülle",
+    "description": "Rahmsoße, Möhrengemüse, Herzoginkartoffeln, glutenhaltiges Getreide, Eier, Sesam, Weizen, Milch/ Milchzucker, Schwein",
+    "price": "3.05€/ 4.9€/ 6.7€",
+    "category": "Fleischgericht",
+    "creationDate": "2023-01-16",
+    "responseCode": 200
+  },
+  {
+    "id": 2,
+    "name": "Kichererbsen-Gemüse-Ragout in Kokosmilch",
+    "description": "Basmatireis, Sellerie, Veganes Gericht",
+    "price": "2.65€/ 4.4€/ 6.1€",
+    "category": "Vegetarisches Gericht",
+    "creationDate": "2023-01-16",
+    "responseCode": 200
+  }
+]
