@@ -131,87 +131,90 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4,
-                            color: Color(0x33000000),
-                            offset: Offset(0, 2),
-                            spreadRadius: 2,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            10, 0, 10, 0),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _date = _date.subtract(
-                                              const Duration(days: 1));
-                                          filteredDishes = _filterDishes();
-                                        });
-                                      },
-                                      child:
-                                          const Icon(Icons.arrow_left_rounded),
+                    child: Expanded(
+                      child: Container(
+                        width: 300,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Color(0x33000000),
+                              offset: Offset(0, 2),
+                              spreadRadius: 2,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10, 0, 10, 0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _date = _date.subtract(
+                                                const Duration(days: 1));
+                                            filteredDishes = _filterDishes();
+                                          });
+                                        },
+                                        child:
+                                            const Icon(Icons.arrow_left_rounded),
+                                      ),
                                     ),
-                                  ),
-                                  InkWell(
-                                    child: Text(DateFormat("E. dd.MM.yyyy")
-                                        .format(_date)),
-                                    onTap: () async {
-                                      final DateTime? picked =
-                                          await showDatePicker(
-                                        context: context,
-                                        initialDate: _date,
-                                        firstDate: DateTime(2023),
-                                        lastDate: DateTime(2024),
-                                      );
-                                      if (picked != _date) {
-                                        setState(() {
-                                          _date = picked!;
-                                          filteredDishes = _filterDishes();
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            10, 0, 10, 0),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _date = _date
-                                              .add(const Duration(days: 1));
-                                          filteredDishes = _filterDishes();
-                                        });
+                                    InkWell(
+                                      child: Text(DateFormat("E. dd.MM.yyyy")
+                                          .format(_date)),
+                                      onTap: () async {
+                                        final DateTime? picked =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: _date,
+                                          firstDate: DateTime(2023),
+                                          lastDate: DateTime(2024),
+                                        );
+                                        if (picked != _date) {
+                                          setState(() {
+                                            _date = picked!;
+                                            filteredDishes = _filterDishes();
+                                          });
+                                        }
                                       },
-                                      child:
-                                          const Icon(Icons.arrow_right_rounded),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10, 0, 10, 0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _date = _date
+                                                .add(const Duration(days: 1));
+                                            filteredDishes = _filterDishes();
+                                          });
+                                        },
+                                        child:
+                                            const Icon(Icons.arrow_right_rounded),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
