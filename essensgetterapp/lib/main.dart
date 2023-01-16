@@ -700,7 +700,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
                                             color:
-                                                Color.fromARGB(255, 36, 234, 10),
+                                                const Color.fromARGB(255, 36, 234, 10),
                                             fontSize: 30,
                                             letterSpacing: 2,
                                           ),
@@ -715,7 +715,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(255, 0, 0, 0),
                                             fontSize: 14,
                                             letterSpacing: 2,
                                           ),
@@ -730,7 +730,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(255, 0, 0, 0),
                                             fontSize: 15,
                                             letterSpacing: 2,
                                           ),
@@ -745,7 +745,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                           .bodyLarge
                                           ?.copyWith(
                                             fontFamily: "Open Sans",
-                                            color: Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(255, 0, 0, 0),
                                             fontSize: 14,
                                             letterSpacing: 2,
                                             
