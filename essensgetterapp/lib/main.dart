@@ -46,7 +46,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   DateTime _date = DateTime.now();
-
+  bool isloading = false;
   Future<List<Dish>> futuredishes = getDishes();
   late Future<List<Dish>> filteredDishes = _filterDishes();
 
@@ -69,6 +69,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     return dishes.where((dish) {
       return dish.datum == formattedDate;
     }).toList();
+  }
+
+  Future refresh() async {
+    setState(() {
+      futuredishes = getDishes();
+    });
   }
 
   @override
@@ -125,87 +131,90 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4,
-                            color: Color(0x33000000),
-                            offset: Offset(0, 2),
-                            spreadRadius: 2,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            10, 0, 10, 0),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _date = _date.subtract(
-                                              const Duration(days: 1));
-                                          filteredDishes = _filterDishes();
-                                        });
-                                      },
-                                      child:
-                                          const Icon(Icons.arrow_left_rounded),
+                    child: Expanded(
+                      child: Container(
+                        width: 300,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Color(0x33000000),
+                              offset: Offset(0, 2),
+                              spreadRadius: 2,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10, 0, 10, 0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _date = _date.subtract(
+                                                const Duration(days: 1));
+                                            filteredDishes = _filterDishes();
+                                          });
+                                        },
+                                        child:
+                                            const Icon(Icons.arrow_left_rounded),
+                                      ),
                                     ),
-                                  ),
-                                  InkWell(
-                                    child: Text(DateFormat("E. dd.MM.yyyy")
-                                        .format(_date)),
-                                    onTap: () async {
-                                      final DateTime? picked =
-                                          await showDatePicker(
-                                        context: context,
-                                        initialDate: _date,
-                                        firstDate: DateTime(2023),
-                                        lastDate: DateTime(2024),
-                                      );
-                                      if (picked != _date) {
-                                        setState(() {
-                                          _date = picked!;
-                                          filteredDishes = _filterDishes();
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            10, 0, 10, 0),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _date = _date
-                                              .add(const Duration(days: 1));
-                                          filteredDishes = _filterDishes();
-                                        });
+                                    InkWell(
+                                      child: Text(DateFormat("E. dd.MM.yyyy")
+                                          .format(_date)),
+                                      onTap: () async {
+                                        final DateTime? picked =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: _date,
+                                          firstDate: DateTime(2023),
+                                          lastDate: DateTime(2024),
+                                        );
+                                        if (picked != _date) {
+                                          setState(() {
+                                            _date = picked!;
+                                            filteredDishes = _filterDishes();
+                                          });
+                                        }
                                       },
-                                      child:
-                                          const Icon(Icons.arrow_right_rounded),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10, 0, 10, 0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _date = _date
+                                                .add(const Duration(days: 1));
+                                            filteredDishes = _filterDishes();
+                                          });
+                                        },
+                                        child:
+                                            const Icon(Icons.arrow_right_rounded),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -223,10 +232,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   child: FutureBuilder(
                       future: filteredDishes,
                       builder: ((context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
+                        if (snapshot.hasError) {
                           return Text("${snapshot.error}");
                         } else if (snapshot.hasData) {
                           final dishes = snapshot.data!;
@@ -338,133 +344,175 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   Widget buildDishes(List<Dish> dishes) {
-    return ListView.builder(
-        itemCount: dishes.length,
-        itemBuilder: (context, index) {
-          final dish = dishes[index];
-          return Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4,
-                            color: Color(0x33000000),
-                            offset: Offset(2, 2),
-                            spreadRadius: 2,
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: ListView.builder(
+          itemCount: dishes.length,
+          itemBuilder: (context, index) {
+            final dish = dishes[index];
+            return Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Color(0x33000000),
+                              offset: Offset(2, 2),
+                              spreadRadius: 2,
+                            ),
+                          ],
+                          gradient: LinearGradient(
+                            colors: decideContainerColor(dish.mealtype),
+                            stops: const [0, 1],
+                            begin: const AlignmentDirectional(0, -1),
+                            end: const AlignmentDirectional(0, 1),
                           ),
-                        ],
-                        gradient: LinearGradient(
-                          colors: decideContainerColor(dish.mealtype),
-                          stops: const [0, 1],
-                          begin: const AlignmentDirectional(0, -1),
-                          end: const AlignmentDirectional(0, 1),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Padding(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    8, 8, 8, 8),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              8, 0, 0, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0, 0, 8, 0),
+                                            child:
+                                                decideIconFile(dish.mealtype),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              dish.gerichtname,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge
+                                                  ?.copyWith(
+                                                    fontFamily: "Open Sans",
+                                                    fontSize: 19,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 4, 4, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Preis: ${dish.preis}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(
+                                                      fontFamily: "Open Sans",
+                                                      fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 4, 4, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Beilagen: ${dish.beilagen}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(
+                                                      fontFamily: "Open Sans",
+                                                      fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 4, 4, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Allergene: ${dish.allergene}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(
+                                                      fontFamily: "Open Sans",
+                                                      fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   8, 8, 8, 8),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 0, 0, 0),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
+                                        const Icon(
+                                          Icons.star_rounded,
+                                          color: Color(0xFFE47B13),
+                                          size: 24,
+                                        ),
                                         Padding(
                                           padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 0, 8, 0),
-                                          child: decideIconFile(dish.mealtype),
-                                        ),
-                                        Expanded(
+                                              .fromSTEB(0, 0, 4, 0),
                                           child: Text(
-                                            dish.gerichtname,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge
-                                                ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 19,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 4, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            "Preis: ${dish.preis}",
+                                            dish.bewertung,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1
                                                 ?.copyWith(
                                                     fontFamily: "Open Sans",
-                                                    fontSize: 13),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 4, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            "Beilagen: ${dish.beilagen}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                ?.copyWith(
-                                                    fontFamily: "Open Sans",
-                                                    fontSize: 13),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 4, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            "Allergene: ${dish.allergene}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                ?.copyWith(
-                                                    fontFamily: "Open Sans",
-                                                    fontSize: 13),
+                                                    fontSize: 15),
                                           ),
                                         ),
                                       ],
@@ -473,52 +521,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ],
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                8, 8, 8, 8),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      const Icon(
-                                        Icons.star_rounded,
-                                        color: Color(0xFFE47B13),
-                                        size: 24,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 0, 4, 0),
-                                        child: Text(
-                                          dish.bewertung,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 15),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ]);
-        });
+                ]);
+          }),
+    );
   }
 }
 
