@@ -81,10 +81,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   void navigateToDetailsPage(BuildContext context, Dish item) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DetailRatingPage(dishdetailed: item),
-        ),
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailRatingPage(dishdetailed: item),
+      ),
     );
   }
 
@@ -394,9 +394,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
                       child: InkWell(
-                        onTap: (() => navigateToDetailsPage(context, dishes[index])),
+                        onTap: (() =>
+                            navigateToDetailsPage(context, dishes[index])),
                         child: Container(
-                          
                           width: double.infinity,
                           decoration: BoxDecoration(
                             boxShadow: const [
@@ -427,15 +427,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                8, 0, 0, 0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(8, 0, 0, 0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(0, 0, 8, 0),
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(0, 0, 8, 0),
                                               child:
                                                   decideIconFile(dish.category),
                                             ),
@@ -455,9 +455,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0, 4, 4, 0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 4, 4, 0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -476,9 +475,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0, 4, 4, 0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 4, 4, 0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
@@ -717,7 +715,25 @@ class _InfoScreenState extends State<AboutPage> {
                                           ),
                                       textAlign: TextAlign.center,
                                     ),
-                                  )
+                                  ),
+                                  TextButton(
+                                      onPressed: () => showLicensePage(
+                                          context: context,
+                                          applicationName: "MensiApp",
+                                          applicationVersion: "App Version: 0.0.1",
+                                          applicationLegalese: "2023 \u00a9 Fritz Schubert",
+                                          applicationIcon: Padding(
+                                            padding: const EdgeInsets.all(12),
+                                            child: Image.asset(
+                                              "assets/images/applogo512.png",
+                                              width: 48,
+                                              height: 48,
+                                            ),
+                                          )),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text("Lizensen"),
+                                      ))
                                 ],
                               ),
                             ),
