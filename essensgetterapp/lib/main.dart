@@ -4,6 +4,7 @@ import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -522,7 +523,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 0, 4, 0),
                                             child: Text(
-                                              "5",
+                                              "",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -744,7 +745,10 @@ class _AboutPageState extends State<AboutPage> {
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Lizensen"),
-                                        ))
+                                        )),Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Text("Alle Daten ohne Gewähr", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Open Sans", fontSize: 15)),
+                                        )
                                   ],
                                 ),
                               ),
@@ -775,27 +779,57 @@ class _AboutPageState extends State<AboutPage> {
 
 class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
-  final DateTime ratingdate = DateTime.now();
 
-  DetailRatingPage({super.key, required this.dishdetailed});
+  const DetailRatingPage({super.key, required this.dishdetailed});
 
   @override
   State<DetailRatingPage> createState() => _DetailRatingPageState();
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
-  late double ratingbarvalue;
+  @override
+  void initState() {
+    super.initState();
+    _getlastRatingDate();
+  }
 
-  void showSnackBar(BuildContext context) {
-    const snackBar = SnackBar(
+  Future<void> showSnackBar1(BuildContext context) async {
+    const snackBar1 = SnackBar(
         content: Text("👍 Bewertung abgegeben"),
         backgroundColor: Colors.blueGrey,
         elevation: 6,
         duration: Duration(seconds: 2));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar1);
   }
 
-  DateTime datumheute = DateTime.now();
+  void showSnackBar2(BuildContext context) {
+    const snackBar2 = SnackBar(
+        content: Text("Heute hast du schon bewertet.🙃"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 6,
+        duration: Duration(seconds: 2));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+  }
+
+  void _getlastRatingDate() async {
+    SharedPreferences olddate = await SharedPreferences.getInstance();
+    String? ratedDate = olddate.getString("ratedDate");
+    setState(() {
+      _lastRatingDate = ratedDate;
+    });
+  }
+
+  void _setRatingDate() async {
+    SharedPreferences olddate = await SharedPreferences.getInstance();
+    String datumheute = DateFormat("yyyy-MM-dd").format(DateTime.now());
+    await olddate.setString("ratedDate", datumheute);
+    setState(() {
+      _lastRatingDate = datumheute;
+    });
+  }
+
+  String? _lastRatingDate = "2023-01-12";
+  late double ratingbarvalue;
 
   @override
   Widget build(BuildContext context) {
@@ -943,7 +977,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 0, 4, 0),
                                             child: Text(
-                                              "5",
+                                              "",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -1001,7 +1035,15 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15)))),
                         onPressed: () {
-                          showSnackBar(context);
+                          if (_lastRatingDate ==
+                              DateFormat("yyyy-MM-dd").format(DateTime.now())) {
+                            showSnackBar2(context);
+                            print(_lastRatingDate);
+                          } else {
+                            //Let him rate
+                            _setRatingDate();
+                            showSnackBar1(context);
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
