@@ -123,7 +123,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         actions: const [],
         flexibleSpace: FlexibleSpaceBar(
           background: Image.asset(
-            "assets/images/appbar-header-brokoli.jpg",
+            "assets/images/appbar-header.jpg",
             fit: BoxFit.cover,
           ),
         ),
@@ -555,6 +555,12 @@ Image decideIconFile(String iconmealtype) {
         width: 45, height: 45, fit: BoxFit.cover);
   } else if (iconmealtype == "Fleischgericht") {
     return Image.asset("assets/images/meat-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  } else if (iconmealtype == "Fischgericht") {
+    return Image.asset("assets/images/fish-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
+  } else if (iconmealtype == "Veganes Gericht") {
+    return Image.asset("assets/images/vegan-icon.png",
         width: 40, height: 40, fit: BoxFit.cover);
   } else {
     return Image.asset("assets/images/default-icon.png",
