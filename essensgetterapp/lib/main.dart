@@ -670,7 +670,7 @@ class _InfoScreenState extends State<AboutPage> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      "Diese App wurde entwickelt von Fritz Schubert in der Zusammenarbeit mit Ole Einar Christoph.",
+                                      "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit Ole Einar Christoph.",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyLarge
