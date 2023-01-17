@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +80,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     });
   }
 
-  void navigateToDetailsPage(BuildContext context, Dish item) {
+  void navigateToDetailRatingPage(BuildContext context, Dish item) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -395,7 +396,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
                       child: InkWell(
                         onTap: (() =>
-                            navigateToDetailsPage(context, dishes[index])),
+                            navigateToDetailRatingPage(context, dishes[index])),
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -613,10 +614,10 @@ class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
 
   @override
-  State<AboutPage> createState() => _InfoScreenState();
+  State<AboutPage> createState() => _AboutPageState();
 }
 
-class _InfoScreenState extends State<AboutPage> {
+class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -753,9 +754,7 @@ class _InfoScreenState extends State<AboutPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
-                    children: const [Text(
-                      "2023 \u00a9 Fritz Schubert"
-                    )],
+                    children: const [Text("2023 \u00a9 Fritz Schubert")],
                   ),
                 ],
               ),
@@ -767,9 +766,28 @@ class _InfoScreenState extends State<AboutPage> {
   }
 }
 
-class DetailRatingPage extends StatelessWidget {
+class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
-  const DetailRatingPage({super.key, required this.dishdetailed});
+  DateTime ratingdate = DateTime.now();
+
+
+  DetailRatingPage({super.key, required this.dishdetailed});
+
+  @override
+  State<DetailRatingPage> createState() => _DetailRatingPageState();
+}
+
+class _DetailRatingPageState extends State<DetailRatingPage> {
+  late double ratingbarvalue;
+
+  void showSnackBar(BuildContext context) {
+    const snackBar = SnackBar(
+        content: Text("👍 Bewertung abgegeben"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 6,
+        duration: Duration(seconds: 2));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -801,7 +819,8 @@ class DetailRatingPage extends StatelessWidget {
                             ),
                           ],
                           gradient: LinearGradient(
-                            colors: decideContainerColor(dishdetailed.category),
+                            colors: decideContainerColor(
+                                widget.dishdetailed.category),
                             stops: const [0, 1],
                             begin: const AlignmentDirectional(0, -1),
                             end: const AlignmentDirectional(0, 1),
@@ -830,11 +849,11 @@ class DetailRatingPage extends StatelessWidget {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 0, 8, 0),
                                             child: decideIconFile(
-                                                dishdetailed.category),
+                                                widget.dishdetailed.category),
                                           ),
                                           Expanded(
                                             child: Text(
-                                              dishdetailed.name,
+                                              widget.dishdetailed.name,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleLarge
@@ -856,7 +875,7 @@ class DetailRatingPage extends StatelessWidget {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "Preis: ${dishdetailed.price}",
+                                              "Preis: ${widget.dishdetailed.price}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -877,7 +896,7 @@ class DetailRatingPage extends StatelessWidget {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              "Beilagen & Zutaten: ${dishdetailed.description}",
+                                              "Beilagen & Zutaten: ${widget.dishdetailed.description}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1
@@ -938,12 +957,90 @@ class DetailRatingPage extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(),
-              Row(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RatingBar.builder(
+                    onRatingUpdate: (newValue) {
+                      setState(() {
+                        ratingbarvalue = newValue;
+                      });
+                    },
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star_rounded,
+                      color: Color(0xFFFA9C00),
+                    ),
+                    direction: Axis.horizontal,
+                    initialRating: 5,
+                    unratedColor: const Color(0xFF9E9E9E),
+                    itemCount: 5,
+                    itemSize: 40,
+                    glowColor: const Color(0xFFFA9C00),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: TextButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFFFA9C00)), shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)))),
+
+                      onPressed: () {
+                        showSnackBar(context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(30,5,30,5),
+                        child: Text(
+                          "Bewerten",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                  fontFamily: "Open Sans",
+                                  fontSize: 20,
+                                  color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class StarRating extends StatefulWidget {
+  const StarRating({super.key});
+
+  @override
+  StarRatingState createState() => StarRatingState();
+}
+
+class StarRatingState extends State<StarRating> {
+  int _selectedStars = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(5, (index) {
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              _selectedStars = index + 1;
+            });
+          },
+          child: Icon(
+            index < _selectedStars ? Icons.star : Icons.star_border,
+            color: Colors.yellow,
+          ),
+        );
+      }),
     );
   }
 }
