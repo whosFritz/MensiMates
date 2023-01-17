@@ -521,7 +521,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           ),
                                           Padding(
                                             padding: const EdgeInsetsDirectional
-                                                .fromSTEB(0, 0, 4, 0),
+                                                .fromSTEB(0, 0, 0, 0),
                                             child: Text(
                                               "",
                                               style: Theme.of(context)
@@ -745,10 +745,17 @@ class _AboutPageState extends State<AboutPage> {
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Lizensen"),
-                                        )),Padding(
-                                          padding: const EdgeInsets.all(15),
-                                          child: Text("Alle Angaben ohne Gewähr", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Open Sans", fontSize: 15)),
-                                        )
+                                        )),
+                                    Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: Text("Alle Angaben ohne Gewähr",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 15)),
+                                    )
                                   ],
                                 ),
                               ),
@@ -778,8 +785,8 @@ class _AboutPageState extends State<AboutPage> {
 }
 
 class DetailRatingPage extends StatefulWidget {
-  final Dish dishdetailed;
 
+  final Dish dishdetailed;
   const DetailRatingPage({super.key, required this.dishdetailed});
 
   @override
@@ -787,6 +794,11 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
+
+  // Variablen
+  String? _lastRatingDate = "2023-01-12";
+  late double ratingbarvalue;
+
   @override
   void initState() {
     super.initState();
@@ -828,16 +840,13 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     });
   }
 
-  String? _lastRatingDate = "2023-01-12";
-  late double ratingbarvalue;
-
   @override
   Widget build(BuildContext context) {
     if (widget.dishdetailed.creationDate ==
         DateFormat("yyyy-MM-dd").format(DateTime.now())) {
       return Scaffold(
         appBar: AppBar(
-            title: const Text("Dateilansicht"),
+            title: const Text("Detailansicht"),
             backgroundColor: Colors.lightGreen),
         body: SafeArea(
           child: GestureDetector(
