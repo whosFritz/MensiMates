@@ -4,7 +4,7 @@ This is a simple Flutter app that displays the meals and meal types of a Mensa (
 The app is beeing built using Dart programming language and the Flutter framework.
 The app also includes a rating system that allows users to rate the meals.
 
-![Screenshot_20230116-191144](https://user-images.githubusercontent.com/97552289/212743088-15131e0c-d002-4d4a-ab21-65a06fac445e.jpg)
+![Screenshot_20230117-163348](https://user-images.githubusercontent.com/97552289/212941781-0c1d5d37-7103-40e9-984a-1a1539c4986c.jpg)
 
 ## Features
 <p>Displays meals and meal types of a Mensa</p>
