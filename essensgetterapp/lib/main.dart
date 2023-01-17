@@ -1047,7 +1047,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                           if (_lastRatingDate ==
                               DateFormat("yyyy-MM-dd").format(DateTime.now())) {
                             showSnackBar2(context);
-                            print(_lastRatingDate);
                           } else {
                             //Let him rate
                             _setRatingDate();
