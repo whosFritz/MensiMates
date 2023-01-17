@@ -611,6 +611,16 @@ class Dish {
     );
   }
 
+  String toJson() {
+    return json.encode({
+      'name': name,
+      'creationDate': creationDate,
+      'category': category,
+      'price': price,
+      'description': description,
+    });
+  }
+
   @override
   String toString() {
     return "Gerich: Es gibt am $creationDate $name mit $description zum Preis von $price.";
@@ -785,7 +795,6 @@ class _AboutPageState extends State<AboutPage> {
 }
 
 class DetailRatingPage extends StatefulWidget {
-
   final Dish dishdetailed;
   const DetailRatingPage({super.key, required this.dishdetailed});
 
@@ -794,7 +803,6 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
-
   // Variablen
   String? _lastRatingDate = "2023-01-12";
   late double ratingbarvalue;
@@ -827,7 +835,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     SharedPreferences olddate = await SharedPreferences.getInstance();
     String? ratedDate = olddate.getString("ratedDate");
     setState(() {
-      _lastRatingDate = ratedDate;
+      _lastRatingDate = ratedDate!;
     });
   }
 
@@ -1046,9 +1054,10 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         onPressed: () {
                           if (_lastRatingDate ==
                               DateFormat("yyyy-MM-dd").format(DateTime.now())) {
+                            // Restrict User rating
                             showSnackBar2(context);
                           } else {
-                            //Let him rate
+                            //Let User rate
                             _setRatingDate();
                             showSnackBar1(context);
                           }
