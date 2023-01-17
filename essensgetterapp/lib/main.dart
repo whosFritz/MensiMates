@@ -768,8 +768,7 @@ class _AboutPageState extends State<AboutPage> {
 
 class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
-  DateTime ratingdate = DateTime.now();
-
+  final DateTime ratingdate = DateTime.now();
 
   DetailRatingPage({super.key, required this.dishdetailed});
 
@@ -985,13 +984,20 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: TextButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFFFA9C00)), shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)))),
-
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xFFFA9C00)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(15)))),
                       onPressed: () {
                         showSnackBar(context);
                       },
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(30,5,30,5),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(30, 5, 30, 5),
                         child: Text(
                           "Bewerten",
                           style: Theme.of(context)
