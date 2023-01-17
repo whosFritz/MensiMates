@@ -654,7 +654,7 @@ class _InfoScreenState extends State<AboutPage> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      "MensApp",
+                                      "MensiApp by whosFritz",
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleLarge
