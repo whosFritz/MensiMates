@@ -975,7 +975,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                           ),
                                           Padding(
                                             padding: const EdgeInsetsDirectional
-                                                .fromSTEB(0, 0, 4, 0),
+                                                .fromSTEB(0, 0, 0, 0),
                                             child: Text(
                                               "",
                                               style: Theme.of(context)
