@@ -747,7 +747,7 @@ class _AboutPageState extends State<AboutPage> {
                                           child: Text("Lizensen"),
                                         )),Padding(
                                           padding: const EdgeInsets.all(15),
-                                          child: Text("Alle Daten ohne Gewähr", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Open Sans", fontSize: 15)),
+                                          child: Text("Alle Angaben ohne Gewähr", style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Open Sans", fontSize: 15)),
                                         )
                                   ],
                                 ),
