@@ -18,13 +18,6 @@ void main() {
   runApp(const MensiApp());
 }
 
-class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({super.key});
-
-  @override
-  State<HomePageWidget> createState() => _HomePageWidgetState();
-}
-
 class MensiApp extends StatelessWidget {
   const MensiApp({super.key});
 
@@ -41,6 +34,13 @@ class MensiApp extends StatelessWidget {
       home: const HomePageWidget(),
     );
   }
+}
+
+class HomePageWidget extends StatefulWidget {
+  const HomePageWidget({super.key});
+
+  @override
+  State<HomePageWidget> createState() => _HomePageWidgetState();
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {

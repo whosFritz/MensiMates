@@ -34,13 +34,13 @@ class Dish {
   }
 
   String toJson() {
-    return json.encode({
+    return json.encode([{
       'name': name,
       'servingDate': servingDate,
       'category': category,
       'price': price,
       'description': description,
       "rating": rating
-    });
+    }]);
   }
 }

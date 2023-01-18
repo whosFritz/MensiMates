@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
@@ -271,6 +270,18 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                               DateFormat("yyyy-MM-dd").format(DateTime.now())) {
                             // Restrict User rating
                             showSnackBar2(context);
+
+                            Dish dish = Dish(
+                                name: widget.dishdetailed.name,
+                                servingDate: widget.dishdetailed.servingDate,
+                                category: widget.dishdetailed.category,
+                                price: widget.dishdetailed.price,
+                                description: widget.dishdetailed.description,
+                                rating: widget.dishdetailed.rating);
+                            // Convert the Dish object to JSON
+                            String dishJson = dish.toJson();
+
+                            print(dishJson);
                           } else {
                             //Let User rate
                             _setRatingDate();
