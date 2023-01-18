@@ -70,12 +70,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         final additionalDescriptions =
             entry.value.skip(1).map((dish) => dish.name).toList().join(", ");
         return Dish(
+            id: firstDish.id,
             name: firstDish.name,
             servingDate: firstDish.servingDate,
             category: firstDish.category,
             price: firstDish.price,
             description: "$additionalDescriptions, ${firstDish.description}",
-            rating: firstDish.rating);
+            rating: firstDish.rating,
+            responseCode: firstDish.responseCode);
       }).toList();
       return mergedDishes;
     } else {
