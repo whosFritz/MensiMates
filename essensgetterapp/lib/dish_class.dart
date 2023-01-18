@@ -1,15 +1,13 @@
-
 import 'dart:convert';
 
 class Dish {
-  Dish({
-    required this.name,
-    required this.servingDate,
-    required this.category,
-    required this.price,
-    required this.description,
-    required this.rating
-  });
+  Dish(
+      {required this.name,
+      required this.servingDate,
+      required this.category,
+      required this.price,
+      required this.description,
+      required this.rating});
 
   final String category;
   final String servingDate;
@@ -34,13 +32,15 @@ class Dish {
   }
 
   String toJson() {
-    return json.encode([{
-      'name': name,
-      'servingDate': servingDate,
-      'category': category,
-      'price': price,
-      'description': description,
-      "rating": rating
-    }]);
+    return json.encode([
+      {
+        'name': name,
+        'servingDate': servingDate,
+        'category': category,
+        'price': price,
+        'description': description,
+        "rating": rating
+      }
+    ]);
   }
 }
