@@ -566,6 +566,9 @@ Image decideIconFile(String iconmealtype) {
   } else if (iconmealtype == "Veganes Gericht") {
     return Image.asset("assets/images/vegan-icon.png",
         width: 40, height: 40, fit: BoxFit.cover);
+  } else if (iconmealtype == "Pastateller") {
+    return Image.asset("assets/images/pasta-icon.png",
+        width: 40, height: 40, fit: BoxFit.cover);
   } else {
     return Image.asset("assets/images/default-icon.png",
         width: 40, height: 40, fit: BoxFit.cover);
@@ -583,6 +586,11 @@ List<Color> decideContainerColor(String category) {
     colors = [
       const Color.fromARGB(255, 244, 120, 32),
       const Color.fromARGB(255, 220, 102, 13)
+    ];
+  } else if (category == "Pastateller") {
+    colors = [
+      const Color.fromRGBO(245, 245, 220, 1),
+      const Color.fromARGB(255, 225, 225, 178),
     ];
   } else {
     colors = [Colors.white, Colors.white];

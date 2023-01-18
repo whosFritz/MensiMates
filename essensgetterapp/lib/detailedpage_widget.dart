@@ -280,8 +280,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 rating: widget.dishdetailed.rating);
                             // Convert the Dish object to JSON
                             String dishJson = dish.toJson();
-
-                            print(dishJson);
                           } else {
                             //Let User rate
                             _setRatingDate();
