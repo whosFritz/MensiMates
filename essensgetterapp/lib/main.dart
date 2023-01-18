@@ -13,7 +13,7 @@ void main() {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight
   ]);
-  runApp(const MensenApp());
+  runApp(const MensiApp());
 }
 
 class HomePageWidget extends StatefulWidget {
@@ -23,8 +23,8 @@ class HomePageWidget extends StatefulWidget {
   State<HomePageWidget> createState() => _HomePageWidgetState();
 }
 
-class MensenApp extends StatelessWidget {
-  const MensenApp({super.key});
+class MensiApp extends StatelessWidget {
+  const MensiApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -34,7 +34,7 @@ class MensenApp extends StatelessWidget {
         "/home": (context) => const HomePageWidget(),
         "/aboutpage": (context) => const AboutPage(),
       },
-      title: "MensaApp",
+      title: "MensiApp",
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Open Sans"),
       home: const HomePageWidget(),
     );
@@ -57,13 +57,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishes() async {
     final response = await http.get(Uri.parse(
-        "https://api.olech2412.de/essensGetter/mealToday?code=YCfe0F9opiNwCKOelCSb"));
+        "https://api.olech2412.de/essensGetter/mealsForFritz?code=YCfe0F9opiNwCKOelCSb"));
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
       return jsondata.map<Dish>(Dish.fromJson).toList();
     } else {
       throw Exception();
     }
+  }
+
+  // Methode um Gerichte nach Datum zu filtern
+  Future<List<Dish>> _filterDishes() async {
+    final dishes = await futuredishes;
+    String formattedDate = DateFormat("yyyy-MM-dd").format(_date);
+    return dishes.where((dish) {
+      print(dish);
+      return dish.servingDate == formattedDate;
+    }).toList();
   }
 
   // Methde, welche Aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
@@ -249,15 +259,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ]);
           }),
     );
-  }
-
-  // Methode um Gerichte nach Datum zu filtern
-  Future<List<Dish>> _filterDishes() async {
-    final dishes = await futuredishes;
-    String formattedDate = DateFormat("yyyy-MM-dd").format(_date);
-    return dishes.where((dish) {
-      return dish.creationDate == formattedDate;
-    }).toList();
   }
 
   @override
@@ -591,37 +592,37 @@ List<Color> decideContainerColor(String category) {
 class Dish {
   Dish({
     required this.name,
-    required this.creationDate,
+    required this.servingDate,
     required this.category,
     required this.price,
     required this.description,
   });
 
   final String category;
-  final String creationDate;
+  final String servingDate;
   final String description;
   final String name;
   final String price;
 
   @override
   String toString() {
-    return "Gerich: Es gibt am $creationDate $name mit $description zum Preis von $price.";
+    return "Gerich: Es gibt am $servingDate $name mit $description zum Preis von $price.";
   }
 
   static Dish fromJson(json) {
     return Dish(
-      name: json["name"],
-      creationDate: json["creationDate"],
-      category: json["category"],
-      price: json["price"],
-      description: json["description"],
+      name: json["name"] ?? "keine Angaben",
+      servingDate: json["servingDate"] ?? "keine Angaben",
+      category: json["category"] ?? "keine Angaben",
+      price: json["price"] ?? "keine Angaben",
+      description: json["description"] ?? "keine Angaben",
     );
   }
 
   String toJson() {
     return json.encode({
       'name': name,
-      'creationDate': creationDate,
+      'servingDate': servingDate,
       'category': category,
       'price': price,
       'description': description,
@@ -854,7 +855,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.dishdetailed.creationDate ==
+    if (widget.dishdetailed.servingDate ==
         DateFormat("yyyy-MM-dd").format(DateTime.now())) {
       return Scaffold(
         appBar: AppBar(
