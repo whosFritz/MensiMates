@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import "package:flutter/material.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
+import "package:intl/intl.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
-import 'dish_class.dart';
-import 'main.dart';
+import "dish_class.dart";
+import "main.dart";
 
 class DetailRatingPage extends StatefulWidget {
   const DetailRatingPage({super.key, required this.dishdetailed});

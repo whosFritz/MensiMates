@@ -122,7 +122,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       final response = await http.get(
           Uri.parse(
               "https://raw.githubusercontent.com/whosFritz/Mensa-App/master/testtingdata.json"),
-          headers: {'Cache-Control': 'no-cache'});
+          headers: {"Cache-Control": "no-cache"});
       if (response.statusCode == 200) {
         setState(() {
           _isLoading = false;
