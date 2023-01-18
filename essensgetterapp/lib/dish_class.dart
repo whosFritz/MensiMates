@@ -1,5 +1,4 @@
 import "dart:convert";
-import 'dart:ffi';
 
 class Dish {
   Dish(
@@ -11,7 +10,7 @@ class Dish {
       required this.description,
       required this.rating,
       required this.responseCode});
-  final Long id;
+  final int id;
   final String category;
   final String servingDate;
   final String description;
@@ -22,7 +21,7 @@ class Dish {
 
   @override
   String toString() {
-    return "Gerich: Es gibt am $servingDate $name mit $description zum Preis von $price und einer Bewertung von $rating Sternen.";
+    return "$responseCode Gericht ID: $id: Es gibt am $servingDate $name mit $description zum Preis von $price und einer Bewertung von $rating Sternen.";
   }
 
   static Dish fromJson(json) {
@@ -39,12 +38,14 @@ class Dish {
 
   String toJson() {
     return json.encode({
+      "id": id,
       "name": name,
       "servingDate": servingDate,
       "category": category,
       "price": price,
       "description": description,
-      "rating": rating
+      "rating": rating,
+      "responseCode": responseCode,
     });
   }
 }

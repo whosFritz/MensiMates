@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
-import 'package:http/http.dart';
+import "package:http/http.dart";
 import "package:intl/intl.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
@@ -17,7 +17,8 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
-  late double ratingbarvalue;
+    late double ratingbarvalue = 5;
+
 
   // Variablen
   String? _lastRatingDate = "2023-01-12";
@@ -66,9 +67,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   Future<http.Response> sendMealsbacktoOle(String jsonbody) {
     return http.post(
       Uri.parse(
-          'http://192.168.137.1:8083/essensGetter/mealsFromFritz?code=YCfe0F9opiNwCKOelCSb'),
+          "https://api.olech2412.de/essensGetter/mealsFromFritz?code=YCfe0F9opiNwCKOelCSb"),
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json; charset=UTF-8",
       },
       body: jsonbody,
     );
@@ -282,9 +283,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                               DateFormat("yyyy-MM-dd").format(DateTime.now())) {
                             // Restrict User rating
                             showSnackBar2(context);
-
                             Dish dishtosend = Dish(
-                              id: widget.dishdetailed.id,
+                                id: widget.dishdetailed.id,
                                 name: widget.dishdetailed.name,
                                 servingDate: widget.dishdetailed.servingDate,
                                 category: widget.dishdetailed.category,
@@ -292,10 +292,13 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 description: widget.dishdetailed.description,
                                 rating: ratingbarvalue,
                                 responseCode: widget.dishdetailed.responseCode);
+
+                            print(dishtosend.id);
+                            print(dishtosend.responseCode);
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
-                            Future<Response> sendresponse =
-                                sendMealsbacktoOle(dishjsontosend);
+                            print(dishjsontosend);
+                            sendMealsbacktoOle(dishjsontosend);
                           } else {
                             //Let User rate
                             _setRatingDate();
