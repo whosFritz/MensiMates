@@ -3,10 +3,10 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
-
-import 'aboutpage_widget.dart';
-import 'detailedpage_widget.dart';
-import 'dish_class.dart';
+import "package:collection/collection.dart";
+import "aboutpage_widget.dart";
+import "detailedpage_widget.dart";
+import "dish_class.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +62,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         "https://api.olech2412.de/essensGetter/mealsForFritz?code=YCfe0F9opiNwCKOelCSb"));
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-      return jsondata.map<Dish>(Dish.fromJson).toList();
+      final dishes = jsondata.map<Dish>(Dish.fromJson).toList();
+      final groupedDishes = groupBy(
+          dishes, (Dish dish) => "${dish.category} ${dish.servingDate}");
+      final mergedDishes = groupedDishes.entries.map((entry) {
+        final firstDish = entry.value[0];
+        final additionalDescriptions =
+            entry.value.skip(1).map((dish) => dish.name).toList().join(", ");
+        return Dish(
+            name: firstDish.name,
+            servingDate: firstDish.servingDate,
+            category: firstDish.category,
+            price: firstDish.price,
+            description: "$additionalDescriptions, ${firstDish.description}",
+            rating: firstDish.rating);
+      }).toList();
+      return mergedDishes;
     } else {
       throw Exception();
     }
@@ -81,6 +96,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Future refresh() async {
     setState(() {
       futuredishes = getDishes();
+      filteredDishes = _filterDishes();
     });
   }
 
@@ -416,25 +432,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
               Expanded(
                   child: FutureBuilder(
-  future: filteredDishes,
-  builder: (context, snapshot) {
-    if (snapshot.hasError) {
-      return Text("🤮${snapshot.error}");
-    } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-      return const Center(
-        child: Text(
-          "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
-          textAlign: TextAlign.center,
-        ),
-      );
-    } else if (snapshot.hasData) {
-      final dishes = snapshot.data!;
-      return buildDishes(dishes);
-    } else {
-      return const Center(child: Text("Keine Daten erhalten. Aktualisieren!"));
-    }
-  }
-)),
+                      future: filteredDishes,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("🤮${snapshot.error}");
+                        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
+                          final dishes = snapshot.data!;
+                          return buildDishes(dishes);
+                        } else {
+                          return const Center(
+                              child:
+                                  Text("Keine Daten erhalten. Aktualisieren!"));
+                        }
+                      })),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,

@@ -1,4 +1,4 @@
-import 'dart:convert';
+import "dart:convert";
 
 class Dish {
   Dish(
@@ -34,11 +34,11 @@ class Dish {
   String toJson() {
     return json.encode([
       {
-        'name': name,
-        'servingDate': servingDate,
-        'category': category,
-        'price': price,
-        'description': description,
+        "name": name,
+        "servingDate": servingDate,
+        "category": category,
+        "price": price,
+        "description": description,
         "rating": rating
       }
     ]);
