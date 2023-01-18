@@ -416,17 +416,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
               Expanded(
                   child: FutureBuilder(
-                      future: filteredDishes,
-                      builder: ((context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text("🤮${snapshot.error}");
-                        } else if (snapshot.hasData) {
-                          final dishes = snapshot.data!;
-                          return buildDishes(dishes);
-                        } else {
-                          return const Text("no data");
-                        }
-                      }))),
+  future: filteredDishes,
+  builder: (context, snapshot) {
+    if (snapshot.hasError) {
+      return Text("🤮${snapshot.error}");
+    } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+      return const Center(
+        child: Text(
+          "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
+          textAlign: TextAlign.center,
+        ),
+      );
+    } else if (snapshot.hasData) {
+      final dishes = snapshot.data!;
+      return buildDishes(dishes);
+    } else {
+      return const Center(child: Text("Keine Daten erhalten. Aktualisieren!"));
+    }
+  }
+)),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -586,6 +594,11 @@ List<Color> decideContainerColor(String category) {
     colors = [
       const Color.fromARGB(255, 244, 120, 32),
       const Color.fromARGB(255, 220, 102, 13)
+    ];
+  } else if (category == "Veganes Gericht") {
+    colors = [
+      const Color.fromARGB(255, 138, 238, 143),
+      const Color.fromARGB(255, 125, 213, 130),
     ];
   } else if (category == "Pastateller") {
     colors = [
