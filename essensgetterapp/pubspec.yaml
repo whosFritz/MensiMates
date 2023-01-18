@@ -23,6 +23,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   flutter_snackbar: ^0.0.3
   shared_preferences: ^2.0.16
+  collection: ^1.16.0
   
 
 
