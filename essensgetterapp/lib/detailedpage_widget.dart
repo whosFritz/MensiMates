@@ -17,8 +17,7 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
-    late double ratingbarvalue = 5;
-
+  late double ratingbarvalue = 5;
 
   // Variablen
   String? _lastRatingDate = "2023-01-12";
@@ -81,8 +80,17 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         DateFormat("yyyy-MM-dd").format(DateTime.now())) {
       return Scaffold(
         appBar: AppBar(
-            title: const Text("Detailansicht"),
-            backgroundColor: Colors.lightGreen),
+          title: const Text("Detailansicht"),
+          backgroundColor: Colors.lightGreen,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+              getDishes();
+              _filterDishes();
+            },
+          ),
+        ),
         body: SafeArea(
           child: GestureDetector(
             child: Column(
@@ -293,11 +301,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 rating: ratingbarvalue,
                                 responseCode: widget.dishdetailed.responseCode);
 
-                            print(dishtosend.id);
-                            print(dishtosend.responseCode);
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
-                            print(dishjsontosend);
                             sendMealsbacktoOle(dishjsontosend);
                           } else {
                             //Let User rate

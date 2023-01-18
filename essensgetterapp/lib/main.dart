@@ -114,7 +114,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Widget buildDishes(List<Dish> dishes) {
     return RefreshIndicator(
       onRefresh: refresh,
-      child: ListView.builder(
+      child: ListView.builder( 
           itemCount: dishes.length,
           itemBuilder: (context, index) {
             final dish = dishes[index];
