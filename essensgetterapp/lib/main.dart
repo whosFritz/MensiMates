@@ -61,7 +61,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishes() async {
     final response = await http.get(Uri.parse(
-        "https://api.olech2412.de/essensGetter/mealsForFritz?code=YCfe0F9opiNwCKOelCSb"));
+        "https://cors-anywhere.herokuapp.com/https://api.olech2412.de/essensGetter/mealsForFritz?code=YCfe0F9opiNwCKOelCSb"));
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
       final dishes = jsondata.map<Dish>(Dish.fromJson).toList();

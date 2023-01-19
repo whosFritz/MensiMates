@@ -66,7 +66,7 @@ class _AboutPageState extends State<AboutPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit Ole Einar Christoph uns einem Programm 'Essensgetter 2.0'.",
+                                        "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit dem Seemann Ole Einar Christoph und seinem Programm 'Essensgetter 2.0'. Vielen Dank bei der Einrichtung der vollständigen Funktionalität.",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge
