@@ -111,12 +111,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     });
   }
 
-  void navigateToDetailRatingPage(BuildContext context, Dish item) {
-    Navigator.push(
-      context,
+  void navigateToDetailRatingPage(BuildContext context, Dish dishdetailed) {
+    Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => DetailRatingPage(dishdetailed: item),
-      ),
+          builder: (context) {
+            return DetailRatingPage(
+              dishdetailed: dishdetailed,
+            );
+          },
+          fullscreenDialog: true),
     );
   }
 
@@ -168,101 +171,148 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
                       child: InkWell(
-                        onTap: (() =>
-                            navigateToDetailRatingPage(context, dishes[index])),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 4,
-                                color: Color(0x33000000),
-                                offset: Offset(2, 2),
-                                spreadRadius: 2,
+                        onTap: (() {
+                          navigateToDetailRatingPage(context, dishes[index]);
+                        }),
+                        child: Hero(
+                          tag: dish.id,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 4,
+                                  color: Color(0x33000000),
+                                  offset: Offset(2, 2),
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                              gradient: LinearGradient(
+                                colors: decideContainerColor(dish.category),
+                                stops: const [0, 1],
+                                begin: const AlignmentDirectional(0, -1),
+                                end: const AlignmentDirectional(0, 1),
                               ),
-                            ],
-                            gradient: LinearGradient(
-                              colors: decideContainerColor(dish.category),
-                              stops: const [0, 1],
-                              begin: const AlignmentDirectional(0, -1),
-                              end: const AlignmentDirectional(0, 1),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Padding(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8, 8, 8, 8),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(8, 0, 0, 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(0, 0, 8, 0),
+                                                child: decideIconFile(
+                                                    dish.category),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  dish.name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleLarge
+                                                      ?.copyWith(
+                                                        fontFamily: "Open Sans",
+                                                        fontSize: 19,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0, 4, 4, 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  "Preis: ${dish.price}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      ?.copyWith(
+                                                          fontFamily:
+                                                              "Open Sans",
+                                                          fontSize: 13),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0, 4, 4, 0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  "Beilagen & Zutaten: ${dish.description}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      ?.copyWith(
+                                                          fontFamily:
+                                                              "Open Sans",
+                                                          fontSize: 13),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       8, 8, 8, 8),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8, 0, 0, 0),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
+                                            const Icon(
+                                              Icons.star_rounded,
+                                              color: Color(0xFFE47B13),
+                                              size: 24,
+                                            ),
                                             Padding(
                                               padding:
                                                   const EdgeInsetsDirectional
-                                                      .fromSTEB(0, 0, 8, 0),
-                                              child:
-                                                  decideIconFile(dish.category),
-                                            ),
-                                            Expanded(
+                                                      .fromSTEB(0, 0, 6, 0),
                                               child: Text(
-                                                dish.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge
-                                                    ?.copyWith(
-                                                      fontFamily: "Open Sans",
-                                                      fontSize: 19,
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 4, 4, 0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                "Preis: ${dish.price}",
+                                                "${dish.rating}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1
                                                     ?.copyWith(
                                                         fontFamily: "Open Sans",
-                                                        fontSize: 13),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 4, 4, 0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                "Beilagen & Zutaten: ${dish.description}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 13),
+                                                        fontSize: 15),
                                               ),
                                             ),
                                           ],
@@ -271,46 +321,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     ],
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    8, 8, 8, 8),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          const Icon(
-                                            Icons.star_rounded,
-                                            color: Color(0xFFE47B13),
-                                            size: 24,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .fromSTEB(0, 0, 6, 0),
-                                            child: Text(
-                                              "${dish.rating}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  ?.copyWith(
-                                                      fontFamily: "Open Sans",
-                                                      fontSize: 15),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -500,7 +512,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   backgroundColor: Colors.white,
                                   color: Colors.green,
                                   minHeight: 50,
-                                  
                                 ))
                               ]);
                         }
