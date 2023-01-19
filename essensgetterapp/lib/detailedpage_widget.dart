@@ -1,15 +1,15 @@
+import 'package:essensgetterapp/main.dart';
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
-import "package:http/http.dart";
 import "package:intl/intl.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "main.dart";
+import 'main.dart';
 
 class DetailRatingPage extends StatefulWidget {
   const DetailRatingPage({super.key, required this.dishdetailed});
-
   final Dish dishdetailed;
 
   @override
@@ -17,8 +17,7 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
-    late double ratingbarvalue = 5;
-
+  late double ratingbarvalue = 5;
 
   // Variablen
   String? _lastRatingDate = "2023-01-12";
@@ -51,8 +50,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     SharedPreferences olddate = await SharedPreferences.getInstance();
     String? ratedDate = olddate.getString("ratedDate");
     setState(() {
-      _lastRatingDate = ratedDate!;
+      _lastRatingDate = ratedDate;
     });
+    print(_lastRatingDate);
   }
 
   void _setRatingDate() async {
@@ -81,8 +81,15 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         DateFormat("yyyy-MM-dd").format(DateTime.now())) {
       return Scaffold(
         appBar: AppBar(
-            title: const Text("Detailansicht"),
-            backgroundColor: Colors.lightGreen),
+          title: const Text("Detailansicht"),
+          backgroundColor: Colors.lightGreen,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: SafeArea(
           child: GestureDetector(
             child: Column(
@@ -293,11 +300,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 rating: ratingbarvalue,
                                 responseCode: widget.dishdetailed.responseCode);
 
-                            print(dishtosend.id);
-                            print(dishtosend.responseCode);
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
-                            print(dishjsontosend);
                             sendMealsbacktoOle(dishjsontosend);
                           } else {
                             //Let User rate

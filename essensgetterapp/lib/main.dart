@@ -54,6 +54,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   void initState() {
     super.initState();
+    futuredishes = getDishes();
+    filteredDishes = _filterDishes();
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
@@ -75,7 +77,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             servingDate: firstDish.servingDate,
             category: firstDish.category,
             price: firstDish.price,
-            description: "$additionalDescriptions, ${firstDish.description}",
+            description: "${firstDish.description}, $additionalDescriptions",
             rating: firstDish.rating,
             responseCode: firstDish.responseCode);
       }).toList();
@@ -110,6 +112,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       ),
     );
   }
+  void functionThatSetsTheState(){
+}
 
   Widget buildDishes(List<Dish> dishes) {
     return RefreshIndicator(
