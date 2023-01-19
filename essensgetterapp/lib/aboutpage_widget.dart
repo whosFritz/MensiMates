@@ -1,7 +1,5 @@
-
-
-
 import "package:flutter/material.dart";
+import "package:url_launcher/url_launcher.dart";
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -117,9 +115,9 @@ class _AboutPageState extends State<AboutPage> {
                                             context: context,
                                             applicationName: "MensiApp",
                                             applicationVersion:
-                                                "App Version: 0.0.1",
+                                                "App Version: 1.0",
                                             applicationLegalese:
-                                                "2023 \u00a9 Fritz Schubert",
+                                                "2023 MensiApp \u00a9 by Fritz Schubert",
                                             applicationIcon: Padding(
                                               padding: const EdgeInsets.all(12),
                                               child: Image.asset(
@@ -131,6 +129,24 @@ class _AboutPageState extends State<AboutPage> {
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Lizensen"),
+                                        )),
+                                    TextButton(
+                                        onPressed: () {
+                                          launch(
+                                              "https://1drv.ms/b/s!Ama40oa14DIW4H4oYALQpCb1gfJB?e=saHE21");
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text("Impressum"),
+                                        )),
+                                    TextButton(
+                                        onPressed: () {
+                                          launch(
+                                              "https://1drv.ms/b/s!Ama40oa14DIW4QAPEPZZy55vigQ9?e=lS9GUF");
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text("Datenschutzerklärung"),
                                         )),
                                     Padding(
                                       padding: const EdgeInsets.all(15),
@@ -158,7 +174,7 @@ class _AboutPageState extends State<AboutPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
-                    children: const [Text("2023 \u00a9 Fritz Schubert")],
+                    children: const [Text("2023 MensiApp \u00a9 by Fritz Schubert")],
                   ),
                 ],
               ),
