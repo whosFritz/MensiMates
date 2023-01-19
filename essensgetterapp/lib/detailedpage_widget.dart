@@ -1,4 +1,3 @@
-import 'package:essensgetterapp/main.dart';
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
@@ -6,7 +5,6 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "main.dart";
-import 'main.dart';
 
 class DetailRatingPage extends StatefulWidget {
   const DetailRatingPage({super.key, required this.dishdetailed});
@@ -52,7 +50,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     setState(() {
       _lastRatingDate = ratedDate;
     });
-    print(_lastRatingDate);
   }
 
   void _setRatingDate() async {
@@ -290,6 +287,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                               DateFormat("yyyy-MM-dd").format(DateTime.now())) {
                             // Restrict User rating
                             showSnackBar2(context);
+                          } else {
+                            //Let User rate
                             Dish dishtosend = Dish(
                                 id: widget.dishdetailed.id,
                                 name: widget.dishdetailed.name,
@@ -299,12 +298,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 description: widget.dishdetailed.description,
                                 rating: ratingbarvalue,
                                 responseCode: widget.dishdetailed.responseCode);
-
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
                             sendMealsbacktoOle(dishjsontosend);
-                          } else {
-                            //Let User rate
                             _setRatingDate();
                             showSnackBar1(context);
                           }
