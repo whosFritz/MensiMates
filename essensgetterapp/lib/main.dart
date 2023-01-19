@@ -7,6 +7,8 @@ import "package:collection/collection.dart";
 import "aboutpage_widget.dart";
 import "detailedpage_widget.dart";
 import "dish_class.dart";
+import "api_links.dart";
+import "package:flutter/foundation.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,8 +62,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishes() async {
-    final response = await http.get(Uri.parse(
-        "https://cors-anywhere.herokuapp.com/https://api.olech2412.de/essensGetter/mealsForFritz?code=YCfe0F9opiNwCKOelCSb"));
+    http.Response response;
+    if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android) {
+      response = await http.get(Uri.parse(apiforreceivinglinkothers));
+    } else {
+      response = await http.get(Uri.parse(apiforreceivinglinkweb));
+    }
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
       final dishes = jsondata.map<Dish>(Dish.fromJson).toList();
@@ -114,6 +121,36 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   void functionThatSetsTheState() {}
+
+  Widget platformrefreshbutton() {
+    if (defaultTargetPlatform != TargetPlatform.android &&
+        defaultTargetPlatform != TargetPlatform.iOS) {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(100)),
+              border: Border.all(color: Colors.black),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 4,
+                  color: Color(0x33000000),
+                  offset: Offset(2, 2),
+                  spreadRadius: 2,
+                ),
+              ]),
+          child: CircleAvatar(
+            child: IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: refresh,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
 
   Widget buildDishes(List<Dish> dishes) {
     return RefreshIndicator(
@@ -458,6 +495,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   Text("Keine Daten erhalten. Aktualisieren!"));
                         }
                       })),
+              platformrefreshbutton(),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,

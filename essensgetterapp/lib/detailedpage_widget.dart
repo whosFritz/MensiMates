@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
@@ -5,6 +6,7 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "main.dart";
+import 'api_links.dart';
 
 class DetailRatingPage extends StatefulWidget {
   const DetailRatingPage({super.key, required this.dishdetailed});
@@ -61,15 +63,25 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     });
   }
 
-  Future<http.Response> sendMealsbacktoOle(String jsonbody) {
-    return http.post(
-      Uri.parse(
-          "https://api.olech2412.de/essensGetter/mealsFromFritz?code=YCfe0F9opiNwCKOelCSb"),
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: jsonbody,
-    );
+  void sendMealsbacktoOle(String jsonbody) {
+    if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android) {
+      http.post(
+        Uri.parse(apiforsendinglinkothers),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonbody,
+      );
+    } else {
+      http.post(
+        Uri.parse(apiforsendinglinkweb),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonbody,
+      );
+    }
   }
 
   @override
@@ -261,7 +273,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         color: Color(0xFFFA9C00),
                       ),
                       direction: Axis.horizontal,
-                      initialRating: 5,
+                      initialRating: 0,
                       unratedColor: const Color(0xFF9E9E9E),
                       itemCount: 5,
                       itemSize: 40,
@@ -286,9 +298,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                           if (_lastRatingDate ==
                               DateFormat("yyyy-MM-dd").format(DateTime.now())) {
                             // Restrict User rating
-                            showSnackBar2(context);
-                          } else {
-                            //Let User rate
                             Dish dishtosend = Dish(
                                 id: widget.dishdetailed.id,
                                 name: widget.dishdetailed.name,
@@ -301,6 +310,10 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
                             sendMealsbacktoOle(dishjsontosend);
+                            showSnackBar2(context);
+                          } else {
+                            //Let User rate
+
                             _setRatingDate();
                             showSnackBar1(context);
                           }
