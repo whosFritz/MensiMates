@@ -18,7 +18,6 @@ class DetailRatingPage extends StatefulWidget {
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
   late double ratingbarvalue = 5;
-  final hpw = new HomePageWidget();
 
   // Variablen
   String? _lastRatingDate = "2023-01-12";
@@ -52,8 +51,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     String? ratedDate = olddate.getString("ratedDate");
     setState(() {
       _lastRatingDate = ratedDate;
-      
     });
+    print(_lastRatingDate);
   }
 
   void _setRatingDate() async {

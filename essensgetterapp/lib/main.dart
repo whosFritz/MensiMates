@@ -77,7 +77,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             servingDate: firstDish.servingDate,
             category: firstDish.category,
             price: firstDish.price,
-            description: "$additionalDescriptions, ${firstDish.description}",
+            description: "${firstDish.description}, $additionalDescriptions",
             rating: firstDish.rating,
             responseCode: firstDish.responseCode);
       }).toList();
