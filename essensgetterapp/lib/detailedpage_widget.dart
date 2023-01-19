@@ -1,3 +1,4 @@
+import 'package:essensgetterapp/main.dart';
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
@@ -5,10 +6,10 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "main.dart";
+import 'main.dart';
 
 class DetailRatingPage extends StatefulWidget {
   const DetailRatingPage({super.key, required this.dishdetailed});
-
   final Dish dishdetailed;
 
   @override
@@ -17,6 +18,7 @@ class DetailRatingPage extends StatefulWidget {
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
   late double ratingbarvalue = 5;
+  final hpw = new HomePageWidget();
 
   // Variablen
   String? _lastRatingDate = "2023-01-12";
@@ -49,7 +51,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     SharedPreferences olddate = await SharedPreferences.getInstance();
     String? ratedDate = olddate.getString("ratedDate");
     setState(() {
-      _lastRatingDate = ratedDate!;
+      _lastRatingDate = ratedDate;
+      
     });
   }
 

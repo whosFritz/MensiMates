@@ -112,6 +112,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       ),
     );
   }
+  void functionThatSetsTheState(){
+}
 
   Widget buildDishes(List<Dish> dishes) {
     return RefreshIndicator(
