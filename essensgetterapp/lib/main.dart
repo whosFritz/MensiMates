@@ -490,9 +490,19 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           final dishes = snapshot.data!;
                           return buildDishes(dishes);
                         } else {
-                          return const Center(
-                              child:
-                                  Text("Keine Daten erhalten. Aktualisieren!"));
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                // works!
+                                Center(
+                                    child: LinearProgressIndicator(
+                                  backgroundColor: Colors.white,
+                                  color: Colors.green,
+                                  minHeight: 50,
+                                  
+                                ))
+                              ]);
                         }
                       })),
               platformrefreshbutton(),
