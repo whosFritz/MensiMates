@@ -298,6 +298,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                           if (_lastRatingDate ==
                               DateFormat("yyyy-MM-dd").format(DateTime.now())) {
                             // Restrict User rating
+                            showSnackBar2(context);
+                          } else {
+                            //Let User rate
                             Dish dishtosend = Dish(
                                 id: widget.dishdetailed.id,
                                 name: widget.dishdetailed.name,
@@ -310,10 +313,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
                             sendMealsbacktoOle(dishjsontosend);
-                            showSnackBar2(context);
-                          } else {
-                            //Let User rate
-
                             _setRatingDate();
                             showSnackBar1(context);
                           }
