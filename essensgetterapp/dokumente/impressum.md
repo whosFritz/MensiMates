@@ -7,7 +7,7 @@ Vertreten durch:
 Fritz Schubert
 Kontakt:
 Telefon: +49 1627497832
-E-Mail: fritzschubert2509@gmail.com
+E-Mail: fritzschubert21@outlook.de
 
 ## Haftungsausschluss:
 
