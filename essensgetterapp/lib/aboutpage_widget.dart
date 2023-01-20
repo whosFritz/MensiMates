@@ -96,7 +96,7 @@ class _AboutPageState extends State<AboutPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "🥰 Ich freue mich über jeden Verbesserungsvorschlag.",
+                                        "🥰 Ich freue mich über jeden Verbesserungsvorschlag. 😘",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge
@@ -113,7 +113,7 @@ class _AboutPageState extends State<AboutPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Durch Nutzung der App stimmst du zu, dass deine anonyme Bewertung der Gerichte für statistische Zwecke und nichtkommerzielle Zwecke benutzt werden können.",
+                                        "Durch Nutzung der App stimmst du zu, dass deine anonyme Bewertung der Gerichte für statistische Zwecke und nichtkommerzielle Zwecke benutzt werden.",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge
