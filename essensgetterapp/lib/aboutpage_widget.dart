@@ -64,7 +64,7 @@ class _AboutPageState extends State<AboutPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit dem Seemann Ole Einar Christoph und seinem Programm 'Essensgetter 2.0'. Vielen Dank bei der Einrichtung der vollständigen Funktionalität.",
+                                        "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit dem Seemann Ole Einar Christoph und seinem Programm 'EssensGetter 2.0'. Vielen Dank bei der Einrichtung der vollständigen Funktionalität. Schaut gerne auf seinem Github vorbei und abonniert den EssensGetter Newsletter.",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge
@@ -108,6 +108,23 @@ class _AboutPageState extends State<AboutPage> {
                                               letterSpacing: 2,
                                             ),
                                         textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Durch Nutzung der App stimmst du zu, dass deine anonyme Bewertung der Gerichte für statistische Zwecke und nichtkommerzielle Zwecke benutzt werden können.",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.copyWith(
+                                              fontFamily: "Open Sans",
+                                              color: const Color.fromARGB(
+                                                  255, 0, 0, 0),
+                                              fontSize: 14,
+                                              letterSpacing: 2,
+                                            ),
+                                        textAlign: TextAlign.left,
                                       ),
                                     ),
                                     TextButton(
