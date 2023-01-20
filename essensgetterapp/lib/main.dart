@@ -46,7 +46,7 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  late Future<List<Dish>> filteredDishes = _filterDishes();
+  late Future<List<Dish>> filteredDishes = filterDishes();
   Future<List<Dish>> futuredishes = getDishes();
 
   // Variablen
@@ -57,7 +57,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void initState() {
     super.initState();
     futuredishes = getDishes();
-    filteredDishes = _filterDishes();
+    filteredDishes = filterDishes();
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
@@ -95,7 +95,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   // Methode um Gerichte nach Datum zu filtern
-  Future<List<Dish>> _filterDishes() async {
+  Future<List<Dish>> filterDishes() async {
     final dishes = await futuredishes;
     String formattedDate = DateFormat("yyyy-MM-dd").format(_date);
     return dishes.where((dish) {
@@ -107,7 +107,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Future refresh() async {
     setState(() {
       futuredishes = getDishes();
-      filteredDishes = _filterDishes();
+      filteredDishes = filterDishes();
     });
   }
 
@@ -122,8 +122,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           fullscreenDialog: true),
     );
   }
-
-  void functionThatSetsTheState() {}
 
   Widget platformrefreshbutton() {
     if (defaultTargetPlatform != TargetPlatform.android &&
@@ -424,7 +422,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           setState(() {
                                             _date = _date.subtract(
                                                 const Duration(days: 1));
-                                            filteredDishes = _filterDishes();
+                                            filteredDishes = filterDishes();
                                           });
                                         },
                                         child: const Icon(
@@ -445,7 +443,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         if (picked != _date) {
                                           setState(() {
                                             _date = picked!;
-                                            filteredDishes = _filterDishes();
+                                            filteredDishes = filterDishes();
                                           });
                                         }
                                       },
@@ -459,7 +457,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           setState(() {
                                             _date = _date
                                                 .add(const Duration(days: 1));
-                                            filteredDishes = _filterDishes();
+                                            filteredDishes = filterDishes();
                                           });
                                         },
                                         child: const Icon(
@@ -686,6 +684,11 @@ List<Color> decideContainerColor(String category) {
     colors = [
       const Color.fromRGBO(245, 245, 220, 1),
       const Color.fromARGB(255, 225, 225, 178),
+    ];
+  } else if (category == "Fischgericht") {
+    colors = [
+      const Color.fromARGB(255, 52, 174, 236),
+      const Color.fromARGB(255, 37, 169, 235),
     ];
   } else {
     colors = [Colors.white, Colors.white];
