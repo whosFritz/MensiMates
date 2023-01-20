@@ -1,7 +1,10 @@
-# Mensa Speiseplan (Still in Development)
+# Mensa Speiseplan
 ## in cooperation with olech2412
+
+This app is a pure student project and is not used for commercial purposes. The data about the courts is publicly accessible. The application's program code is copyrighted.
+
 This is a simple Flutter app that displays the meals and meal types of a Mensa (canteen) with a rating system.
-The app is beeing built using Dart programming language and the Flutter framework.
+The app was built using Dart programming language and the Flutter framework.
 The app also includes a rating system that allows users to rate the meals.
 
 ![Screenshot_20230117-163348](https://user-images.githubusercontent.com/97552289/212941781-0c1d5d37-7103-40e9-984a-1a1539c4986c.jpg)
