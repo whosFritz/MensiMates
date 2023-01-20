@@ -150,7 +150,7 @@ class _AboutPageState extends State<AboutPage> {
                                     TextButton(
                                         onPressed: () {
                                           launchUrl(Uri.parse(
-                                              "https://1drv.ms/b/s!Ama40oa14DIW4H4oYALQpCb1gfJB?e=saHE21"));
+                                              "https://github.com/whosFritz/Mensa-App/blob/master/essensgetterapp/dokumente/impressum.md"));
                                         },
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
@@ -159,7 +159,7 @@ class _AboutPageState extends State<AboutPage> {
                                     TextButton(
                                         onPressed: () {
                                           launchUrl(Uri.parse(
-                                              "https://1drv.ms/b/s!Ama40oa14DIW4QAPEPZZy55vigQ9?e=lS9GUF"));
+                                              "https://github.com/whosFritz/Mensa-App/blob/master/essensgetterapp/dokumente/privacy-policy"));
                                         },
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
