@@ -71,6 +71,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       http.post(
         Uri.parse(apiforsendinglinkothers),
         headers: {
+          "Access-Control_Allow_Origin": "*",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonbody,
@@ -79,6 +80,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       http.post(
         Uri.parse(apiforsendinglinkweb),
         headers: {
+          "Access-Control_Allow_Origin": "*",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonbody,
@@ -370,7 +372,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            30, 30, 30, 30),
                         child: Hero(
                           tag: widget.dishdetailed.id,
                           child: Container(

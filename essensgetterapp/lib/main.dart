@@ -44,7 +44,6 @@ class HomePageWidget extends StatefulWidget {
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
 }
-
 class _HomePageWidgetState extends State<HomePageWidget> {
   late Future<List<Dish>> filteredDishes = filterDishes();
   Future<List<Dish>> futuredishes = getDishes();
@@ -61,13 +60,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
+  
   static Future<List<Dish>> getDishes() async {
     http.Response response;
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
-      response = await http.get(Uri.parse(apiforreceivinglinkothers));
+      response = await http.get(
+        Uri.parse(apiforreceivinglinkothers),
+        headers: {
+          "Access-Control_Allow_Origin": "*",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
     } else {
-      response = await http.get(Uri.parse(apiforreceivinglinkweb));
+      response = await http.get(
+        Uri.parse(apiforreceivinglinkweb),
+        headers: {
+          "Access-Control_Allow_Origin": "*",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      );
     }
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
@@ -129,10 +141,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       return Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(100)),
-              border: Border.all(color: Colors.black),
-              boxShadow: const [
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(100)),
+              boxShadow: [
                 BoxShadow(
                   blurRadius: 4,
                   color: Color(0x33000000),
@@ -161,8 +172,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           itemBuilder: (context, index) {
             final dish = dishes[index];
             return Padding(
-              padding:
-                  const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
+              padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
               child: InkWell(
                 onTap: (() {
                   navigateToDetailRatingPage(context, dishes[index]);
@@ -194,24 +204,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding:
-                                const EdgeInsetsDirectional.fromSTEB(
-                                    8, 8, 8, 8),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                8, 8, 8, 8),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsetsDirectional
-                                      .fromSTEB(8, 0, 0, 0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      8, 0, 0, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Padding(
-                                        padding:
-                                            const EdgeInsetsDirectional
-                                                .fromSTEB(0, 0, 8, 0),
-                                        child: decideIconFile(
-                                            dish.category),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 0, 8, 0),
+                                        child: decideIconFile(dish.category),
                                       ),
                                       Expanded(
                                         child: Text(
@@ -229,8 +236,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional
-                                      .fromSTEB(0, 4, 4, 0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 4, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
@@ -241,8 +248,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                               .textTheme
                                               .bodyText1
                                               ?.copyWith(
-                                                  fontFamily:
-                                                      "Open Sans",
+                                                  fontFamily: "Open Sans",
                                                   fontSize: 13),
                                         ),
                                       ),
@@ -250,8 +256,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional
-                                      .fromSTEB(0, 4, 4, 0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 4, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
@@ -262,8 +268,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                               .textTheme
                                               .bodyText1
                                               ?.copyWith(
-                                                  fontFamily:
-                                                      "Open Sans",
+                                                  fontFamily: "Open Sans",
                                                   fontSize: 13),
                                         ),
                                       ),
@@ -275,16 +280,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              8, 8, 8, 8),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.circular(6),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
@@ -296,8 +300,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     ),
                                     Padding(
                                       padding:
-                                          const EdgeInsetsDirectional
-                                              .fromSTEB(0, 0, 6, 0),
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 0, 6, 0),
                                       child: Text(
                                         "${dish.rating}",
                                         style: Theme.of(context)
