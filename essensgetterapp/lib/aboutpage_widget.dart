@@ -134,7 +134,7 @@ class _AboutPageState extends State<AboutPage> {
                                             applicationVersion:
                                                 "App Version: 1.0",
                                             applicationLegalese:
-                                                "2023 MensiApp \u00a9 by Fritz Schubert",
+                                                "\u00a9 2023 MensiApp by Fritz Schubert",
                                             applicationIcon: Padding(
                                               padding: const EdgeInsets.all(12),
                                               child: Image.asset(
@@ -192,7 +192,7 @@ class _AboutPageState extends State<AboutPage> {
                 children: [
                   Column(
                     children: const [
-                      Text("2023 MensiApp \u00a9 by Fritz Schubert")
+                      Text("\u00a9 2023 MensiApp by Fritz Schubert")
                     ],
                   ),
                 ],
