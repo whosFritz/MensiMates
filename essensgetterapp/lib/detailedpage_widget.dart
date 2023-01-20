@@ -95,7 +95,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Detailansicht"),
-          backgroundColor: Colors.lightGreen,
+          backgroundColor: const Color.fromARGB(255, 207, 186, 143),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -356,7 +356,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Detailansicht"),
-          backgroundColor: Colors.lightGreen,
+          backgroundColor: const Color.fromARGB(255, 207, 186, 143),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

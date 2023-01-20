@@ -44,6 +44,7 @@ class HomePageWidget extends StatefulWidget {
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
 }
+
 class _HomePageWidgetState extends State<HomePageWidget> {
   late Future<List<Dish>> filteredDishes = filterDishes();
   Future<List<Dish>> futuredishes = getDishes();
@@ -55,12 +56,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   void initState() {
     super.initState();
-    futuredishes = getDishes();
     filteredDishes = filterDishes();
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
-  
+
   static Future<List<Dish>> getDishes() async {
     http.Response response;
     if (defaultTargetPlatform == TargetPlatform.iOS ||
