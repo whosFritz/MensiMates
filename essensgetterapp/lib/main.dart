@@ -2,6 +2,7 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
+import 'package:intl/date_symbol_data_local.dart';
 import "package:intl/intl.dart";
 import "package:collection/collection.dart";
 import "aboutpage_widget.dart";
@@ -11,6 +12,7 @@ import "api_links.dart";
 import "package:flutter/foundation.dart";
 
 void main() {
+  initializeDateFormatting("de_DE"); // Add this line
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -427,8 +429,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ),
                                     ),
                                     InkWell(
-                                      child: Text(DateFormat("E. dd.MM.yyyy")
-                                          .format(_date)),
+                                      child: Text(
+                                          DateFormat("E. dd.MM.yyyy", "de_DE")
+                                              .format(_date)),
                                       onTap: () async {
                                         final DateTime? picked =
                                             await showDatePicker(
