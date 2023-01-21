@@ -48,13 +48,12 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  // Variablen
   late Future<List<Dish>> filteredDishes = filterDishes();
   Future<List<Dish>> futuredishes = getDishes();
-
-  // Variablen
   DateTime _date = DateTime.now();
 
-  // Initierung
+  // Initiierung
   @override
   void initState() {
     super.initState();
@@ -70,7 +69,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       response = await http.get(
         Uri.parse(apiforreceivinglinkothers),
         headers: {
-          "Access-Control_Allow_Origin": "*",
           "Content-Type": "application/json; charset=UTF-8",
         },
       );
@@ -78,7 +76,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       response = await http.get(
         Uri.parse(apiforreceivinglinkweb),
         headers: {
-          "Access-Control_Allow_Origin": "*",
           "Content-Type": "application/json; charset=UTF-8",
         },
       );
@@ -429,9 +426,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ),
                                     ),
                                     InkWell(
-                                      child: Text(
-                                          DateFormat("E. dd.MM.yyyy", "de_DE")
-                                              .format(_date)),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 150,
+                                        child: Text(
+                                            DateFormat("E. dd.MM.yyyy", "de_DE")
+                                                .format(_date)),
+                                      ),
                                       onTap: () async {
                                         final DateTime? picked =
                                             await showDatePicker(
@@ -503,14 +504,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                 // works!
-                                Center(
-                                    child: LinearProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                  color: Colors.green,
-                                  minHeight: 50,
-                                ))
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: const Center(
+                                      child: LinearProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                    color: Colors.green,
+                                    minHeight: 50,
+                                  )),
+                                )
                               ]);
                         }
                       })),

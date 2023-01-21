@@ -19,8 +19,10 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
-  late double ratingbarvalue = 5;
-
+  // Variablen
+  late double ratingbarvalue;
+  String pagename = "Detailansicht";
+  Color appbarbgcolor = const Color.fromARGB(255, 207, 186, 143);
   // Variablen
   String? _lastRatingDate = "2023-01-12";
 
@@ -94,8 +96,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         DateFormat("yyyy-MM-dd").format(DateTime.now())) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("Detailansicht"),
-          backgroundColor: const Color.fromARGB(255, 207, 186, 143),
+          title: Text(pagename),
+          backgroundColor: appbarbgcolor,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -355,8 +357,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("Detailansicht"),
-          backgroundColor: const Color.fromARGB(255, 207, 186, 143),
+          title: Text(pagename),
+          backgroundColor: appbarbgcolor,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
