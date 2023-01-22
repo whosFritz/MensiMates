@@ -167,7 +167,7 @@ class _AboutPageState extends State<AboutPage> {
                                         )),
                                     Padding(
                                       padding: const EdgeInsets.all(15),
-                                      child: Text("Alle Angaben ohne Gewähr",
+                                      child: Text("Alle Angaben ohne Gewähr.",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyLarge
