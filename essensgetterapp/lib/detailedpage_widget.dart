@@ -73,7 +73,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       http.post(
         Uri.parse(apiforsendinglinkothers),
         headers: {
-          "Access-Control_Allow_Origin": "*",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonbody,
@@ -82,7 +84,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       http.post(
         Uri.parse(apiforsendinglinkweb),
         headers: {
-          "Access-Control_Allow_Origin": "*",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonbody,

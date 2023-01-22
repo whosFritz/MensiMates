@@ -69,6 +69,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       response = await http.get(
         Uri.parse(apiforreceivinglinkothers),
         headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
           "Content-Type": "application/json; charset=UTF-8",
         },
       );
@@ -76,6 +79,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       response = await http.get(
         Uri.parse(apiforreceivinglinkweb),
         headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
           "Content-Type": "application/json; charset=UTF-8",
         },
       );
