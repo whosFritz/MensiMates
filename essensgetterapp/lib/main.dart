@@ -368,7 +368,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   Expanded(
                     child: Padding(
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
+                          const EdgeInsetsDirectional.fromSTEB(30, 8, 30, 8),
                       child: Container(
                         width: 300,
                         height: 50,
