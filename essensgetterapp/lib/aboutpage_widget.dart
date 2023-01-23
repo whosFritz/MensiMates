@@ -132,7 +132,7 @@ class _AboutPageState extends State<AboutPage> {
                                             context: context,
                                             applicationName: "MensiApp",
                                             applicationVersion:
-                                                "App Version: 1.0",
+                                                "App Version: Beta 1.3",
                                             applicationLegalese:
                                                 "\u00a9 2023 MensiApp by Fritz Schubert",
                                             applicationIcon: Padding(

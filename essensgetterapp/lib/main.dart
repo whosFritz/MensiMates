@@ -434,7 +434,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     InkWell(
                                       child: Container(
                                         alignment: Alignment.center,
-                                        width: 150,
+                                        width: 120,
                                         child: Text(
                                             DateFormat("E. dd.MM.yyyy", "de_DE")
                                                 .format(_date)),
