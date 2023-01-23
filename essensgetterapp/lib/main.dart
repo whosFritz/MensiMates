@@ -49,8 +49,8 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget> {
   // Variablen
-  late Future<List<Dish>> filteredDishes = filterDishes();
   Future<List<Dish>> futuredishes = getDishes();
+  late Future<List<Dish>> filteredDishes = filterDishes();
   DateTime _date = DateTime.now();
 
   // Initiierung
@@ -165,7 +165,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
               child: InkWell(
                 onTap: (() {
-                  navigateToDetailRatingPage(context, dishes[index]);
+                  navigateToDetailRatingPage(context, dish);
                 }),
                 child: Hero(
                   tag: dish.id,
@@ -188,42 +188,38 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                8, 8, 8, 8),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 0, 8, 0),
-                                        child: decideIconFile(dish.category),
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 0, 8, 0),
+                                      child: decideIconFile(dish.category),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        dish.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge
+                                            ?.copyWith(
+                                              fontFamily: "Open Sans",
+                                              fontSize: 19,
+                                            ),
                                       ),
-                                      Expanded(
-                                        child: Text(
-                                          dish.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge
-                                              ?.copyWith(
-                                                fontFamily: "Open Sans",
-                                                fontSize: 19,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
@@ -268,47 +264,46 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ],
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    const Icon(
-                                      Icons.star_rounded,
-                                      color: Color(0xFFE47B13),
-                                      size: 24,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 0, 6, 0),
-                                      child: Text(
-                                        "${dish.rating}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            ?.copyWith(
-                                                fontFamily: "Open Sans",
-                                                fontSize: 15),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                8, 8, 8, 8),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      const Icon(
+                                        Icons.star_rounded,
+                                        color: Color(0xFFE47B13),
+                                        size: 24,
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 0, 6, 0),
+                                        child: Text(
+                                          "${dish.rating}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                                  fontFamily: "Open Sans",
+                                                  fontSize: 15),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -392,73 +387,56 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              10, 0, 10, 0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _date = _date.subtract(
-                                                const Duration(days: 1));
-                                            filteredDishes = filterDishes();
-                                          });
-                                        },
-                                        child: const Icon(
-                                            Icons.arrow_left_rounded),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: 120,
-                                        child: Text(
-                                            DateFormat("E dd.MM.yyyy", "de_DE")
-                                                .format(_date)),
-                                      ),
-                                      onTap: () async {
-                                        final DateTime? picked =
-                                            await showDatePicker(
-                                          context: context,
-                                          initialDate: _date,
-                                          firstDate: DateTime(2023),
-                                          lastDate: DateTime(2024),
-                                        );
-                                        if (picked != _date) {
-                                          setState(() {
-                                            _date = picked!;
-                                            filteredDishes = filterDishes();
-                                          });
-                                        }
-                                      },
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              10, 0, 10, 0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _date = _date
-                                                .add(const Duration(days: 1));
-                                            filteredDishes = filterDishes();
-                                          });
-                                        },
-                                        child: const Icon(
-                                            Icons.arrow_right_rounded),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  10, 0, 10, 0),
+                              child: TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _date =
+                                        _date.subtract(const Duration(days: 1));
+                                    filteredDishes = filterDishes();
+                                  });
+                                },
+                                child: const Icon(Icons.arrow_left_rounded),
+                              ),
+                            ),
+                            InkWell(
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 120,
+                                child: Text(DateFormat("E dd.MM.yyyy", "de_DE")
+                                    .format(_date)),
+                              ),
+                              onTap: () async {
+                                final DateTime? picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: _date,
+                                  firstDate: DateTime(2023),
+                                  lastDate: DateTime(2024),
+                                );
+                                if (picked != _date) {
+                                  setState(() {
+                                    _date = picked!;
+                                    filteredDishes = filterDishes();
+                                  });
+                                }
+                              },
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  10, 0, 10, 0),
+                              child: TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _date = _date.add(const Duration(days: 1));
+                                    filteredDishes = filterDishes();
+                                  });
+                                },
+                                child: const Icon(Icons.arrow_right_rounded),
+                              ),
                             ),
                           ],
                         ),
