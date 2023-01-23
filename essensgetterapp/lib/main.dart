@@ -63,29 +63,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   // Methode um Gerichte zu holen und umzuwandeln.
 
   static Future<List<Dish>> getDishes() async {
-    http.Response response;
-    if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
-      response = await http.get(
-        Uri.parse(apiforreceivinglinkothers),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-      );
-    } else {
-      response = await http.get(
-        Uri.parse(apiforreceivinglinkweb),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-      );
-    }
+    final response = await http.get(
+      Uri.parse(apiforreceivinglink),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    );
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
       final dishes = jsondata.map<Dish>(Dish.fromJson).toList();
@@ -436,7 +421,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         alignment: Alignment.center,
                                         width: 120,
                                         child: Text(
-                                            DateFormat("E. dd.MM.yyyy", "de_DE")
+                                            DateFormat("E dd.MM.yyyy", "de_DE")
                                                 .format(_date)),
                                       ),
                                       onTap: () async {
@@ -692,8 +677,8 @@ List<Color> decideContainerColor(String category) {
     ];
   } else if (category == "Pastateller") {
     colors = [
-      const Color.fromRGBO(245, 245, 220, 1),
-      const Color.fromARGB(255, 225, 225, 178),
+      const Color.fromARGB(255, 212, 185, 149),
+      const Color.fromARGB(255, 209, 177, 134),
     ];
   } else if (category == "Fischgericht") {
     colors = [

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
@@ -22,7 +21,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   // Variablen
   late double ratingbarvalue;
   String pagename = "Detailansicht";
-  Color appbarbgcolor = const Color.fromARGB(255, 207, 186, 143);
   // Variablen
   String? _lastRatingDate = "2023-01-12";
 
@@ -68,30 +66,33 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   }
 
   void sendMealsbacktoOle(String jsonbody) {
-    if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
-      http.post(
-        Uri.parse(apiforsendinglinkothers),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonbody,
-      );
+    http.post(
+      Uri.parse(apiforsendinglink),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: jsonbody,
+    );
+  }
+
+  Color decideAppBarcolor(String category) {
+    Color appbarcolor;
+    if (category == "Vegetarisches Gericht") {
+      appbarcolor = const Color.fromARGB(255, 59, 215, 67);
+    } else if (category == "Fleischgericht") {
+      appbarcolor = const Color.fromARGB(255, 244, 120, 32);
+    } else if (category == "Veganes Gericht") {
+      appbarcolor = const Color.fromARGB(255, 138, 238, 143);
+    } else if (category == "Pastateller") {
+      appbarcolor = const Color.fromRGBO(210, 180, 140, 1);
+    } else if (category == "Fischgericht") {
+      appbarcolor = const Color.fromARGB(255, 52, 174, 236);
     } else {
-      http.post(
-        Uri.parse(apiforsendinglinkweb),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonbody,
-      );
+      appbarcolor = Colors.white;
     }
+    return appbarcolor;
   }
 
   @override
@@ -101,7 +102,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(pagename),
-          backgroundColor: appbarbgcolor,
+          backgroundColor: decideAppBarcolor(widget.dishdetailed.category),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -362,7 +363,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(pagename),
-          backgroundColor: appbarbgcolor,
+          backgroundColor: decideAppBarcolor(widget.dishdetailed.category),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
