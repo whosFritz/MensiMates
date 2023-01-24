@@ -47,7 +47,8 @@ class HomePageWidget extends StatefulWidget {
   State<HomePageWidget> createState() => _HomePageWidgetState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget> {
+class _HomePageWidgetState extends State<HomePageWidget>
+    with TickerProviderStateMixin {
   // Variablen
   Future<List<Dish>> futuredishes = getDishes();
   late Future<List<Dish>> filteredDishes = filterDishes();
@@ -58,6 +59,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void initState() {
     super.initState();
     filteredDishes = filterDishes();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
@@ -169,8 +175,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 }),
                 child: Hero(
                   tag: dish.id,
-                  child: Container(
-                    width: double.infinity,
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       boxShadow: const [
                         BoxShadow(
@@ -202,9 +211,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 0, 8, 0),
+                                      padding: const EdgeInsetsDirectional
+                                          .fromSTEB(0, 0, 8, 0),
                                       child: decideIconFile(dish.category),
                                     ),
                                     Expanded(
@@ -222,8 +230,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ],
                                 ),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 4, 4, 0),
+                                  padding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          0, 4, 4, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
@@ -242,8 +251,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 4, 4, 0),
+                                  padding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          0, 4, 4, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
