@@ -25,6 +25,7 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_neumorphic: ^3.2.0
   flutter_native_splash: ^2.2.16
+  msix: ^3.7.0
   
 
 

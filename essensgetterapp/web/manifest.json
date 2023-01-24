@@ -1,6 +1,6 @@
 {
-    "name": "essensgetterapp",
-    "short_name": "essensgetterapp",
+    "name": "MensiApp",
+    "short_name": "MensiApp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFFFFF",
