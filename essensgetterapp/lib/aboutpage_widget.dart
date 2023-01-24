@@ -192,7 +192,10 @@ class _AboutPageState extends State<AboutPage> {
                 children: [
                   Column(
                     children: const [
-                      Text("\u00a9 2023 MensiApp by Fritz Schubert")
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                        child: Text("\u00a9 2023 MensiApp by Fritz Schubert"),
+                      )
                     ],
                   ),
                 ],
