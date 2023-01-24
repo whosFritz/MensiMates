@@ -176,10 +176,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                 child: Hero(
                   tag: dish.id,
                   child: AnimatedContainer(
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     curve: Curves.easeInOut,
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       boxShadow: const [
                         BoxShadow(
@@ -211,8 +209,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional
-                                          .fromSTEB(0, 0, 8, 0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0, 0, 8, 0),
                                       child: decideIconFile(dish.category),
                                     ),
                                     Expanded(
@@ -230,9 +229,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   ],
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          0, 4, 4, 0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 4, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
@@ -251,9 +249,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          0, 4, 4, 0),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 4, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
