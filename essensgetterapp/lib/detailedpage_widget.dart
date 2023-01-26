@@ -19,16 +19,10 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
+  
   // Variablen
-  late double ratingbarvaluetaste;
-  late double ratingbarvaluefreshness;
-
-  late double ratingbarvaluelook;
-
-  late double ratingbarvalueprice;
-
+  Map<String, double> mapratingvalues = {};
   String pagename = "Detailansicht";
-  // Variablen
   String? _lastRatingDate = "2023-01-12";
 
   @override
@@ -309,7 +303,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                           RatingBar.builder(
                             onRatingUpdate: (newValue) {
                               setState(() {
-                                ratingbarvaluetaste = newValue;
+                                mapratingvalues["taste"] = newValue;
                               });
                             },
                             itemBuilder: (context, index) => const Icon(
@@ -346,7 +340,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                           RatingBar.builder(
                             onRatingUpdate: (newValue) {
                               setState(() {
-                                ratingbarvaluefreshness = newValue;
+                                mapratingvalues["freshness"] = newValue;
                               });
                             },
                             itemBuilder: (context, index) => const Icon(
@@ -383,7 +377,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                           RatingBar.builder(
                             onRatingUpdate: (newValue) {
                               setState(() {
-                                ratingbarvaluelook = newValue;
+                                mapratingvalues["look"] = newValue;
                               });
                             },
                             itemBuilder: (context, index) => const Icon(
@@ -420,7 +414,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                           RatingBar.builder(
                             onRatingUpdate: (newValue) {
                               setState(() {
-                                ratingbarvalueprice = newValue;
+                                mapratingvalues["price"] = newValue;
                               });
                             },
                             itemBuilder: (context, index) => const Icon(
@@ -458,6 +452,10 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             // Restrict User rating
                             showSnackBar2(context);
                           } else {
+                            double sum = mapratingvalues.values
+                                .reduce((value, element) => value + element);
+                            double ratingvalue = sum / mapratingvalues.length;
+                            print(ratingvalue);
                             //Let User rate
                             Dish dishtosend = Dish(
                                 id: widget.dishdetailed.id,
@@ -466,11 +464,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 category: widget.dishdetailed.category,
                                 price: widget.dishdetailed.price,
                                 description: widget.dishdetailed.description,
-                                rating: ((ratingbarvaluetaste +
-                                        ratingbarvaluefreshness +
-                                        ratingbarvaluelook +
-                                        ratingbarvalueprice) /
-                                    4),
+                                rating: ratingvalue,
                                 responseCode: widget.dishdetailed.responseCode);
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
