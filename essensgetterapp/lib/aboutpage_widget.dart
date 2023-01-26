@@ -145,7 +145,7 @@ class _AboutPageState extends State<AboutPage> {
                                             )),
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
-                                          child: Text("Lizensen"),
+                                          child: Text("Lizenzen"),
                                         )),
                                     TextButton(
                                         onPressed: () {

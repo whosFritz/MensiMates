@@ -10,6 +10,7 @@ import "detailedpage_widget.dart";
 import "dish_class.dart";
 import "api_links.dart";
 import "package:flutter/foundation.dart";
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 void main() {
   initializeDateFormatting("de_DE"); // Add this line
@@ -485,10 +486,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 Container(
                                   alignment: Alignment.center,
                                   child: const Center(
-                                      child: LinearProgressIndicator(
+                                      child: CircularProgressIndicator(
                                     backgroundColor: Colors.white,
                                     color: Colors.green,
-                                    minHeight: 50,
                                   )),
                                 )
                               ]);
