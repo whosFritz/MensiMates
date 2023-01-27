@@ -68,7 +68,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
-
   static Future<List<Dish>> getDishes() async {
     final response = await http.get(
       Uri.parse(apiforreceivinglink),
@@ -112,7 +111,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     }).toList();
   }
 
-  // Methde, welche Aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
+  // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
       futuredishes = getDishes();
@@ -120,6 +119,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     });
   }
 
+  //Navigation zur Detailpage
   void navigateToDetailRatingPage(BuildContext context, Dish dishdetailed) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -131,7 +131,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           fullscreenDialog: true),
     );
   }
-
+  // Reload button nur für die WebApp
   Widget platformrefreshbutton() {
     if (defaultTargetPlatform != TargetPlatform.android &&
         defaultTargetPlatform != TargetPlatform.iOS) {
@@ -161,6 +161,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     }
   }
 
+  // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
     return RefreshIndicator(
       onRefresh: refresh,
