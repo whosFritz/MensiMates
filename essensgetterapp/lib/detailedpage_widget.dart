@@ -19,7 +19,6 @@ class DetailRatingPage extends StatefulWidget {
 }
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
-  
   // Variablen
   Map<String, double> mapratingvalues = {};
   String pagename = "Detailansicht";
@@ -471,6 +470,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             sendMealsbacktoOle(dishjsontosend);
                             _setRatingDate();
                             showSnackBar1(context);
+                            print(dishjsontosend);
                           }
                         },
                         child: Padding(
