@@ -1,6 +1,13 @@
 # Mensa Speiseplan
 ## in cooperation with olech2412
 
+<a href="https://mensiapp.000webhostapp.com">
+  <img src="https://user-images.githubusercontent.com/97552289/215055483-bcea49a9-04d4-4041-bc3f-5188f4ef4950.png" alt="apple-logo">
+</a>
+<a href="https://mensiapp.000webhostapp.com">
+  <img src="https://user-images.githubusercontent.com/97552289/215055980-d8811728-b25f-4155-8834-4c7ff9634909.png" alt="apple-logo">
+</a>
+
 This app is a pure student project and is not used for commercial purposes. The application's program code is copyrighted. The App's Data is from the open and free openmensa.org API
 
 This is a simple Flutter app that displays the meals and meal types of a Mensa (canteen) with a rating system.
