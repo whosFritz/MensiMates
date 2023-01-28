@@ -489,7 +489,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   child: const Center(
                                       child: CircularProgressIndicator(
                                     backgroundColor: Colors.white,
-                                    color: Colors.green,
+                                    color: Color.fromARGB(255, 0, 166, 255),
                                   )),
                                 )
                               ]);
