@@ -1,46 +1,43 @@
-Privacy Policy  
-----------------
+# Datenschutzrichtlinie
+## Einführung
+Unsere Datenschutzrichtlinie hilft Ihnen zu verstehen, welche Informationen wir bei MensiApp sammeln, wie MensiApp sie verwendet und welche Wahlmöglichkeiten Sie haben.
+Fritz Schubert hat die MensiApp-App als kostenlose App erstellt. DiesER DIENST wird von Fritz Schubert kostenfrei bereitgestellt und ist für die Verwendung wie gesehen gedacht.
+Wenn Sie unser Service nutzen möchten, dann stimmen Sie der Sammlung und Verwendung von Informationen im Zusammenhang mit dieser Richtlinie zu. Die von uns gesammelten personenbezogenen Informationen werden zur Bereitstellung und Verbesserung des Services verwendet. Wir werden Ihre Informationen nicht außer wie in dieser Datenschutzrichtlinie beschrieben nutzen oder teilen.
+Die in dieser Datenschutzrichtlinie verwendeten Begriffe haben die gleiche Bedeutung wie in unseren Nutzungsbedingungen, die auf unserer Website verfügbar sind, es sei denn, sie werden in dieser Datenschutzrichtlinie anders definiert.
 
-### Introduction  
-Our privacy policy will help you understand what information we collect at MensiApp, how MensiApp uses it, and what choices you have.
-Fritz Schubert built the MensiApp app as a free app. This SERVICE is provided by Fritz Schubert at no cost and is intended for use as is.
-If you choose to use our Service, then you agree to the collection and use of information in  relation with this policy. The Personal Information that we collect are used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy.  
-The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible in our website, unless otherwise  defined in this Privacy Policy.
+## Sammlung und Verwendung von Informationen
+Für ein besseres Erlebnis bei der Verwendung unseres Services können wir Sie bitten, uns bestimmte personenbezogene Informationen bereitzustellen, einschließlich, aber nicht beschränkt auf Benutzername, E-Mail-Adresse, Geschlecht, Standort, Bilder. Die von uns angeforderten Informationen werden von uns aufbewahrt und gemäß dieser Datenschutzrichtlinie verwendet.
+Die App nutzt Drittanbieterdienste, die Informationen verwenden können, um Sie zu identifizieren.
 
-### Information Collection and Use  
-For a better experience while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to users name, email address, gender, location, pictures. The information that we request will be retained by us and used as described in this privacy policy.  
-The app does use third party services that may collect information used to identify you. 
+## Cookies
+Cookies sind Dateien mit geringen Datenmengen, die häufig als anonyme eindeutige Kennung verwendet werden. Diese werden von der von Ihnen besuchten Website an Ihren Browser gesendet und auf dem internen Speicher Ihres Geräts gespeichert.
+Dieser Dienst nutzt diese "Cookies" nicht explizit. Die App kann jedoch Drittanbieter-Code und -Bibliotheken verwenden, die "Cookies" zur Sammlung von Informationen und zur Verbesserung ihrer Dienste verwenden. Sie haben die Option, diese Cookies zu akzeptieren oder abzulehnen und zu wissen, wann ein Cookie an Ihr Gerät gesendet wird. Wenn Sie unsere Cookies ablehnen, können Sie möglicherweise einige Teile dieses Dienstes nicht nutzen.
 
-### Cookies  
-Cookies are files with small amount of data that is commonly used an anonymous unique identifier. These are sent to your browser from the website that you visit and are stored on your devices’s internal memory.  
+## Standortinformationen
+Einige der Dienste können Standortinformationen verwenden, die von den Mobiltelefonen der Benutzer übertragen werden. Wir nutzen diese Informationen nur im erforderlichen Umfang für den angegebenen Dienst.
 
-This Services does not uses these “cookies” explicitly. However, the app may use third party code and libraries that use “cookies” to collection information and to improve their services. You have the option  to either accept or refuse these cookies, and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.  
+## Geräteinformationen
+In einigen Fällen sammeln wir Informationen von Ihrem Gerät. Die Informationen werden genutzt, um einen besseren Dienst zu gewährleisten und Betrugsversuche zu verhindern. Darüber hinaus werden diese Informationen keine identifizierenden Informationen über den einzelnen Benutzer enthalten.
 
-### Location Information  
-Some of the services may use location information transmitted from users' mobile phones. We only use this information within the scope necessary for the designated service.  
+## Dienstleister
+Wir können Drittfirmen und Einzelpersonen aus folgenden Gründen beschäftigen:
+- um unseren Dienst zu erleichtern
+- um den Dienst im Namen unserer Firma bereitzustellen
+Um Dienstleistungen im Zusammenhang mit dem Dienst durchzuführen
+oder
+- um uns bei der Analyse unseres Dienstes zu unterstützen.
+Wir möchten die Benutzer dieses Dienstes darüber informieren, dass diese Dritten Zugang zu Ihren persönlichen Informationen haben. Der Grund dafür ist, die ihnen von uns zugewiesenen Aufgaben auszuführen. Sie sind jedoch verpflichtet, diese Informationen nicht zu offenbaren oder für andere Zwecke zu nutzen.
 
-### Device Information  
-We collect information from your device in some cases. The information will be utilized for the provision of better service and to prevent fraudulent acts. Additionally, such information will not include that which will identify the individual user.  
+## Sicherheit
+Wir schätzen Ihr Vertrauen, indem Sie uns Ihre persönlichen Informationen zur Verfügung stellen, und bemühen uns daher, kommerziell akzeptable Mittel zum Schutz zu verwenden. Bitte beachten Sie jedoch, dass keine Übertragungsmethode über das Internet oder elektronische Speichermethode 100% sicher und zuverlässig ist und wir deren absolute Sicherheit nicht garantieren können.
 
-### Service Providers  
-We may employ third-party companies and individuals due to the following reasons:  
-* To facilitate our Service;
-* To provide the Service on our behalf;
-* To perform Service-related services; or
-* To assist us in analyzing how our Service is used.  
+## Kinder-Datenschutz
+Dieser Dienst richtet sich nicht an Personen unter 13 Jahren. Wir sammeln keine personenbezogenen Informationen von Kindern unter 13 Jahren. Falls wir entdecken, dass ein Kind unter 13 Jahren uns personenbezogene Informationen zur Verfügung gestellt hat, löschen wir diese sofort von unseren Servern. Wenn Sie Elternteil oder Vormund sind und wissen, dass Ihr Kind uns personenbezogene Informationen zur Verfügung gestellt hat, kontaktieren Sie uns bitte, damit wir die notwendigen Maßnahmen ergreifen können.
 
-We want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.  
+## Änderungen an dieser Datenschutzrichtlinie
+Wir können unsere Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Daher wird empfohlen, diese Seite regelmäßig auf Änderungen zu überprüfen. Wir informieren Sie über Änderungen, indem wir die neue Datenschutzrichtlinie auf dieser Seite veröffentlichen. Diese Änderungen treten sofort in Kraft, nachdem sie auf dieser Seite veröffentlicht wurden.
 
-### Security  
-We value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over  the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.  
-
-### Children’s Privacy  
-This Services do not address anyone under the age of 13. We do not knowingly collect personal identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you  are  a  parent  or  guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.  
-
-### Changes to This Privacy Policy  
-We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately, after they are posted on this page.  
-
-### Contact Us  
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.  
-Contact Information:  
-Email: fritzschubert21@outlook.de
+## Kontakt
+Wenn Sie Fragen oder Anregungen zu unserer Datenschutzrichtlinie haben, zögern Sie bitte nicht, uns zu kontaktieren.
+Kontaktinformationen:
+E-Mail: fritzschubert21@outlook.de
