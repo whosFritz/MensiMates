@@ -262,34 +262,40 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   ),
                                   child: Column(
                                     children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          const Icon(
-                                            Icons.star_rounded,
-                                            color: Color(0xFFE47B13),
-                                            size: 24,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .fromSTEB(0, 0, 8, 0),
-                                            child: Text(
-                                              "${dish.rating}/5",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  ?.copyWith(
-                                                      fontFamily: "Open Sans",
-                                                      fontSize: 15),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(8, 8, 8, 0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            const Icon(
+                                              Icons.star_rounded,
+                                              color: Color(0xFFE47B13),
+                                              size: 24,
                                             ),
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(0, 0, 6, 0),
+                                              child: Text(
+                                                "${dish.rating} / 5",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    ?.copyWith(
+                                                        fontFamily: "Open Sans",
+                                                        fontSize: 15),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Row(children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(children: [
+                                          Text(
                                             "Votes: ${dish.votes}",
                                             style: Theme.of(context)
                                                 .textTheme
@@ -298,8 +304,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     fontFamily: "Open Sans",
                                                     fontSize: 15),
                                           ),
-                                        ),
-                                      ]),
+                                        ]),
+                                      ),
                                     ],
                                   ),
                                 ),
