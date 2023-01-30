@@ -6,6 +6,7 @@ import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "main.dart";
 import 'api_links.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
@@ -19,9 +20,8 @@ class DetailRatingPage extends StatefulWidget {
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
   // Variablen
-  late double ratingbarvalue;
+  Map<String, double> mapratingvalues = {};
   String pagename = "Detailansicht";
-  // Variablen
   String? _lastRatingDate = "2023-01-12";
 
   @override
@@ -278,27 +278,159 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RatingBar.builder(
-                      onRatingUpdate: (newValue) {
-                        setState(() {
-                          ratingbarvalue = newValue;
-                        });
-                      },
-                      itemBuilder: (context, index) => const Icon(
-                        Icons.star_rounded,
-                        color: Color(0xFFFA9C00),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Geschmack",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 20,
+                                    color: Colors.black),
+                          ),
+                        ],
                       ),
-                      direction: Axis.horizontal,
-                      initialRating: 0,
-                      unratedColor: const Color(0xFF9E9E9E),
-                      itemCount: 5,
-                      itemSize: 40,
-                      glowColor: const Color(0xFFFA9C00),
-                    ),
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            onRatingUpdate: (newValue) {
+                              setState(() {
+                                mapratingvalues["taste"] = newValue;
+                              });
+                            },
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFFA9C00),
+                            ),
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            unratedColor: const Color(0xFF9E9E9E),
+                            itemCount: 5,
+                            itemSize: 40,
+                            glowColor: const Color(0xFFFA9C00),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Frische",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 20,
+                                    color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            onRatingUpdate: (newValue) {
+                              setState(() {
+                                mapratingvalues["freshness"] = newValue;
+                              });
+                            },
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFFA9C00),
+                            ),
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            unratedColor: const Color(0xFF9E9E9E),
+                            itemCount: 5,
+                            itemSize: 40,
+                            glowColor: const Color(0xFFFA9C00),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Aussehen",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 20,
+                                    color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            onRatingUpdate: (newValue) {
+                              setState(() {
+                                mapratingvalues["look"] = newValue;
+                              });
+                            },
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFFA9C00),
+                            ),
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            unratedColor: const Color(0xFF9E9E9E),
+                            itemCount: 5,
+                            itemSize: 40,
+                            glowColor: const Color(0xFFFA9C00),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Preis-Leistung",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 20,
+                                    color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            onRatingUpdate: (newValue) {
+                              setState(() {
+                                mapratingvalues["price"] = newValue;
+                              });
+                            },
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFFA9C00),
+                            ),
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            unratedColor: const Color(0xFF9E9E9E),
+                            itemCount: 5,
+                            itemSize: 40,
+                            glowColor: const Color(0xFFFA9C00),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -319,6 +451,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             // Restrict User rating
                             showSnackBar2(context);
                           } else {
+                            double sum = mapratingvalues.values
+                                .reduce((value, element) => value + element);
+                            double ratingvalue = sum / mapratingvalues.length;
                             //Let User rate
                             Dish dishtosend = Dish(
                                 id: widget.dishdetailed.id,
@@ -327,7 +462,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 category: widget.dishdetailed.category,
                                 price: widget.dishdetailed.price,
                                 description: widget.dishdetailed.description,
-                                rating: ratingbarvalue,
+                                rating: ratingvalue,
                                 responseCode: widget.dishdetailed.responseCode);
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();

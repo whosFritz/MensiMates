@@ -132,7 +132,7 @@ class _AboutPageState extends State<AboutPage> {
                                             context: context,
                                             applicationName: "MensiApp",
                                             applicationVersion:
-                                                "App Version: Beta 1.4",
+                                                "App Version: Beta 1.5",
                                             applicationLegalese:
                                                 "\u00a9 2023 MensiApp by Fritz Schubert",
                                             applicationIcon: Padding(
@@ -145,12 +145,12 @@ class _AboutPageState extends State<AboutPage> {
                                             )),
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
-                                          child: Text("Lizensen"),
+                                          child: Text("Lizenzen"),
                                         )),
                                     TextButton(
                                         onPressed: () {
                                           launchUrl(Uri.parse(
-                                              "https://github.com/whosFritz/Mensa-App/blob/master/essensgetterapp/impressum.md"));
+                                              "https://github.com/whosFritz/Mensa-App/blob/master/impressum.md"));
                                         },
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
@@ -159,7 +159,7 @@ class _AboutPageState extends State<AboutPage> {
                                     TextButton(
                                         onPressed: () {
                                           launchUrl(Uri.parse(
-                                              "https://github.com/whosFritz/Mensa-App/blob/master/essensgetterapp/privacy-policy.md"));
+                                              "https://github.com/whosFritz/Mensa-App/blob/master/privacy-policy.md"));
                                         },
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
