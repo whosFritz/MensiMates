@@ -285,7 +285,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Geschmack?",
+                            "Geschmack",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
@@ -322,7 +322,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Frische?",
+                            "Frische",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
@@ -359,7 +359,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Aussehen?",
+                            "Aussehen",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
@@ -396,7 +396,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Preis-Leistung?",
+                            "Preis-Leistung",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge
@@ -454,7 +454,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             double sum = mapratingvalues.values
                                 .reduce((value, element) => value + element);
                             double ratingvalue = sum / mapratingvalues.length;
-                            print(ratingvalue);
                             //Let User rate
                             Dish dishtosend = Dish(
                                 id: widget.dishdetailed.id,
@@ -470,7 +469,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             sendMealsbacktoOle(dishjsontosend);
                             _setRatingDate();
                             showSnackBar1(context);
-                            print(dishjsontosend);
                           }
                         },
                         child: Padding(

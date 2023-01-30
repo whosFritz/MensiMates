@@ -131,6 +131,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           fullscreenDialog: true),
     );
   }
+  
   // Reload button nur für die WebApp
   Widget platformrefreshbutton() {
     if (defaultTargetPlatform != TargetPlatform.android &&
