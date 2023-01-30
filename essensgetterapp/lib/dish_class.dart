@@ -9,7 +9,8 @@ class Dish {
       required this.price,
       required this.description,
       required this.rating,
-      required this.responseCode});
+      required this.responseCode,
+      required this.votes});
   final int id;
   final String category;
   final String servingDate;
@@ -18,6 +19,7 @@ class Dish {
   final String price;
   final double rating;
   final int responseCode;
+  final int votes;
 
   @override
   String toString() {
@@ -33,7 +35,8 @@ class Dish {
         price: json["price"] ?? "keine Angaben",
         description: json["description"] ?? "keine Angaben",
         rating: json["rating"] ?? 3.0,
-        responseCode: json["responseCode"] ?? 200);
+        responseCode: json["responseCode"] ?? 200,
+        votes: json["votes"] ?? 0);
   }
 
   String toJson() {
@@ -46,6 +49,7 @@ class Dish {
       "description": description,
       "rating": rating,
       "responseCode": responseCode,
+      "votes": votes,
     });
   }
 }

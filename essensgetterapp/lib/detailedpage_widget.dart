@@ -463,7 +463,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 price: widget.dishdetailed.price,
                                 description: widget.dishdetailed.description,
                                 rating: ratingvalue,
-                                responseCode: widget.dishdetailed.responseCode);
+                                responseCode: widget.dishdetailed.responseCode,
+                                votes: widget.dishdetailed.votes);
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
                             sendMealsbacktoOle(dishjsontosend);
