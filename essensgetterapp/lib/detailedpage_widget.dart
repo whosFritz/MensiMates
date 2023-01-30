@@ -242,28 +242,51 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                           borderRadius:
                                               BorderRadius.circular(6),
                                         ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
+                                        child: Column(
                                           children: [
-                                            const Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                const Icon(
+                                                  Icons.star_rounded,
+                                                  color: Color(0xFFE47B13),
+                                                  size: 24,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(0, 0, 8, 0),
+                                                  child: Text(
+                                                    "${widget.dishdetailed.rating}/5",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        ?.copyWith(
+                                                            fontFamily:
+                                                                "Open Sans",
+                                                            fontSize: 15),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(0, 0, 6, 0),
-                                              child: Text(
-                                                "${widget.dishdetailed.rating}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 15),
+                                            Row(children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  "Votes: ${widget.dishdetailed.votes}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      ?.copyWith(
+                                                          fontFamily:
+                                                              "Open Sans",
+                                                          fontSize: 15),
+                                                ),
                                               ),
-                                            ),
+                                            ]),
                                           ],
                                         ),
                                       ),
@@ -463,7 +486,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 price: widget.dishdetailed.price,
                                 description: widget.dishdetailed.description,
                                 rating: ratingvalue,
-                                responseCode: widget.dishdetailed.responseCode);
+                                responseCode: widget.dishdetailed.responseCode,
+                                votes: widget.dishdetailed.votes);
                             // Convert the Dish object to JSON
                             String dishjsontosend = dishtosend.toJson();
                             sendMealsbacktoOle(dishjsontosend);
@@ -636,28 +660,51 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                           borderRadius:
                                               BorderRadius.circular(6),
                                         ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
+                                        child: Column(
                                           children: [
-                                            const Icon(
-                                              Icons.star_rounded,
-                                              color: Color(0xFFE47B13),
-                                              size: 24,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                const Icon(
+                                                  Icons.star_rounded,
+                                                  color: Color(0xFFE47B13),
+                                                  size: 24,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(0, 0, 8, 0),
+                                                  child: Text(
+                                                    "${widget.dishdetailed.rating}/5",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        ?.copyWith(
+                                                            fontFamily:
+                                                                "Open Sans",
+                                                            fontSize: 15),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(0, 0, 6, 0),
-                                              child: Text(
-                                                "${widget.dishdetailed.rating}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    ?.copyWith(
-                                                        fontFamily: "Open Sans",
-                                                        fontSize: 15),
+                                            Row(children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  "Votes: ${widget.dishdetailed.votes}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      ?.copyWith(
+                                                          fontFamily:
+                                                              "Open Sans",
+                                                          fontSize: 15),
+                                                ),
                                               ),
-                                            ),
+                                            ]),
                                           ],
                                         ),
                                       ),

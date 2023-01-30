@@ -4,7 +4,6 @@ import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
 import 'package:intl/date_symbol_data_local.dart';
 import "package:intl/intl.dart";
-import "package:collection/collection.dart";
 import "aboutpage_widget.dart";
 import "detailedpage_widget.dart";
 import "dish_class.dart";
@@ -13,7 +12,7 @@ import "package:flutter/foundation.dart";
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 void main() {
-  initializeDateFormatting("de_DE"); // Add this line
+  initializeDateFormatting("de_DE");
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -261,27 +260,46 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
+                                  child: Column(
                                     children: [
-                                      const Icon(
-                                        Icons.star_rounded,
-                                        color: Color(0xFFE47B13),
-                                        size: 24,
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          const Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFE47B13),
+                                            size: 24,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0, 0, 8, 0),
+                                            child: Text(
+                                              "${dish.rating}/5",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(
+                                                      fontFamily: "Open Sans",
+                                                      fontSize: 15),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 0, 6, 0),
-                                        child: Text(
-                                          "${dish.rating}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 15),
+                                      Row(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Votes: ${dish.votes}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                ?.copyWith(
+                                                    fontFamily: "Open Sans",
+                                                    fontSize: 15),
+                                          ),
                                         ),
-                                      ),
+                                      ]),
                                     ],
                                   ),
                                 ),
