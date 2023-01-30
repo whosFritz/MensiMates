@@ -69,34 +69,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
   // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishes() async {
-    final response = await http.get(
-      Uri.parse(apiforreceivinglink),
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-    );
+    final response = await http.get(Uri.parse(apiforreceivinglink));
     if (response.statusCode == 200) {
       final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-      final dishes = jsondata.map<Dish>(Dish.fromJson).toList();
-      final groupedDishes = groupBy(
-          dishes, (Dish dish) => "${dish.category} ${dish.servingDate}");
-      final mergedDishes = groupedDishes.entries.map((entry) {
-        final firstDish = entry.value[0];
-        final additionalDescriptions =
-            entry.value.skip(1).map((dish) => dish.name).toList().join(", ");
-        return Dish(
-            id: firstDish.id,
-            name: firstDish.name,
-            servingDate: firstDish.servingDate,
-            category: firstDish.category,
-            price: firstDish.price,
-            description: "${firstDish.description}, $additionalDescriptions",
-            rating: firstDish.rating,
-            responseCode: firstDish.responseCode);
-      }).toList();
-      return mergedDishes;
+      return jsondata.map<Dish>(Dish.fromJson).toList();
     } else {
       throw Exception();
     }
@@ -131,7 +107,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           fullscreenDialog: true),
     );
   }
-  
+
   // Reload button nur für die WebApp
   Widget platformrefreshbutton() {
     if (defaultTargetPlatform != TargetPlatform.android &&
