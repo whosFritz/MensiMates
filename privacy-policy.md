@@ -1,7 +1,7 @@
 # Datenschutzrichtlinie
 ## Einführung
-Unsere Datenschutzrichtlinie hilft Ihnen zu verstehen, welche Informationen wir bei MensiApp sammeln, wie MensiApp sie verwendet und welche Wahlmöglichkeiten Sie haben.
-Fritz Schubert hat die MensiApp-App als kostenlose App erstellt. DiesER DIENST wird von Fritz Schubert kostenfrei bereitgestellt und ist für die Verwendung wie gesehen gedacht.
+Unsere Datenschutzrichtlinie hilft Ihnen zu verstehen, welche Informationen wir bei MensiMates sammeln, wie MensiMates sie verwendet und welche Wahlmöglichkeiten Sie haben.
+Fritz Schubert hat die MensiMates-App als kostenlose App erstellt. DiesER DIENST wird von Fritz Schubert kostenfrei bereitgestellt und ist für die Verwendung wie gesehen gedacht.
 Wenn Sie unser Service nutzen möchten, dann stimmen Sie der Sammlung und Verwendung von Informationen im Zusammenhang mit dieser Richtlinie zu. Die von uns gesammelten personenbezogenen Informationen werden zur Bereitstellung und Verbesserung des Services verwendet. Wir werden Ihre Informationen nicht außer wie in dieser Datenschutzrichtlinie beschrieben nutzen oder teilen.
 Die in dieser Datenschutzrichtlinie verwendeten Begriffe haben die gleiche Bedeutung wie in unseren Nutzungsbedingungen, die auf unserer Website verfügbar sind, es sei denn, sie werden in dieser Datenschutzrichtlinie anders definiert.
 
