@@ -3,7 +3,7 @@
     package="com.example.essensgetterapp">
     <uses-permission android:name="android.permission.INTERNET"/> <!-- Add this -->
    <application
-        android:label="MensiApp"
+        android:label="MensiMates"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
