@@ -1,10 +1,10 @@
 # Mensa Speiseplan
 ## in cooperation with olech2412
 
-<a href="https://mensiapp.000webhostapp.com">
+<a href="https://mensi-mates.whosfritz.de">
   <img src="https://user-images.githubusercontent.com/97552289/215055483-bcea49a9-04d4-4041-bc3f-5188f4ef4950.png" width="100" height="100" alt="apple-logo">
 </a>
-<a href="https://mensiapp.000webhostapp.com">
+<a href="https://mensi-mates.whosfritz.de">
   <img src="https://user-images.githubusercontent.com/97552289/215055980-d8811728-b25f-4155-8834-4c7ff9634909.png" width="100" height="100" alt="apple-logo">
 </a>
 
