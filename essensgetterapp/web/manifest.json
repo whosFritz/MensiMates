@@ -1,6 +1,6 @@
 {
-    "name": "MensiApp",
-    "short_name": "MensiApp",
+    "name": "MensiMates",
+    "short_name": "MensiMates",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFFFFF",

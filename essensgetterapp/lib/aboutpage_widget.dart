@@ -48,7 +48,7 @@ class _AboutPageState extends State<AboutPage> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "MensiApp",
+                                        "MensiMates",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge
@@ -130,11 +130,11 @@ class _AboutPageState extends State<AboutPage> {
                                     TextButton(
                                         onPressed: () => showLicensePage(
                                             context: context,
-                                            applicationName: "MensiApp",
+                                            applicationName: "MensiMates",
                                             applicationVersion:
                                                 "App Version: Beta 1.7",
                                             applicationLegalese:
-                                                "\u00a9 2023 MensiApp by Fritz Schubert",
+                                                "\u00a9 2023 MensiMates by Fritz Schubert",
                                             applicationIcon: Padding(
                                               padding: const EdgeInsets.all(12),
                                               child: Image.asset(
@@ -194,7 +194,7 @@ class _AboutPageState extends State<AboutPage> {
                     children: const [
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                        child: Text("\u00a9 2023 MensiApp by Fritz Schubert"),
+                        child: Text("\u00a9 2023 MensiMates by Fritz Schubert"),
                       )
                     ],
                   ),

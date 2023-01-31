@@ -19,11 +19,11 @@ void main() {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight
   ]);
-  runApp(const MensiApp());
+  runApp(const MensiMates());
 }
 
-class MensiApp extends StatelessWidget {
-  const MensiApp({super.key});
+class MensiMates extends StatelessWidget {
+  const MensiMates({super.key});
 
   // This widget is the root of your application.
   @override
@@ -33,7 +33,7 @@ class MensiApp extends StatelessWidget {
         "/home": (context) => const HomePageWidget(),
         "/aboutpage": (context) => const AboutPage(),
       },
-      title: "MensiApp",
+      title: "MensiMates",
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Open Sans"),
       home: const HomePageWidget(),
     );
