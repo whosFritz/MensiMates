@@ -500,6 +500,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             _setRatingDate();
                             showSnackBar1(context);
                           }
+                          Navigator.pop(context);
                         },
                         child: Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
