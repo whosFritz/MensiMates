@@ -150,7 +150,7 @@ class _AboutPageState extends State<AboutPage> {
                                     TextButton(
                                         onPressed: () {
                                           launchUrl(Uri.parse(
-                                              "https://github.com/whosFritz/Mensa-App/blob/master/impressum.md"));
+                                              "https://impressum.whosfritz.de"));
                                         },
                                         child: const Padding(
                                           padding: EdgeInsets.all(8.0),
