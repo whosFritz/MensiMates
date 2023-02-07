@@ -2,14 +2,16 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
-import 'package:intl/date_symbol_data_local.dart';
+import "package:intl/date_symbol_data_local.dart";
 import "package:intl/intl.dart";
 import "aboutpage_widget.dart";
 import "detailedpage_widget.dart";
 import "dish_class.dart";
 import "api_links.dart";
 import "package:flutter/foundation.dart";
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import "package:flutter_neumorphic/flutter_neumorphic.dart";
+
+import 'dish_helper_class.dart';
 
 void main() {
   initializeDateFormatting("de_DE");
@@ -50,8 +52,9 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
   // Variablen
-  Future<List<Dish>> futuredishes = getDishes();
+  Future<List<Dish>> dishesfromOle = getDishesfromOle();
   late Future<List<Dish>> filteredDishes = filterDishes();
+  late Future<List<Dish>> ratedDishes;
   DateTime _date = DateTime.now();
 
   // Initiierung
@@ -67,19 +70,27 @@ class _HomePageWidgetState extends State<HomePageWidget>
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
-  static Future<List<Dish>> getDishes() async {
-    final response = await http.get(Uri.parse(apiforreceivinglink));
-    if (response.statusCode == 200) {
-      final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-      return jsondata.map<Dish>(Dish.fromJson).toList();
-    } else {
-      throw Exception();
+  static Future<List<Dish>> getDishesfromOle() async {
+    DishHelperClass dhc = DishHelperClass();
+    try {
+      final response = await http.get(Uri.parse(apiforreceivinglink)).timeout(
+            const Duration(seconds: 6),
+          );
+      if (response.statusCode == 200) {
+        final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
+        dhc.setofflineDishes(jsondata.map<Dish>(Dish.fromJson).toList());
+        return jsondata.map<Dish>(Dish.fromJson).toList();
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      return dhc.getofflineDishes();
     }
   }
 
   // Methode um Gerichte nach Datum zu filtern
   Future<List<Dish>> filterDishes() async {
-    final dishes = await futuredishes;
+    final dishes = await dishesfromOle;
     String formattedDate = DateFormat("yyyy-MM-dd").format(_date);
     return dishes.where((dish) {
       return dish.servingDate == formattedDate;
@@ -89,7 +100,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
-      futuredishes = getDishes();
+      dishesfromOle = getDishesfromOle();
       filteredDishes = filterDishes();
     });
   }
