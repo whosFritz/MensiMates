@@ -28,15 +28,16 @@ class Dish {
 
   static Dish fromJson(json) {
     return Dish(
-        id: json["id"] ?? 10000,
-        name: json["name"] ?? "keine Angaben",
-        servingDate: json["servingDate"] ?? "keine Angaben",
-        category: json["category"] ?? "keine Angaben",
-        price: json["price"] ?? "keine Angaben",
-        description: json["description"] ?? "keine Angaben",
-        rating: json["rating"] ?? 3.0,
-        responseCode: json["responseCode"] ?? 200,
-        votes: json["votes"] ?? 0);
+      id: json["id"] ?? 10000,
+      name: json["name"] ?? "keine Angaben",
+      description: json["description"] ?? "keine Angaben",
+      price: json["price"] ?? "keine Angaben",
+      category: json["category"] ?? "keine Angaben",
+      servingDate: json["servingDate"] ?? "keine Angaben",
+      responseCode: json["responseCode"] ?? 200,
+      rating: json["rating"] ?? 3.0,
+      votes: json["votes"] ?? 0,
+    );
   }
 
   String toJson() {
