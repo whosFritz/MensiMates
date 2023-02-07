@@ -3,7 +3,7 @@
 ## in cooperation with olech2412
 
 <a href="https://www.github.com/whosfritz/Mensa-App/releases">
-  <img scr="https://user-images.githubusercontent.com/97552289/217292450-6295379a-15cd-47b9-8a33-1d40a9761f58.png" width="100" height="100"
+  <img scr="https://github.com/whosFritz/Mensa-App/blob/master/essensgetterapp/assets/images/Android_icon.png" width="100" height="100"
   alt="android-icon">
 </a>
 <a href="https://mensi-mates.whosfritz.de">
