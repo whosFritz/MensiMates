@@ -6,7 +6,7 @@ class DishHelperClass {
   Future<List<Dish>> getofflineDishes() async {
     SharedPreferences offlineDishesget = await SharedPreferences.getInstance();
     List<String>? listOfofflineDishStrings =
-        offlineDishesget.getStringList('offlineDishes');
+        offlineDishesget.getStringList('oofflineDishes');
     /* List<String> listOfofflineDishStringss = [
       '{"id":8435984382,"name":"Rucola-Süßkartoffel Schnitte","servingDate":"2023-02-07","category":"Veganes Gericht","price":"2,40€/ 4,00€/ 5,50€","description":"Chili-Tomatensoße, Rosmarinkartoffeln, glutenhaltiges Getreide, Weizen, Gerste, Veganes Gericht, Konservierungsstoff","rating":2.0,"responseCode":200,"votes":1}',
       '{"id":8435984396,"name":"Kartoffel-Pfanne mit Champignon, Wirsing & Erdnusscreme","servingDate":"2023-02-07","category":"Veganes Gericht","price":"2,40€/ 4,00€/ 5,50€","description":"Erdnüsse, Soja, Veganes Gericht","rating":0.0,"responseCode":200,"votes":0}'

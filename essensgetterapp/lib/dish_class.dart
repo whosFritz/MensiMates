@@ -13,7 +13,7 @@ class Dish {
       required this.votes});
   final int id;
   final String category;
-  final String servingDate;
+  final DateTime servingDate;
   final String description;
   final String name;
   final String price;
@@ -33,7 +33,7 @@ class Dish {
       description: json["description"] ?? "keine Angaben",
       price: json["price"] ?? "keine Angaben",
       category: json["category"] ?? "keine Angaben",
-      servingDate: json["servingDate"] ?? "keine Angaben",
+      servingDate: DateTime.parse(json["servingDate"]),
       responseCode: json["responseCode"] ?? 200,
       rating: json["rating"] ?? 3.0,
       votes: json["votes"] ?? 0,
@@ -44,7 +44,7 @@ class Dish {
     return json.encode({
       "id": id,
       "name": name,
-      "servingDate": servingDate,
+      "servingDate": servingDate.toIso8601String(),
       "category": category,
       "price": price,
       "description": description,
