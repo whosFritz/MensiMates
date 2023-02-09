@@ -171,16 +171,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
           itemCount: groupedDishes.length,
           itemBuilder: (context, index) {
             final group = groupedDishes[index];
-            return Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 30),
-                child: RefreshIndicator(
-                  onRefresh: refresh,
-                  child: GestureDetector(
-                    child: ListView.builder(
-                        itemCount: group.dishes.length,
-                        itemBuilder: (context, index) {
-                          final dish = group.dishes[index];
-                          return InkWell(
+            return RefreshIndicator(
+              onRefresh: refresh,
+              child: GestureDetector(
+                child: ListView.builder(
+                    itemCount: group.dishes.length,
+                    itemBuilder: (context, index) {
+                      final dish = group.dishes[index];
+                      return Column(
+                        children: [
+                          InkWell(
                             onTap: (() {
                               navigateToDetailRatingPage(context, dish);
                             }),
@@ -201,7 +201,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ),
                                     ],
                                     gradient: LinearGradient(
-                                      colors: decideContainerColor(dish.category),
+                                      colors:
+                                          decideContainerColor(dish.category),
                                       stops: const [0, 1],
                                       begin: const AlignmentDirectional(0, -1),
                                       end: const AlignmentDirectional(0, 1),
@@ -212,7 +213,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: Column(
@@ -224,7 +226,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   Padding(
                                                     padding:
                                                         const EdgeInsetsDirectional
-                                                            .fromSTEB(0, 0, 8, 0),
+                                                                .fromSTEB(
+                                                            0, 0, 8, 0),
                                                     child: decideIconFile(
                                                         dish.category),
                                                   ),
@@ -235,7 +238,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           .textTheme
                                                           .titleLarge
                                                           ?.copyWith(
-                                                            fontFamily: "Open Sans",
+                                                            fontFamily:
+                                                                "Open Sans",
                                                             fontSize: 19,
                                                           ),
                                                     ),
@@ -243,10 +247,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 ],
                                               ),
                                               Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(0, 4, 4, 0),
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(0, 4, 4, 0),
                                                 child: Row(
-                                                  mainAxisSize: MainAxisSize.max,
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
                                                   children: [
                                                     Expanded(
                                                       child: Text(
@@ -264,10 +270,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(0, 4, 4, 0),
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(0, 4, 4, 0),
                                                 child: Row(
-                                                  mainAxisSize: MainAxisSize.max,
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
                                                   children: [
                                                     Expanded(
                                                       child: Text(
@@ -288,9 +296,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  8, 8, 8, 8),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(8, 8, 8, 8),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
@@ -305,7 +312,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     Padding(
                                                       padding:
                                                           const EdgeInsetsDirectional
-                                                              .fromSTEB(8, 8, 8, 0),
+                                                                  .fromSTEB(
+                                                              8, 8, 8, 0),
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -315,8 +323,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         children: [
                                                           const Icon(
                                                             Icons.star_rounded,
-                                                            color:
-                                                                Color(0xFFE47B13),
+                                                            color: Color(
+                                                                0xFFE47B13),
                                                             size: 24,
                                                           ),
                                                           Padding(
@@ -333,7 +341,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                                   ?.copyWith(
                                                                       fontFamily:
                                                                           "Open Sans",
-                                                                      fontSize: 15),
+                                                                      fontSize:
+                                                                          15),
                                                             ),
                                                           ),
                                                         ],
@@ -341,11 +350,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsets.all(8.0),
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                       child: Row(children: [
                                                         Text(
                                                           "Votes: ${dish.votes}",
-                                                          style: Theme.of(context)
+                                                          style: Theme.of(
+                                                                  context)
                                                               .textTheme
                                                               .bodyText1
                                                               ?.copyWith(
@@ -367,10 +378,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 ),
                               ),
                             ),
-                          );
-                        }),
-                  ),
-                ));
+                          ),
+                        ],
+                      );
+                    }),
+              ),
+            );
           }),
     );
   }
