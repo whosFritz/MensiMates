@@ -472,7 +472,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   setState(() {
                                     _date =
                                         _date.subtract(const Duration(days: 1));
-                                    filteredDishes = filterDishes();
                                   });
                                 },
                                 child: const Icon(Icons.arrow_left_rounded),
@@ -495,7 +494,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 if (picked != _date) {
                                   setState(() {
                                     _date = picked!;
-                                    filteredDishes = filterDishes();
                                   });
                                 }
                               },
@@ -507,7 +505,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 onPressed: () {
                                   setState(() {
                                     _date = _date.add(const Duration(days: 1));
-                                    filteredDishes = filterDishes();
                                   });
                                 },
                                 child: const Icon(Icons.arrow_right_rounded),
