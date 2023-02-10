@@ -646,7 +646,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         ],
                       ),
                     ),
-                  ],
+                  )
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
