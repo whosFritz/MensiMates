@@ -1,0 +1,97 @@
+<menu>
+    <notice>
+      Speiseplan Studentenwerk Leipzig
+      Erlaeuterungen:
+      1. Prinzipiell: In den Mensen werden komplette Essen oder Komponenten angeboten.
+      2. Jedes Essen oder Komponente ist in einem &lt;group /&gt; zusammengefasst. Dabei gibt das type-Attribut an, ob es sich um ein Essen (Typ 1) oder um eine Komponenten(-gruppierung) (Typ 2) handelt.
+      3. Der Ausgabeort (location) haengt als 3-stellige ID (Attribut) an jeder Gruppe (es waere somit denkbar, Speiseplaene ueber mehrere Orte zusammenzustellen).
+      4. Das Produktionsdatum haengt ebenfalls als Attribut an jeder Gruppe.
+      5. Die Gruppen werden in sortierte Reihenfolge ausgegeben (sort-Attribut)
+      6. Der Ausgabename der Gruppe ist in &lt;name /&gt; angeben.
+      7. &lt;internalname /&gt; kann vorerst ignoriert werden und muss nicht ausgeben werden.
+      8. &lt;note /&gt; enthaelt evtl. Hinweise zu der Gruppe und wird nur ausgegeben wenn auch ein Inhalt vorhanden ist.
+      9. Bei Essen gelten Preise (&lt;prices /&gt;) und Kennzeichnungen (&lt;taggings /&gt;) fuer die gesammte Gruppe. Bei Komponenten gelten diese Angaben fuer jede einzeln Komponente (&lt; components /&gt;).
+      10. Kennzeichnungen bis zur ID 50 sind Zusatzstoffe. Kennzeichnungen mit einer ID ueber 50 sind sogenannte Inhaltsstoffe.
+      Dabei kann ein Essen, bzw. Komponente, auch mehrere Zusatzstoffe und Inhaltsstoffe enthalten.
+      11. Preise: 0:Studenten, 1:Bedienstete, 2:Gaeste
+    </notice>
+    <group type="1" location="140" productiondate="2023-02-09" sort="8">
+        <name>Fischgericht</name>
+        <internalname>Essen D</internalname>
+        <prices size="3">
+            <price consumerID="0">3.05</price>
+            <price consumerID="1">4.90</price>
+            <price consumerID="2">6.70</price>
+        </prices>
+        <taggings>
+            <tagging taggingID="13" type="allergens">glutenhaltiges Getreide</tagging>
+            <tagging taggingID="16" type="allergens">Fisch</tagging>
+            <tagging taggingID="81" type="allergens">Weizen</tagging>
+            <tagging taggingID="19" type="allergens">Milch/ Milchzucker</tagging>
+            <tagging taggingID="15" type="allergens">Eier</tagging>
+            <tagging taggingID="56" type="ingredients">Fisch</tagging>
+        </taggings>
+        <components size="4">
+            <component elementid="0" sort="1">
+                <name1>Seelachsfilet in Knusperkernpanade</name1>
+            </component>
+            <component elementid="1" sort="2">
+                <name1>Kräuter-Sahnesoße</name1>
+            </component>
+            <component elementid="2" sort="3">
+                <name1>Brokkoli mit Sauce hollandaise</name1>
+            </component>
+            <component elementid="3" sort="4">
+                <name1>Petersilienkartoffeln</name1>
+            </component>
+        </components>
+    </group>
+    <group type="1" location="140" productiondate="2023-02-09" sort="9">
+        <name>Fleischgericht</name>
+        <internalname>Essen DD</internalname>
+        <prices size="3">
+            <price consumerID="0">3.05</price>
+            <price consumerID="1">4.90</price>
+            <price consumerID="2">6.70</price>
+        </prices>
+        <taggings>
+            <tagging taggingID="9" type="additives">Süßungsmitteln</tagging>
+            <tagging taggingID="13" type="allergens">glutenhaltiges Getreide</tagging>
+            <tagging taggingID="19" type="allergens">Milch/ Milchzucker</tagging>
+            <tagging taggingID="81" type="allergens">Weizen</tagging>
+            <tagging taggingID="15" type="allergens">Eier</tagging>
+            <tagging taggingID="52" type="ingredients">Rind</tagging>
+        </taggings>
+        <components size="2">
+            <component elementid="0" sort="1">
+                <name1>Rindergeschnetzeltes "Stroganoff" (mit Champignons und Gewür</name1>
+            </component>
+            <component elementid="1" sort="2">
+                <name1>Eierspätzle</name1>
+            </component>
+        </components>
+    </group>
+    <group type="1" location="140" productiondate="2023-02-09" sort="6">
+        <name>Vegetarisches Gericht</name>
+        <internalname>Essen C</internalname>
+        <prices size="3">
+            <price consumerID="0">2.65</price>
+            <price consumerID="1">4.40</price>
+            <price consumerID="2">6.10</price>
+        </prices>
+        <taggings>
+            <tagging taggingID="13" type="allergens">glutenhaltiges Getreide</tagging>
+            <tagging taggingID="19" type="allergens">Milch/ Milchzucker</tagging>
+            <tagging taggingID="81" type="allergens">Weizen</tagging>
+            <tagging taggingID="50" type="ingredients">Vegetarisches Gericht</tagging>
+        </taggings>
+        <components size="2">
+            <component elementid="0" sort="1">
+                <name1>Ravioli mit Spinat-Käse-Füllung</name1>
+            </component>
+            <component elementid="1" sort="2">
+                <name1>Tomaten-Sahnesoße mit Zucchini</name1>
+            </component>
+        </components>
+    </group>
+</menu>
