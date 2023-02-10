@@ -684,15 +684,14 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          20, 5, 20, 5),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(20, 5, 20, 5),
                       child: Text(
                         "Du kannst nur für den heutigen Tag abstimmen.",
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge
-                            ?.copyWith(
-                                fontFamily: "Open Sans", fontSize: 16),
+                            ?.copyWith(fontFamily: "Open Sans", fontSize: 16),
                       ),
                     ),
                   ),
