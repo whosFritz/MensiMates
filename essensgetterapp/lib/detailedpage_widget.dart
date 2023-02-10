@@ -100,8 +100,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         },
         body: jsonbody,
       );
-    } on Exception catch (_) {
-    }
+    } on Exception catch (_) {}
   }
 
   Color decideAppBarcolor(String category) {
@@ -679,32 +678,23 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                     )),
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.lightBlueAccent,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  20, 5, 20, 5),
-                              child: Text(
-                                "Du kannst nur für den heutigen Tag abstimmen.",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                        fontFamily: "Open Sans", fontSize: 15),
-                              ),
-                            )
-                          ],
-                        ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlueAccent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20, 5, 20, 5),
+                      child: Text(
+                        "Du kannst nur für den heutigen Tag abstimmen.",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(
+                                fontFamily: "Open Sans", fontSize: 16),
                       ),
-                    ],
+                    ),
                   ),
                 )
               ],

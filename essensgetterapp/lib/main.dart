@@ -469,12 +469,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 100,
-                              child: Text(DateFormat("E dd.MM.yyyy", "de_DE")
-                                  .format(anzeigeDatum)),
-                            ),
+                            Text(DateFormat("E dd.MM.yyyy", "de_DE")
+                                .format(anzeigeDatum)),
                           ],
                         ),
                       ),
