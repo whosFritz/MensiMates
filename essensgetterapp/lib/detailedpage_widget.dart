@@ -323,43 +323,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Frische",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(
-                                    fontFamily: "Open Sans",
-                                    fontSize: 20,
-                                    color: Colors.black),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RatingBar.builder(
-                            onRatingUpdate: (newValue) {
-                              setState(() {
-                                mapratingvalues["freshness"] = newValue;
-                              });
-                            },
-                            itemBuilder: (context, index) => const Icon(
-                              Icons.star_rounded,
-                              color: Color(0xFFFA9C00),
-                            ),
-                            direction: Axis.horizontal,
-                            initialRating: 0,
-                            unratedColor: const Color(0xFF9E9E9E),
-                            itemCount: 5,
-                            itemSize: 40,
-                            glowColor: const Color(0xFFFA9C00),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
                             "Aussehen",
                             style: Theme.of(context)
                                 .textTheme
@@ -683,6 +646,36 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                         ],
                       ),
                     ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlueAccent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  20, 5, 20, 5),
+                              child: Text(
+                                "Du kannst nur für den heutigen Tag abstimmen.",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                        fontFamily: "Open Sans", fontSize: 15),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 )
               ],
