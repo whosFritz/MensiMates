@@ -176,22 +176,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
   Widget buildDishes(List<Dish> dishes) {
     final groupedDishes = groupByDate(dishes);
     return PageView.builder(
-        onPageChanged: (int index) {
-          setState(() {
-            if (index > currentPage) {
-              // Swiped right
-              anzeigeDatum.add(const Duration(days: 1));
-            } else if (index < currentPage) {
-              // Swiped left
-              anzeigeDatum.subtract(const Duration(days: 1));
-            }
-            currentPage = index;
-          });
-        },
         controller: PageController(initialPage: 2),
         itemCount: groupedDishes.length,
+        onPageChanged: (int index) {
+          setState(() {
+            anzeigeDatum = groupedDishes[index].date;
+          });
+          currentPage = index;
+        },
         itemBuilder: (context, index) {
           final group = groupedDishes[index];
+
           /*
           if (group.date != anzeigeDatum) {
             return const Center(child: Text("Keine Daten"));
