@@ -11,8 +11,8 @@ import "api_links.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
 
-import 'dish_helper_class.dart';
-import 'dishgroup.dart';
+import "dish_helper_class.dart";
+import "dishgroup.dart";
 
 void main() {
   initializeDateFormatting("de_DE");
@@ -54,7 +54,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
   // Variablen
   Future<List<Dish>> dishesfromOle = getDishesfromOle();
-  late Future<List<Dish>> ratedDishes;
   DateTime anzeigeDatum = DateTime.now();
   int currentPage = 0;
 
@@ -71,23 +70,27 @@ class _HomePageWidgetState extends State<HomePageWidget>
 
   // Methode um Gerichte zu holen und umzuwandeln.
   static Future<List<Dish>> getDishesfromOle() async {
+    // ! Caching
     DishHelperClass dhc = DishHelperClass();
-    try {
-      final response = await http.get(Uri.parse(apiforreceivinglink)).timeout(
-            const Duration(seconds: 6),
-          );
-      if (response.statusCode == 200) {
-        final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-        dhc.setofflineDishes(jsondata.map<Dish>(Dish.fromJson).toList());
-        List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
-        listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-        return listvondishes;
-      } else {
-        throw Exception();
-      }
-    } catch (e) {
-      return dhc.getofflineDishes();
+    // try {
+    final response = await http.get(Uri.parse(apiforreceivinglink)).timeout(
+          const Duration(seconds: 6),
+        );
+    if (response.statusCode == 200) {
+      final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
+      List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
+      listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
+      //! Caching
+      dhc.setofflineDishes(listvondishes);
+      return listvondishes;
+    } else {
+      throw Exception();
     }
+    /** 
+    *! } catch (e) {
+    *!  return dhc.getofflineDishes();
+    *!}
+    */
   }
   /*
   // Methode um Gerichte nach Datum zu filtern
@@ -468,7 +471,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           children: [
                             Container(
                               alignment: Alignment.center,
-                              width: 120,
+                              width: 100,
                               child: Text(DateFormat("E dd.MM.yyyy", "de_DE")
                                   .format(anzeigeDatum)),
                             ),
@@ -492,7 +495,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                       future: dishesfromOle,
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
-                          return Text("🤮${snapshot.error}");
+                          Object? errormessage = snapshot.error;
+                          if (errormessage.toString() ==
+                              "Failed host lookup: 'api.olech2412.de'") {
+                            return const Text("🥵 API Error 🥵");
+                          } else {
+                            return Text("🤮 $errormessage 🤮");
+                          }
                         } else if (snapshot.hasData && snapshot.data!.isEmpty) {
                           return const Center(
                             child: Text(

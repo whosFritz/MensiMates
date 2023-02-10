@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
@@ -7,8 +5,8 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "main.dart";
-import 'api_links.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import "api_links.dart";
+import "package:flutter_neumorphic/flutter_neumorphic.dart";
 
 class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
@@ -24,46 +22,33 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   // Variablen
   Map<String, double> mapratingvalues = {};
   String pagename = "Detailansicht";
-  String? _lastRatingDate = "2023-01-12";
+  // TODO: look other todo and get dishes from initstae
 
   @override
   void initState() {
     super.initState();
-    _getlastRatingDate();
+    // TODO: "getting list from memory"
   }
 
   Future<void> showSnackBar1(BuildContext context) async {
-    try {
-      final result = await InternetAddress.lookup('www.olech2412.de');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
-        const snackBarinternet = SnackBar(
-            content: Text("👍 Bewertung abgegeben"),
-            backgroundColor: Colors.blueGrey,
-            elevation: 6,
-            duration: Duration(seconds: 2));
-        ScaffoldMessenger.of(context).showSnackBar(snackBarinternet);
-      }
-    } on SocketException catch (_) {
-      print('not connected');
-      const snackBarinternet = SnackBar(
-          content: Text("👎 Keine Internetverbindung"),
-          backgroundColor: Colors.blueGrey,
-          elevation: 6,
-          duration: Duration(seconds: 2));
-      ScaffoldMessenger.of(context).showSnackBar(snackBarinternet);
-    }
-  }
-
-  Future<void> showSnackBar2(BuildContext context) async {
     const snackBarinternet = SnackBar(
-        content: Text("Heute hast du schon bewertet.🙃"),
+        content: Text("👍 Bewertung abgegeben"),
         backgroundColor: Colors.blueGrey,
         elevation: 6,
         duration: Duration(seconds: 2));
     ScaffoldMessenger.of(context).showSnackBar(snackBarinternet);
   }
 
+  Future<void> showSnackBar2(BuildContext context) async {
+    const snackBarinternet = SnackBar(
+        content: Text("Dieses Gericht hast du schon bewertet. 🙃"),
+        backgroundColor: Colors.blueGrey,
+        elevation: 6,
+        duration: Duration(seconds: 2));
+    ScaffoldMessenger.of(context).showSnackBar(snackBarinternet);
+  }
+
+  /*
   void _getlastRatingDate() async {
     SharedPreferences olddate = await SharedPreferences.getInstance();
     String? ratedDate = olddate.getString("ratedDate");
@@ -71,6 +56,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       _lastRatingDate = ratedDate;
     });
   }
+  */
+  /*
 
   void _setRatingDate() async {
     SharedPreferences olddate = await SharedPreferences.getInstance();
@@ -80,17 +67,41 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       _lastRatingDate = datumheute;
     });
   }
+  */
+  Future<List<int>> readListFromStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? list = prefs.getStringList("ratedDishesmem");
+    if (list == null) {
+      return [];
+    }
+
+    List<int> intIDliste = [];
+    for (String stringID in list) {
+      intIDliste.add(int.parse(stringID));
+    }
+    return intIDliste;
+  }
+
+  Future<void> writeListToStorage(List<int> list) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList(
+        "ratedDishesmem", list.map((e) => e.toString()).toList());
+  }
 
   void sendMealsbacktoOle(String jsonbody) {
-    http.post(
-      Uri.parse(apiforsendinglink),
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: jsonbody,
-    );
+    try {
+      http.post(
+        Uri.parse(apiforsendinglink),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonbody,
+      );
+    } on Exception catch (_) {
+    }
   }
 
   Color decideAppBarcolor(String category) {
@@ -425,35 +436,35 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                           borderRadius:
                                               BorderRadius.circular(15)))),
                               onPressed: () async {
-                                if (_lastRatingDate ==
-                                    DateFormat("yyyy-MM-dd")
-                                        .format(DateTime.now())) {
-                                  // Restrict User rating
+                                Dish dishobj = widget.dishdetailed;
+                                List<int> ratedDishesIDList =
+                                    await readListFromStorage();
+                                if (ratedDishesIDList.contains(dishobj.id)) {
+                                  //** Restrict User from rating
                                   showSnackBar2(context);
                                 } else {
                                   double sum = mapratingvalues.values.reduce(
                                       (value, element) => value + element);
                                   double ratingvalue =
                                       sum / mapratingvalues.length;
-                                  //Let User rate
+                                  //** Let User rate
                                   Dish dishtosend = Dish(
-                                      id: widget.dishdetailed.id,
-                                      name: widget.dishdetailed.name,
-                                      servingDate:
-                                          widget.dishdetailed.servingDate,
-                                      category: widget.dishdetailed.category,
-                                      price: widget.dishdetailed.price,
-                                      description:
-                                          widget.dishdetailed.description,
+                                      id: dishobj.id,
+                                      name: dishobj.name,
+                                      servingDate: dishobj.servingDate,
+                                      category: dishobj.category,
+                                      price: dishobj.price,
+                                      description: dishobj.description,
                                       rating: ratingvalue,
-                                      responseCode:
-                                          widget.dishdetailed.responseCode,
-                                      votes: widget.dishdetailed.votes);
+                                      responseCode: dishobj.responseCode,
+                                      votes: dishobj.votes);
                                   // Convert the Dish object to JSON
                                   String dishjsontosend = dishtosend.toJson();
                                   sendMealsbacktoOle(dishjsontosend);
-                                  _setRatingDate();
                                   showSnackBar1(context);
+
+                                  ratedDishesIDList.add(dishobj.id);
+                                  writeListToStorage(ratedDishesIDList);
                                 }
                                 Navigator.pop(context);
                               },
