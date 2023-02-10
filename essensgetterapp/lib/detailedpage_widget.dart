@@ -8,6 +8,8 @@ import "main.dart";
 import "api_links.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
 
+import 'mensi_schedule.dart';
+
 class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
 
