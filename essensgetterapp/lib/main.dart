@@ -199,7 +199,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                 itemBuilder: (context, index) {
                   final dish = group.dishes[index];
                   // changeAnzeigeDatum(group.date);
-                  print(anzeigeDatum);
                   return Column(
                     children: [
                       InkWell(
