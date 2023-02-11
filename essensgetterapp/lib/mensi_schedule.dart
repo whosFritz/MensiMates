@@ -2,14 +2,14 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
+import 'detailedpage_widget.dart';
 import "dish_class.dart";
 import "api_links.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
 import "dish_helper_class.dart";
-import 'methods_for_mensi_schedule.dart';
+import 'dishgroup.dart';
 import 'navigation_drawer.dart';
-
 
 class MensiSchedule extends StatefulWidget {
   const MensiSchedule(
@@ -27,8 +27,8 @@ class _MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   // Variablen
   late Future<List<Dish>> dishesfromOle;
-  DateTime anzeigeDatum = DateTime.now();
   int currentPage = 0;
+  DateTime anzeigeDatum = DateTime.now();
   // Initiierung
   @override
   void initState() {
@@ -77,12 +77,39 @@ class _MensiScheduleState extends State<MensiSchedule>
   }
   */
 
+  List<DishGroup> groupByDate(List<Dish> dishes) {
+    final groups = <DateTime, DishGroup>{};
+    for (final dish in dishes) {
+      final date = dish.servingDate;
+      if (!groups.containsKey(date)) {
+        groups[date] = DishGroup(date, []);
+      }
+      groups[date]!.dishes.add(dish);
+    }
+    return groups.values.toList();
+  }
+
+//Navigation zur Detailpage
+  void navigateToDetailRatingPage(BuildContext context, Dish dishdetailed) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) {
+            return DetailRatingPage(
+              dishdetailed: dishdetailed,
+              mensiID: widget.mensiID,
+            );
+          },
+          fullscreenDialog: true),
+    );
+  }
+
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
       dishesfromOle = getDishesfromOle();
     });
   }
+
   // Reload button nur für die WebApp
   Widget platformrefreshbutton() {
     if (defaultTargetPlatform != TargetPlatform.android &&
@@ -123,6 +150,10 @@ class _MensiScheduleState extends State<MensiSchedule>
     });
   }
   */
+  DateTime initiateAnzeigeDatum(List<Dish> dishes) {
+    DateTime localAnzeigeDatum = groupByDate(dishes)[1].date;
+    return localAnzeigeDatum;
+  }
 
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
@@ -150,7 +181,6 @@ class _MensiScheduleState extends State<MensiSchedule>
                 itemCount: group.dishes.length,
                 itemBuilder: (context, index) {
                   final dish = group.dishes[index];
-                  // changeAnzeigeDatum(group.date);
                   return Column(
                     children: [
                       InkWell(
@@ -396,7 +426,7 @@ class _MensiScheduleState extends State<MensiSchedule>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(DateFormat("E dd.MM.yyyy", "de_DE")
-                                .format(anzeigeDatum)),
+                                .format(anzeigeDatum))
                           ],
                         ),
                       ),
@@ -433,6 +463,7 @@ class _MensiScheduleState extends State<MensiSchedule>
                           );
                         } else if (snapshot.hasData) {
                           final dishes = snapshot.data!;
+                          initiateAnzeigeDatum(dishes);
                           return buildDishes(dishes);
                         } else {
                           return Column(
@@ -545,23 +576,6 @@ class _MensiScheduleState extends State<MensiSchedule>
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                7, 7, 14, 7),
-                            child: Column(
-                              children: [
-                                Row(children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.info_outline),
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, "/aboutpage");
-                                    },
-                                  ),
-                                ]),
-                              ],
                             ),
                           ),
                         ],
