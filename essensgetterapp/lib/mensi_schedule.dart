@@ -2,15 +2,14 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
-import "detailedpage_widget.dart";
 import "dish_class.dart";
 import "api_links.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
-
 import "dish_helper_class.dart";
-import "dishgroup.dart";
+import 'methods_for_mensi_schedule.dart';
 import 'navigation_drawer.dart';
+
 
 class MensiSchedule extends StatefulWidget {
   const MensiSchedule(
@@ -84,20 +83,6 @@ class _MensiScheduleState extends State<MensiSchedule>
       dishesfromOle = getDishesfromOle();
     });
   }
-
-  //Navigation zur Detailpage
-  void navigateToDetailRatingPage(BuildContext context, Dish dishdetailed) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) {
-            return DetailRatingPage(
-              dishdetailed: dishdetailed,
-            );
-          },
-          fullscreenDialog: true),
-    );
-  }
-
   // Reload button nur für die WebApp
   Widget platformrefreshbutton() {
     if (defaultTargetPlatform != TargetPlatform.android &&
@@ -138,18 +123,6 @@ class _MensiScheduleState extends State<MensiSchedule>
     });
   }
   */
-
-  List<DishGroup> groupByDate(List<Dish> dishes) {
-    final groups = <DateTime, DishGroup>{};
-    for (final dish in dishes) {
-      final date = dish.servingDate;
-      if (!groups.containsKey(date)) {
-        groups[date] = DishGroup(date, []);
-      }
-      groups[date]!.dishes.add(dish);
-    }
-    return groups.values.toList();
-  }
 
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
