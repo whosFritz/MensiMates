@@ -8,7 +8,8 @@ import "api_links.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
 import "dish_helper_class.dart";
-import 'dishgroup.dart';
+import 'dishgroup_cat.dart';
+import 'dishgroup_date.dart';
 import 'navigation_drawer.dart';
 
 class MensiSchedule extends StatefulWidget {
@@ -77,18 +78,6 @@ class _MensiScheduleState extends State<MensiSchedule>
   }
   */
 
-  List<DishGroup> groupByDate(List<Dish> dishes) {
-    final groups = <DateTime, DishGroup>{};
-    for (final dish in dishes) {
-      final date = dish.servingDate;
-      if (!groups.containsKey(date)) {
-        groups[date] = DishGroup(date, []);
-      }
-      groups[date]!.dishes.add(dish);
-    }
-    return groups.values.toList();
-  }
-
 //Navigation zur Detailpage
   void navigateToDetailRatingPage(BuildContext context, Dish dishdetailed) {
     Navigator.of(context).push(
@@ -151,8 +140,36 @@ class _MensiScheduleState extends State<MensiSchedule>
   }
   */
 
+  List<DishGroupDate> groupByDate(List<Dish> dishes) {
+    final groups = <DateTime, DishGroupDate>{};
+    for (final dish in dishes) {
+      final date = dish.servingDate;
+      if (!groups.containsKey(date)) {
+        groups[date] = DishGroupDate(date, []);
+      }
+      groups[date]!.gerichteingruppe.add(dish);
+    }
+    return groups.values.toList();
+  }
+
+  List<DishGroupCat> groupByCat(List<Dish> dishes) {
+    final groups = <String, DishGroupCat>{};
+    for (final dish in dishes) {
+      final cat = dish.category;
+      if (!groups.containsKey(cat)) {
+        groups[cat] = DishGroupCat(cat, []);
+      }
+      groups[cat]!.gerichteingruppe.add(dish);
+    }
+    return groups.values.toList();
+  }
+
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
+    /*
+     ? Liste der Dishgruppeninstanzen holen und diese gruppieren nach datum
+     ? danach 
+    */
     final groupedDishes = groupByDate(dishes);
     return PageView.builder(
         controller: PageController(initialPage: 2),
@@ -165,18 +182,12 @@ class _MensiScheduleState extends State<MensiSchedule>
         },
         itemBuilder: (context, index) {
           final group = groupedDishes[index];
-
-          /*
-          if (group.date != anzeigeDatum) {
-            return const Center(child: Text("Keine Daten"));
-          }
-          */
           return RefreshIndicator(
             onRefresh: refresh,
             child: ListView.builder(
-                itemCount: group.dishes.length,
+                itemCount: group.gerichteingruppe.length,
                 itemBuilder: (context, index) {
-                  final dish = group.dishes[index];
+                  final dish = group.gerichteingruppe[index];
                   return Column(
                     children: [
                       InkWell(
@@ -189,14 +200,6 @@ class _MensiScheduleState extends State<MensiSchedule>
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
                             decoration: BoxDecoration(
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 4,
-                                  color: Color(0x33000000),
-                                  offset: Offset(2, 2),
-                                  spreadRadius: 2,
-                                ),
-                              ],
                               gradient: LinearGradient(
                                 colors: decideContainerColor(dish.category),
                                 stops: const [0, 1],
@@ -588,56 +591,132 @@ class _MensiScheduleState extends State<MensiSchedule>
 }
 
 Image decideIconFile(String iconmealtype) {
-  if (iconmealtype == "Vegetarisches Gericht") {
-    return Image.asset("assets/images/vegetarian-icon.png",
-        width: 45, height: 45, fit: BoxFit.cover);
-  } else if (iconmealtype == "Fleischgericht") {
-    return Image.asset("assets/images/meat-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "Fischgericht") {
-    return Image.asset("assets/images/fish-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "Veganes Gericht") {
-    return Image.asset("assets/images/vegan-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else if (iconmealtype == "Pastateller") {
-    return Image.asset("assets/images/pasta-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
-  } else {
-    return Image.asset("assets/images/default-icon.png",
-        width: 40, height: 40, fit: BoxFit.cover);
+  Image icon;
+  switch (iconmealtype) {
+    case "Vegetarisches Gericht":
+      icon = Image.asset("assets/images/vegetarian-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Fleischgericht":
+      icon = Image.asset("assets/images/meat-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Fischgericht":
+      icon = Image.asset("assets/images/fish-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Veganes Gericht":
+      icon = Image.asset("assets/images/vegan-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Pastateller":
+      icon = Image.asset("assets/images/pasta-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Dessert":
+      icon = Image.asset("assets/images/dessert-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Smoothie":
+      icon = Image.asset("assets/images/smoothie-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "WOK":
+      icon = Image.asset("assets/images/wok-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Salat":
+      icon = Image.asset("assets/images/salat-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Gemüsebeilage":
+      icon = Image.asset("assets/images/gemuesebeilage-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    case "Sättigungsbeilage":
+      icon = Image.asset("assets/images/saettigungsbeilage-icon.png",
+          width: 40, fit: BoxFit.cover);
+      break;
+    default:
+      icon = Image.asset("assets/images/default-icon.png",
+          width: 40, height: 40, fit: BoxFit.cover);
+      break;
   }
+  return icon;
 }
 
 List<Color> decideContainerColor(String category) {
-  List<Color> colors = [];
-  if (category == "Vegetarisches Gericht") {
-    colors = [
-      const Color.fromARGB(255, 59, 215, 67),
-      const Color.fromARGB(255, 18, 213, 151)
-    ];
-  } else if (category == "Fleischgericht") {
-    colors = [
-      const Color.fromARGB(255, 244, 120, 32),
-      const Color.fromARGB(255, 220, 102, 13)
-    ];
-  } else if (category == "Veganes Gericht") {
-    colors = [
-      const Color.fromARGB(255, 138, 238, 143),
-      const Color.fromARGB(255, 125, 213, 130),
-    ];
-  } else if (category == "Pastateller") {
-    colors = [
-      const Color.fromARGB(255, 212, 185, 149),
-      const Color.fromARGB(255, 209, 177, 134),
-    ];
-  } else if (category == "Fischgericht") {
-    colors = [
-      const Color.fromARGB(255, 52, 174, 236),
-      const Color.fromARGB(255, 37, 169, 235),
-    ];
-  } else {
-    colors = [Colors.white, Colors.white];
+  List<Color> colors;
+  switch (category) {
+    case "Vegetarisches Gericht":
+      colors = [
+        const Color.fromARGB(255, 69, 218, 77),
+        const Color.fromARGB(255, 52, 187, 58),
+      ];
+      break;
+    case "Fleischgericht":
+      colors = [
+        const Color.fromARGB(255, 244, 120, 32),
+        const Color.fromARGB(255, 220, 102, 13)
+      ];
+      break;
+    case "Veganes Gericht":
+      colors = [
+        const Color.fromARGB(255, 138, 238, 143),
+        const Color.fromARGB(255, 125, 213, 130),
+      ];
+      break;
+    case "Pastateller":
+      colors = [
+        const Color.fromARGB(255, 212, 185, 149),
+        const Color.fromARGB(255, 209, 177, 134),
+      ];
+      break;
+    case "Fischgericht":
+      colors = [
+        const Color.fromARGB(255, 52, 174, 236),
+        const Color.fromARGB(255, 37, 169, 235),
+      ];
+      break;
+    case "Dessert":
+      colors = [
+        const Color.fromARGB(255, 158, 137, 236),
+        const Color.fromARGB(255, 134, 107, 230),
+      ];
+      break;
+    case "Smoothie":
+      colors = [
+        const Color.fromARGB(255, 214, 117, 238),
+        const Color.fromARGB(255, 179, 97, 199),
+      ];
+      break;
+    case "WOK":
+      colors = [
+        const Color.fromARGB(255, 255, 223, 83),
+        const Color.fromARGB(255, 211, 183, 58),
+      ];
+      break;
+    case "Salat":
+      colors = [
+        const Color.fromARGB(255, 31, 150, 41),
+        const Color.fromARGB(255, 24, 128, 32),
+      ];
+      break;
+    case "Gemüsebeilage":
+      colors = [
+        const Color.fromARGB(255, 150, 243, 62),
+        const Color.fromARGB(255, 118, 199, 42),
+      ];
+      break;
+    case "Sättigungsbeilage":
+      colors = [
+        const Color.fromARGB(255, 235, 219, 80),
+        const Color.fromARGB(255, 235, 219, 80),
+      ];
+      break;
+    default:
+      colors = [Colors.white, Colors.white];
+      break;
   }
   return colors;
 }

@@ -156,14 +156,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                 tag: widget.dishdetailed.id,
                 child: Container(
                   decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        blurRadius: 4,
-                        color: Color(0x33000000),
-                        offset: Offset(2, 2),
-                        spreadRadius: 2,
-                      ),
-                    ],
                     gradient: LinearGradient(
                       colors:
                           decideContainerColor(widget.dishdetailed.category),
@@ -536,14 +528,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                     tag: widget.dishdetailed.id,
                     child: Container(
                       decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4,
-                            color: Color(0x33000000),
-                            offset: Offset(2, 2),
-                            spreadRadius: 2,
-                          ),
-                        ],
                         gradient: LinearGradient(
                           colors: decideContainerColor(
                               widget.dishdetailed.category),
