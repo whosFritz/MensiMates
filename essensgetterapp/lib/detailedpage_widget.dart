@@ -50,6 +50,15 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBarinternet);
   }
 
+  void showSnackbar3(BuildContext context) {
+    const snackBarallesRaten = SnackBar(
+        content: Text("Bitte Bewertung vollständig ausfüllen."),
+        backgroundColor: Colors.blueGrey,
+        elevation: 6,
+        duration: Duration(seconds: 2));
+    ScaffoldMessenger.of(context).showSnackBar(snackBarallesRaten);
+  }
+
   /*
   void _getlastRatingDate() async {
     SharedPreferences olddate = await SharedPreferences.getInstance();
@@ -443,34 +452,43 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                 List<int> ratedDishesIDList =
                                     await readListFromStorage();
                                 if (ratedDishesIDList.contains(dishobj.id)) {
-                                  //** Restrict User from rating
+                                  // * Restrict User from rating cause already voted
                                   showSnackBar2(context);
                                 } else {
-                                  double sum = mapratingvalues.values.reduce(
-                                      (value, element) => value + element);
-                                  double ratingvalue =
-                                      sum / mapratingvalues.length;
-                                  //** Let User rate
-                                  Dish dishtosend = Dish(
-                                      id: dishobj.id,
-                                      name: dishobj.name,
-                                      servingDate: dishobj.servingDate,
-                                      category: dishobj.category,
-                                      price: dishobj.price,
-                                      description: dishobj.description,
-                                      rating: ratingvalue,
-                                      responseCode: dishobj.responseCode,
-                                      votes: dishobj.votes);
-                                  // Convert the Dish object to JSON
-                                  String dishjsontosend = dishtosend.toJson();
-                                  print(dishjsontosend);
-                                  sendMealsbacktoOle(dishjsontosend);
-                                  showSnackBar1(context);
+                                  int mapLenght = mapratingvalues.length;
+                                  if (mapLenght == 3) {
+                                    // * finally let User rate
 
-                                  ratedDishesIDList.add(dishobj.id);
-                                  writeListToStorage(ratedDishesIDList);
+                                    double sum = mapratingvalues.values
+                                        .reduce((value, element) {
+                                      return value + element;
+                                    });
+                                    double ratingvalue =
+                                        sum / mapratingvalues.length;
+                                    Dish dishtosend = Dish(
+                                        id: dishobj.id,
+                                        name: dishobj.name,
+                                        description: dishobj.description,
+                                        price: dishobj.price,
+                                        category: dishobj.category,
+                                        servingDate: dishobj.servingDate,
+                                        responseCode: dishobj.responseCode,
+                                        rating: ratingvalue,
+                                        votes: dishobj.votes);
+                                    // Convert the Dish object to JSON
+                                    String dishjsontosend = dishtosend.toJson();
+                                    print(dishjsontosend);
+                                    sendMealsbacktoOle(dishjsontosend);
+                                    showSnackBar1(context);
+                                    ratedDishesIDList.add(dishobj.id);
+                                    // * Then save dish to memory
+                                    writeListToStorage(ratedDishesIDList);
+                                    Navigator.pop(context);
+                                  } else {
+                                    // * Restrict hrim cause not rated everything
+                                    showSnackbar3(context);
+                                  }
                                 }
-                                Navigator.pop(context);
                               },
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -505,6 +523,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
           backgroundColor: decideAppBarcolor(widget.dishdetailed.category),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
+            color: Colors.blueGrey,
             onPressed: () {
               Navigator.pop(context);
             },

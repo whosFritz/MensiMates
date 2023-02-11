@@ -4,21 +4,22 @@ class Dish {
   Dish(
       {required this.id,
       required this.name,
-      required this.servingDate,
-      required this.category,
-      required this.price,
       required this.description,
-      required this.rating,
+      required this.price,
+      required this.category,
+      required this.servingDate,
       required this.responseCode,
+      required this.rating,
       required this.votes});
+
   final int id;
+  final String name;
+  final String description;
+  final String price;
   final String category;
   final DateTime servingDate;
-  final String description;
-  final String name;
-  final String price;
-  final double rating;
   final int responseCode;
+  final double rating;
   final int votes;
 
   @override
@@ -44,12 +45,12 @@ class Dish {
     return json.encode({
       "id": id,
       "name": name,
-      "servingDate": servingDate.toIso8601String(),
-      "category": category,
-      "price": price,
       "description": description,
-      "rating": rating,
+      "price": price,
+      "category": category,
+      "servingDate": servingDate.toString().substring(0, 10),
       "responseCode": responseCode,
+      "rating": rating,
       "votes": votes,
     });
   }

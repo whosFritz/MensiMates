@@ -150,10 +150,6 @@ class _MensiScheduleState extends State<MensiSchedule>
     });
   }
   */
-  DateTime initiateAnzeigeDatum(List<Dish> dishes) {
-    DateTime localAnzeigeDatum = groupByDate(dishes)[1].date;
-    return localAnzeigeDatum;
-  }
 
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
@@ -463,7 +459,6 @@ class _MensiScheduleState extends State<MensiSchedule>
                           );
                         } else if (snapshot.hasData) {
                           final dishes = snapshot.data!;
-                          initiateAnzeigeDatum(dishes);
                           return buildDishes(dishes);
                         } else {
                           return Column(
