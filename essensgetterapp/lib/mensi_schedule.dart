@@ -1,10 +1,7 @@
 import "dart:convert";
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
 import "package:http/http.dart" as http;
-import "package:intl/date_symbol_data_local.dart";
 import "package:intl/intl.dart";
-import "aboutpage_widget.dart";
 import "detailedpage_widget.dart";
 import "dish_class.dart";
 import "api_links.dart";
@@ -13,25 +10,32 @@ import "package:flutter_neumorphic/flutter_neumorphic.dart";
 
 import "dish_helper_class.dart";
 import "dishgroup.dart";
-
+import 'navigation_drawer.dart';
 
 class MensiSchedule extends StatefulWidget {
-  const MensiSchedule({super.key});
+  const MensiSchedule(
+      {super.key, required this.mensiID, required this.mensiName});
+  final int mensiID;
+  final String mensiName;
 
   @override
-  State<MensiSchedule> createState() => _MensiScheduleState();
+  State<MensiSchedule> createState() {
+    return _MensiScheduleState();
+  }
 }
 
 class _MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   // Variablen
-  Future<List<Dish>> dishesfromOle = getDishesfromOle();
+  late Future<List<Dish>> dishesfromOle;
   DateTime anzeigeDatum = DateTime.now();
   int currentPage = 0;
-
   // Initiierung
   @override
   void initState() {
+    setState(() {
+      dishesfromOle = getDishesfromOle();
+    });
     super.initState();
   }
 
@@ -41,11 +45,11 @@ class _MensiScheduleState extends State<MensiSchedule>
   }
 
   // Methode um Gerichte zu holen und umzuwandeln.
-  static Future<List<Dish>> getDishesfromOle() async {
+  Future<List<Dish>> getDishesfromOle() async {
     // ! Caching
-    DishHelperClass dhc = DishHelperClass();
     // try {
-    final response = await http.get(Uri.parse(apiforreceivinglink)).timeout(
+    String mealsForFritzLink = decideMensi(widget.mensiID)[0];
+    final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
           const Duration(seconds: 6),
         );
     if (response.statusCode == 200) {
@@ -53,14 +57,14 @@ class _MensiScheduleState extends State<MensiSchedule>
       List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
       listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
       //! Caching
-      dhc.setofflineDishes(listvondishes);
+      setofflineDishes(listvondishes);
       return listvondishes;
     } else {
       throw Exception();
     }
     /** 
     *! } catch (e) {
-    *!  return dhc.getofflineDishes();
+    *!  return getofflineDishes();
     *!}
     */
   }
@@ -369,43 +373,20 @@ class _MensiScheduleState extends State<MensiSchedule>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.blueGrey),
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+        title: Text(
+          widget.mensiName,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontFamily: "Open Sans",
+                color: Colors.black,
+                fontSize: 20,
+                letterSpacing: 2,
               ),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(7, 3, 7, 3),
-                child: Text(
-                  "Mensa Speiseplan",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontFamily: "Open Sans",
-                        color: Colors.black,
-                        fontSize: 20,
-                        letterSpacing: 2,
-                      ),
-                ),
-              ),
-            ),
-          ],
         ),
-        actions: const [],
-        flexibleSpace: FlexibleSpaceBar(
-          background: Image.asset(
-            "assets/images/appbar-header.jpg",
-            fit: BoxFit.cover,
-          ),
-        ),
-        centerTitle: false,
-        elevation: 2,
+        centerTitle: true,
       ),
+      drawer: const NavigationDrawer(),
       body: SafeArea(
         child: GestureDetector(
           child: Column(

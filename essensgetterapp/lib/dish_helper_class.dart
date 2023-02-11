@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dish_class.dart';
 
-class DishHelperClass {
   Future<List<Dish>> getofflineDishes() async {
     SharedPreferences offlineDishesget = await SharedPreferences.getInstance();
     List<String>? listOfofflineDishStrings =
@@ -35,4 +34,3 @@ class DishHelperClass {
     await offlineDishesset.setStringList(
         'offlineDishes', listOfcurrentDishStrings);
   }
-}

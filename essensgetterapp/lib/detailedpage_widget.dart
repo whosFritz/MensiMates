@@ -4,7 +4,6 @@ import "package:intl/intl.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "dish_class.dart";
-import "main.dart";
 import "api_links.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
 
@@ -133,6 +132,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
           backgroundColor: decideAppBarcolor(widget.dishdetailed.category),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
+            color: Colors.blueGrey,
             onPressed: () {
               Navigator.pop(context);
             },
