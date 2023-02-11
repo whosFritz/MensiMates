@@ -1,9 +1,9 @@
 name: essensgetterapp
 description: Rate the dishes.
-publish_to: 'none'
+publish_to: "none"
 version: 1.9.0+1
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: ">=2.18.6 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,8 +27,6 @@ dependencies:
   flutter_native_splash: ^2.2.16
   msix: ^3.7.0
   package_info: ^2.0.2
-  
-
 
 dev_dependencies:
   flutter_test:
@@ -36,13 +34,15 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   built_value_generator: ^8.4.0
-  
+
 flutter:
   uses-material-design: true
   assets:
-      - assets/images/
-      - assets/audio/
-      - assets/
+    - assets/images/
+    - assets/audio/
+    - assets/fonts/
+    - assets/
+
 flutter_icons:
   android: "launcher_icon"
   ios: true
