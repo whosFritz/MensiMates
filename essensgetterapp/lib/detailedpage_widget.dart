@@ -6,13 +6,14 @@ import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "api_links.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
-
 import 'mensi_schedule.dart';
 
 class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
+  final int mensiID;
 
-  const DetailRatingPage({Key? key, required this.dishdetailed})
+  const DetailRatingPage(
+      {Key? key, required this.dishdetailed, required this.mensiID})
       : super(key: key);
 
   @override
@@ -91,8 +92,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
 
   void sendMealsbacktoOle(String jsonbody) {
     try {
+      String mealsFromFritzLink = decideMensi(widget.mensiID)[1];
       http.post(
-        Uri.parse(apiforsendinglink),
+        Uri.parse(mealsFromFritzLink),
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods":
@@ -461,6 +463,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                       votes: dishobj.votes);
                                   // Convert the Dish object to JSON
                                   String dishjsontosend = dishtosend.toJson();
+                                  print(dishjsontosend);
                                   sendMealsbacktoOle(dishjsontosend);
                                   showSnackBar1(context);
 
