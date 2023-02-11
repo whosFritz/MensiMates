@@ -477,7 +477,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                         votes: dishobj.votes);
                                     // Convert the Dish object to JSON
                                     String dishjsontosend = dishtosend.toJson();
-                                    print(dishjsontosend);
                                     sendMealsbacktoOle(dishjsontosend);
                                     showSnackBar1(context);
                                     ratedDishesIDList.add(dishobj.id);
