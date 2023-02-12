@@ -40,6 +40,170 @@ class MensiScheduleState extends State<MensiSchedule>
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const SizedBox(
+              height: 24 * 1.5,
+              width: 24 * 1.5,
+              child: Icon(Icons.sync),
+            ),
+            onPressed: () {
+              // Perform the sync operation here
+            },
+          )
+        ],
+        iconTheme: const IconThemeData(color: Colors.blueGrey),
+        backgroundColor: Colors.white,
+        title: Text(
+          widget.mensiobj.name,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFamily: "Open Sans",
+              fontSize: 20,
+              color: Colors.black,
+              letterSpacing: 2),
+        ),
+        centerTitle: true,
+      ),
+      drawer: const MyNavigationDrawer(),
+      body: SafeArea(
+        child: GestureDetector(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Color(0x33000000),
+                              offset: Offset(0, 2),
+                              spreadRadius: 2,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(DateFormat("E dd.MM.yyyy", "de_DE")
+                                .format(anzeigeDatum))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(
+                thickness: 3,
+                color: Color(0xFFFA9C00),
+              ),
+              const Divider(
+                thickness: 3,
+                color: Color(0xFFFA9C00),
+              ),
+              Expanded(
+                  child: FutureBuilder(
+                      future: dishesfromOle,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          Object? errormessage = snapshot.error;
+                          if (errormessage.toString() ==
+                              "Failed host lookup: 'api.olech2412.de'") {
+                            return const Text("🥵 API Error 🥵");
+                          } else {
+                            return Text("🤮 $errormessage 🤮");
+                          }
+                        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
+                          final dishes = snapshot.data!;
+                          return buildDishes(dishes);
+                        } else {
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // works!
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: const Center(
+                                      child: CircularProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                    color: Color.fromARGB(255, 0, 166, 255),
+                                  )),
+                                )
+                              ]);
+                        }
+                      })),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: const Color(0xffE0E0E0),
+                          borderRadius: BorderRadius.circular(0),
+                          shape: BoxShape.rectangle),
+                      child: Padding(
+                        padding: const EdgeInsets.all(7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Öffnungszeiten:",
+                              style: TextStyle(
+                                  fontFamily: "Open Sans", fontSize: 13),
+                            ),
+                            for (String zeile
+                                in widget.mensiobj.oeffnungszeitenalles)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 7),
+                                child: Text(
+                                  zeile,
+                                  style: const TextStyle(
+                                      fontFamily: "Open Sans", fontSize: 12),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   // Methode um Gerichte zu holen und umzuwandeln.
   Future<List<Dish>> getDishesfromOle() async {
     // ! Caching
@@ -362,168 +526,6 @@ class MensiScheduleState extends State<MensiSchedule>
       ),
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.sync),
-            onPressed: () {
-              refresh();
-            },
-          )
-        ],
-        iconTheme: const IconThemeData(color: Colors.blueGrey),
-        backgroundColor: Colors.white,
-        title: Text(
-          widget.mensiobj.name,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: "Open Sans",
-              fontSize: 20,
-              color: Colors.black,
-              letterSpacing: 2),
-        ),
-        centerTitle: true,
-      ),
-      drawer: const MyNavigationDrawer(),
-      body: SafeArea(
-        child: GestureDetector(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(40, 8, 40, 8),
-                      child: Container(
-                        width: 300,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              blurRadius: 4,
-                              color: Color(0x33000000),
-                              offset: Offset(0, 2),
-                              spreadRadius: 2,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(DateFormat("E dd.MM.yyyy", "de_DE")
-                                .format(anzeigeDatum))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Divider(
-                thickness: 3,
-                color: Color(0xFFFA9C00),
-              ),
-              const Divider(
-                thickness: 3,
-                color: Color(0xFFFA9C00),
-              ),
-              Expanded(
-                  child: FutureBuilder(
-                      future: dishesfromOle,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          Object? errormessage = snapshot.error;
-                          if (errormessage.toString() ==
-                              "Failed host lookup: 'api.olech2412.de'") {
-                            return const Text("🥵 API Error 🥵");
-                          } else {
-                            return Text("🤮 $errormessage 🤮");
-                          }
-                        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                          return const Center(
-                            child: Text(
-                              "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        } else if (snapshot.hasData) {
-                          final dishes = snapshot.data!;
-                          return buildDishes(dishes);
-                        } else {
-                          return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // works!
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: const Center(
-                                      child: CircularProgressIndicator(
-                                    backgroundColor: Colors.white,
-                                    color: Color.fromARGB(255, 0, 166, 255),
-                                  )),
-                                )
-                              ]);
-                        }
-                      })),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: const Color(0xffE0E0E0),
-                          borderRadius: BorderRadius.circular(0),
-                          shape: BoxShape.rectangle),
-                      child: Padding(
-                        padding: const EdgeInsets.all(7),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Öffnungszeiten:",
-                              style: TextStyle(
-                                  fontFamily: "Open Sans", fontSize: 13),
-                            ),
-                            for (String zeile
-                                in widget.mensiobj.oeffnungszeitenalles)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 7),
-                                child: Text(
-                                  zeile,
-                                  style: const TextStyle(
-                                      fontFamily: "Open Sans", fontSize: 12),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 Image decideIconFile(String iconmealtype) {
@@ -531,51 +533,51 @@ Image decideIconFile(String iconmealtype) {
   switch (iconmealtype) {
     case "Vegetarisches Gericht":
       icon = Image.asset("assets/images/vegetarian-icon.png",
-          height: 60, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Fleischgericht":
       icon = Image.asset("assets/images/meat-icon.png",
-          height: 60, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Fischgericht":
       icon = Image.asset("assets/images/fish-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Veganes Gericht":
       icon = Image.asset("assets/images/vegan-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Pastateller":
       icon = Image.asset("assets/images/pasta-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Dessert":
       icon = Image.asset("assets/images/dessert-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Smoothie":
       icon = Image.asset("assets/images/smoothie-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "WOK":
       icon = Image.asset("assets/images/wok-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Salat":
       icon = Image.asset("assets/images/salat-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Gemüsebeilage":
       icon = Image.asset("assets/images/gemuesebeilage-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     case "Sättigungsbeilage":
       icon = Image.asset("assets/images/saettigungsbeilage-icon.png",
-          height: 50, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
     default:
       icon = Image.asset("assets/images/default-icon.png",
-          height: 60, fit: BoxFit.cover);
+          width: 40, fit: BoxFit.scaleDown);
       break;
   }
   return icon;
