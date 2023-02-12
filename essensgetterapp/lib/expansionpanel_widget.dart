@@ -12,8 +12,8 @@ class DishList extends StatefulWidget {
 }
 
 class _DishListState extends State<DishList> {
-  late List<ExpansionPanel> _expansionPanels;
-  late List<bool> _isExpanded;
+  List<ExpansionPanel> _expansionPanels = [];
+  List<bool> _isExpanded = [];
 
   @override
   void initState() {
@@ -33,7 +33,6 @@ class _DishListState extends State<DishList> {
             );
           }).toList(),
         ),
-        isExpanded: _isExpanded[index],
       );
     });
 
