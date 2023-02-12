@@ -11,6 +11,7 @@ import "dish_helper_class.dart";
 import 'dishgroup_cat.dart';
 import 'dishgroup_date.dart';
 import 'navigation_drawer.dart';
+import 'dart:developer';
 
 class MensiSchedule extends StatefulWidget {
   const MensiSchedule(
@@ -178,199 +179,33 @@ class _MensiScheduleState extends State<MensiSchedule>
           setState(() {
             anzeigeDatum = groupedDishes[index].date;
           });
-          currentPage = index;
+          currentPage =
+              index; // ? remove?, weil das war mal button überbleibsel
         },
         itemBuilder: (context, index) {
           final group = groupedDishes[index];
-          final grouppedbycat = groupByCat(group.gerichteingruppe);
-          print(grouppedbycat);
-          return RefreshIndicator(
-            onRefresh: refresh,
-            child: ListView.builder(
-                itemCount: group.gerichteingruppe.length,
-                itemBuilder: (context, index) {
-                  final dish = group.gerichteingruppe[index];
-                  return Column(
-                    children: [
-                      InkWell(
-                        onTap: (() {
-                          navigateToDetailRatingPage(context, dish);
-                        }),
-                        child: Hero(
-                          tag: dish.id,
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: decideContainerColor(dish.category),
-                                stops: const [0, 1],
-                                begin: const AlignmentDirectional(0, -1),
-                                end: const AlignmentDirectional(0, 1),
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(0, 0, 8, 0),
-                                              child:
-                                                  decideIconFile(dish.category),
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                dish.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleLarge
-                                                    ?.copyWith(
-                                                      fontFamily: "Open Sans",
-                                                      fontSize: 19,
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 4, 4, 0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  "Preis: ${dish.price}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 13),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 4, 4, 0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  "Beilagen & Zutaten: ${dish.description}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(
-                                                          fontFamily:
-                                                              "Open Sans",
-                                                          fontSize: 13),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 8),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(8, 8, 8, 0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.star_rounded,
-                                                      color: Color(0xFFE47B13),
-                                                      size: 24,
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                              0, 0, 6, 0),
-                                                      child: Text(
-                                                        "${dish.rating} / 5",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1
-                                                            ?.copyWith(
-                                                                fontFamily:
-                                                                    "Open Sans",
-                                                                fontSize: 15),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Row(children: [
-                                                  Text(
-                                                    "Votes: ${dish.votes}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontFamily:
-                                                                "Open Sans",
-                                                            fontSize: 15),
-                                                  ),
-                                                ]),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }),
+          final grouppedbycatListe = groupByCat(group.gerichteingruppe);
+          for (var grpobj in grouppedbycatListe) {
+            debugPrint(grpobj.kategorie.toString());
+          }
+          final dish = group.gerichteingruppe[index];
+          return SingleChildScrollView(
+            child: ExpansionPanelList(
+                children: buildexpansionpanels(grouppedbycatListe)),
           );
         });
+  }
+
+  List<ExpansionPanel> buildexpansionpanels(List<DishGroupCat> grouppedbycatListe) {
+    List<ExpansionPanel> exppanelist = [];
+    for (final grouppedbycat in grouppedbycatListe) {
+      exppanelist.add(ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return Text(grouppedbycat.kategorie);
+          },
+          body: Text("body expansionpanel")));
+    }
+    return exppanelist;
   }
 
   @override
