@@ -5,33 +5,75 @@ import 'package:flutter/material.dart';
 import 'mensi_class.dart';
 
 List<Mensi> mensenliste = [
-  Mensi(id: 153, name: "Cafeteria Dittrichring"),
-  Mensi(id: 118, name: "Mensa Academica"),
-  Mensi(id: 115, name: "Mensa am Elsterbecken"),
-  Mensi(id: 162, name: "Mensa am Medizincampus"),
-  Mensi(id: 106, name: "Mensa am Park"),
-  Mensi(id: 111, name: "Mensa Peterssteinweg"),
-  Mensi(id: 170, name: "Mensa Tierklinik"),
-  Mensi(id: 127, name: "Mensaria am Botanischen Garten"),
-  Mensi(id: 140, name: "Mensa Schönauer Straße"),
+  Mensi(id: 153, name: "Cafeteria Dittrichring", oeffnungszeitenalles: [
+    "Montag-Donnerstag 8.00-16.30 Uhr",
+    "Freitag 8.00-15.00 Uhr",
+    "Mittagessen:",
+    "Montag-Freitag 11.30-13.30 Uhr"
+  ]),
+  Mensi(id: 118, name: "Mensa Academica", oeffnungszeitenalles: [
+    "Mensa:",
+    "Montag-Freitag 11.00-14.00 Uhr",
+    "Cafeteria:",
+    "Montag-Freitag8.30-15.00 Uhr"
+  ]),
+  Mensi(id: 115, name: "Mensa am Elsterbecken", oeffnungszeitenalles: [
+    "Mensa:",
+    "Montag-Freitag 11.00-14.00 Uhr",
+    "Cafeteria:",
+    "Montag-Donnerstag	09.00-17.00 Uhr",
+    "Freitag 09.00-15.00 Uhr",
+    "Kaffeeinsel im OG:",
+    "Montag-Freitag:	11.00-14.00 Uhr"
+  ]),
+  Mensi(id: 162, name: "Mensa am Medizincampus", oeffnungszeitenalles: [
+    "Mensa:",
+    "Montag-Freitag 10.45-14.00 Uhr",
+    "Cafeteria:",
+    "Montag-Freitag 08.00-15.00 Uhr"
+  ]),
+  Mensi(id: 106, name: "Mensa am Park", oeffnungszeitenalles: [
+    "Montag-Donnerstag: 10.45-18.30 Uhr",
+    "Freitag: 10.45-14.00 Uhr",
+    "Samstag: 11.00-14.00 Uhr"
+  ]),
+  Mensi(id: 111, name: "Mensa Peterssteinweg", oeffnungszeitenalles: [
+    "Mensa:",
+    "Montag-Freitag	11.00-14.00 Uhr",
+    "Cafeteria:",
+    "Montag-Freitag	11.00-14.00 Uhr"
+  ]),
+  Mensi(id: 170, name: "Mensa Tierklinik", oeffnungszeitenalles: [
+    "Mensa:",
+    "Montag-Freitag 11.00-14.00 Uhr",
+    "Cafeteria:",
+    "Montag-Donnerstag	7.30-14.15 Uhr",
+    "Freitag	7.30-14.00 Uhr"
+  ]),
+  Mensi(id: 127, name: "Mensaria am Botanischen Garten", oeffnungszeitenalles: [
+    "Mensa:",
+    "Montag-Freitag	11.00-14.00 Uhr",
+    "Cafeteria:",
+    "Montag-Freitag	09.00-14.00 Uhr"
+  ]),
+  Mensi(id: 140, name: "Mensa Schönauer Straße", oeffnungszeitenalles: [
+    "Montag-Freitag	8.30-15.45 Uhr",
+    "Mittagessen:",
+    "Montag-Freitag	11.30-14.00 Uhr"
+  ]),
 ];
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+class MyNavigationDrawer extends StatefulWidget {
+  const MyNavigationDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            buildHeader(context),
-            buildMensiItems(context),
-          ],
-        ),
-      ),
-    );
+  State<MyNavigationDrawer> createState() => _MyNavigationDrawerState();
+}
+
+class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
+  @override
+  void initState() {
+    super.initState();
   }
 
   Widget buildHeader(BuildContext context) {
@@ -39,17 +81,13 @@ class NavigationDrawer extends StatelessWidget {
       color: const Color.fromARGB(255, 218, 179, 97),
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
-        children: [
-          const Image(
-              image: AssetImage("assets/images/applogo512.png"), width: 80),
+        children: const [
+          Image(image: AssetImage("assets/images/applogo512.png"), width: 80),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Text(
               "MensiMates",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontFamily: "Open Sans", fontSize: 19),
+              style: TextStyle(fontFamily: "Open Sans", fontSize: 19),
             ),
           )
         ],
@@ -71,7 +109,7 @@ class NavigationDrawer extends StatelessWidget {
           ),
           const Divider(color: Colors.grey),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.5,
             child: ListView.builder(
                 itemCount: mensenliste.length,
                 itemBuilder: ((context, index) {
@@ -85,6 +123,7 @@ class NavigationDrawer extends StatelessWidget {
                           builder: (context) => MensiSchedule(
                                 mensiID: mensi.id,
                                 mensiName: mensi.name,
+                                oeffnungszeiten: mensi.oeffnungszeitenalles,
                               )));
                     },
                   );
@@ -100,6 +139,21 @@ class NavigationDrawer extends StatelessWidget {
             },
           )
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(context),
+            buildMensiItems(context),
+          ],
+        ),
       ),
     );
   }

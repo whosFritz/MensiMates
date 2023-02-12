@@ -8,10 +8,10 @@ class DishList extends StatefulWidget {
   const DishList({super.key, required this.dishGroups});
 
   @override
-  _DishListState createState() => _DishListState();
+  DishListState createState() => DishListState();
 }
 
-class _DishListState extends State<DishList> {
+class DishListState extends State<DishList> {
   List<ExpansionPanel> _expansionPanels = [];
   List<bool> _isExpanded = [];
 

@@ -45,86 +45,60 @@ class _AboutPageState extends State<AboutPage> {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "MensiMates",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge
-                                            ?.copyWith(
-                                              fontFamily: "Open Sans",
-                                              color: const Color.fromARGB(
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text("MensiMates",
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
                                                   255, 36, 234, 10),
-                                              fontSize: 30,
-                                              letterSpacing: 2,
-                                            ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit dem Seemann Ole Einar Christoph und seinem Programm 'EssensGetter 2.0'. Vielen Dank bei der Einrichtung der vollständigen Funktionalität. Schaut gerne auf seinem Github vorbei und abonniert den EssensGetter Newsletter.",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.copyWith(
                                               fontFamily: "Open Sans",
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                              fontSize: 14,
-                                              letterSpacing: 2,
-                                            ),
-                                      ),
+                                              fontSize: 30,
+                                              letterSpacing: 2)),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                          "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit Ole Einar Christoph und seinem Programm 'EssensGetter 2.0'. Vielen Dank bei der Einrichtung der vollständigen Funktionalität. Schaut gerne auf seinem Github vorbei und abonniert den EssensGetter Newsletter.",
+                                          style: TextStyle(
+                                              fontFamily: "Open Sans",
+                                              color: Colors.black,
+                                              letterSpacing: 2,
+                                              fontSize: 14)),
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
                                       child: Text(
                                         "Viel Spaß",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.copyWith(
-                                              fontFamily: "Open Sans",
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                              fontSize: 15,
-                                              letterSpacing: 2,
-                                            ),
+                                        style: TextStyle(
+                                          fontFamily: "Open Sans",
+                                          color: Colors.black,
+                                          letterSpacing: 2,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
                                       child: Text(
                                         "🥰 Ich freue mich über jeden Verbesserungsvorschlag. 😘",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.copyWith(
-                                              fontFamily: "Open Sans",
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                              fontSize: 14,
-                                              letterSpacing: 2,
-                                            ),
+                                        style: TextStyle(
+                                            fontFamily: "Open Sans",
+                                            color: Colors.black,
+                                            letterSpacing: 2,
+                                            fontSize: 14),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
                                       child: Text(
                                         "Durch Nutzung der App stimmst du zu, dass deine anonyme Bewertung der Gerichte für statistische Zwecke und nichtkommerzielle Zwecke benutzt werden.",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.copyWith(
-                                              fontFamily: "Open Sans",
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                              fontSize: 14,
-                                              letterSpacing: 2,
-                                            ),
-                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontFamily: "Open Sans",
+                                            color: Colors.black,
+                                            letterSpacing: 2,
+                                            fontSize: 14),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                     TextButton(
@@ -165,15 +139,13 @@ class _AboutPageState extends State<AboutPage> {
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Datenschutzerklärung"),
                                         )),
-                                    Padding(
-                                      padding: const EdgeInsets.all(15),
+                                    const Padding(
+                                      padding: EdgeInsets.all(15),
                                       child: Text("Alle Angaben ohne Gewähr.",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge
-                                              ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 15)),
+                                          style: TextStyle(
+                                              fontFamily: "Open Sans",
+                                              color: Colors.black,
+                                              fontSize: 15,fontWeight: FontWeight.bold)),
                                     )
                                   ],
                                 ),
