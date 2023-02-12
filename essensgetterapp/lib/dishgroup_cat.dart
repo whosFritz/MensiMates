@@ -5,4 +5,9 @@ class DishGroupCat {
   final List<Dish> gerichteingruppe;
 
   DishGroupCat(this.kategorie, this.gerichteingruppe);
+
+  @override
+  String toString() {
+    return "$kategorie-Gruppe: $gerichteingruppe";
+  }
 }

@@ -182,11 +182,13 @@ class _MensiScheduleState extends State<MensiSchedule>
         },
         itemBuilder: (context, index) {
           final group = groupedDishes[index];
+          print(groupByCat(group.gerichteingruppe));
           return RefreshIndicator(
             onRefresh: refresh,
             child: ListView.builder(
                 itemCount: group.gerichteingruppe.length,
                 itemBuilder: (context, index) {
+                  
                   final dish = group.gerichteingruppe[index];
                   return Column(
                     children: [
