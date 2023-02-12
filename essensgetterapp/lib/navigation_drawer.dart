@@ -121,9 +121,7 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
                       Navigator.pop(context);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => MensiSchedule(
-                                mensiID: mensi.id,
-                                mensiName: mensi.name,
-                                oeffnungszeiten: mensi.oeffnungszeitenalles,
+                                mensiobj: mensi,
                               )));
                     },
                   );

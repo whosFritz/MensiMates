@@ -5,30 +5,25 @@ import "package:intl/intl.dart";
 import 'detailedpage_widget.dart';
 import "dish_class.dart";
 import "api_links.dart";
-import "package:flutter/foundation.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
 import "dish_helper_class.dart";
 import 'dishgroup_cat.dart';
 import 'dishgroup_date.dart';
+import "mensi_class.dart";
 import 'navigation_drawer.dart';
 
 class MensiSchedule extends StatefulWidget {
-  const MensiSchedule(
-      {super.key,
-      required this.mensiID,
-      required this.mensiName,
-      required this.oeffnungszeiten});
-  final int mensiID;
-  final String mensiName;
-  final List<String> oeffnungszeiten;
+  final Mensi mensiobj;
+
+  const MensiSchedule({super.key, required this.mensiobj});
 
   @override
   State<MensiSchedule> createState() {
-    return _MensiScheduleState();
+    return MensiScheduleState();
   }
 }
 
-class _MensiScheduleState extends State<MensiSchedule>
+class MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   // Variablen
   late Future<List<Dish>> dishesfromOle;
@@ -45,16 +40,11 @@ class _MensiScheduleState extends State<MensiSchedule>
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   // Methode um Gerichte zu holen und umzuwandeln.
   Future<List<Dish>> getDishesfromOle() async {
     // ! Caching
     // try {
-    String mealsForFritzLink = decideMensi(widget.mensiID)[0];
+    String mealsForFritzLink = decideMensi(widget.mensiobj.id)[0];
     final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
           const Duration(seconds: 6),
         );
@@ -90,7 +80,7 @@ class _MensiScheduleState extends State<MensiSchedule>
       builder: (context) {
         return DetailRatingPage(
           dishdetailed: dishdetailed,
-          mensiID: widget.mensiID,
+          mensiID: widget.mensiobj.id,
         );
       },
     ));
@@ -105,32 +95,36 @@ class _MensiScheduleState extends State<MensiSchedule>
 
   // Reload button nur für die WebApp
   Widget platformrefreshbutton() {
+    /*
     if (defaultTargetPlatform != TargetPlatform.android &&
         defaultTargetPlatform != TargetPlatform.iOS) {
-      return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(100)),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 4,
-                  color: Color(0x33000000),
-                  offset: Offset(2, 2),
-                  spreadRadius: 2,
-                ),
-              ]),
-          child: CircleAvatar(
-            child: IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: refresh,
-            ),
+          */
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(100)),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 4,
+                color: Color(0x33000000),
+                offset: Offset(2, 2),
+                spreadRadius: 2,
+              ),
+            ]),
+        child: CircleAvatar(
+          child: IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: refresh,
           ),
         ),
-      );
+      ),
+    );
+    /*
     } else {
       return Container();
     }
+    */
   }
 
   /*
@@ -209,8 +203,13 @@ class _MensiScheduleState extends State<MensiSchedule>
           headerBuilder: (BuildContext context, bool isExpanded) {
             return Row(
               children: [
-                decideIconFile(grouppedbycat.kategorie),
-                const SizedBox(width: 16),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: decideIconFile(grouppedbycat.kategorie),
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
                 Text(
                   grouppedbycat.kategorie,
                   style: const TextStyle(
@@ -234,132 +233,13 @@ class _MensiScheduleState extends State<MensiSchedule>
                       builder: (context) {
                         return DetailRatingPage(
                           dishdetailed: dish,
-                          mensiID: widget.mensiID,
+                          mensiID: widget.mensiobj.id,
                         );
                       },
                     ),
                   );
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  child: Text(dish.name,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18,
-                                          fontFamily: "Open Sans")),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 4, 4, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                        "Preis: ${dish.price.substring(0, 5)}",
-                                        style: const TextStyle(
-                                            fontFamily: "Open Sans",
-                                            fontSize: 13)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 4, 4, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Beilagen & Zutaten: ${dish.description}",
-                                      style: const TextStyle(
-                                          fontFamily: "Open Sans",
-                                          fontSize: 13),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 8, 8, 0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        const Icon(
-                                          Icons.star_rounded,
-                                          color: Color(0xFFE47B13),
-                                          size: 24,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 0, 6, 0),
-                                          child: Text(
-                                            "${dish.rating} / 5",
-                                            style: const TextStyle(
-                                                fontFamily: "Open Sans",
-                                                fontSize: 15),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(children: [
-                                      Text(
-                                        "Votes: ${dish.votes}",
-                                        style: const TextStyle(
-                                            fontFamily: "Open Sans",
-                                            fontSize: 15),
-                                      ),
-                                    ]),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: buildlistitemBox(context, dish),
               );
             },
           ),
@@ -370,18 +250,140 @@ class _MensiScheduleState extends State<MensiSchedule>
     return exppanelist;
   }
 
+  static Widget buildlistitemBox(BuildContext context, Dish dish) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Text(dish.name,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              fontFamily: "Open Sans")),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 4, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Text("Preis: ${dish.price.substring(0, 5)}",
+                            style: const TextStyle(
+                                fontFamily: "Open Sans", fontSize: 13)),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 4, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Beilagen & Zutaten: ${dish.description}",
+                          style: const TextStyle(
+                              fontFamily: "Open Sans", fontSize: 13),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFE47B13),
+                              size: 24,
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 0, 6, 0),
+                              child: Text(
+                                "${dish.rating} / 5",
+                                style: const TextStyle(
+                                    fontFamily: "Open Sans", fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(children: [
+                          Text(
+                            "Votes: ${dish.votes}",
+                            style: const TextStyle(
+                                fontFamily: "Open Sans", fontSize: 15),
+                          ),
+                        ]),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.sync),
+            onPressed: () {
+              refresh();
+            },
+          )
+        ],
         iconTheme: const IconThemeData(color: Colors.blueGrey),
         backgroundColor: Colors.white,
         title: Text(
-          widget.mensiName,
+          widget.mensiobj.name,
           style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: "Open Sans",
               fontSize: 20,
+              color: Colors.black,
               letterSpacing: 2),
         ),
         centerTitle: true,
@@ -478,7 +480,6 @@ class _MensiScheduleState extends State<MensiSchedule>
                               ]);
                         }
                       })),
-              platformrefreshbutton(),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -500,7 +501,8 @@ class _MensiScheduleState extends State<MensiSchedule>
                               style: TextStyle(
                                   fontFamily: "Open Sans", fontSize: 13),
                             ),
-                            for (String zeile in widget.oeffnungszeiten)
+                            for (String zeile
+                                in widget.mensiobj.oeffnungszeitenalles)
                               Padding(
                                 padding: const EdgeInsets.only(top: 7),
                                 child: Text(
@@ -529,51 +531,51 @@ Image decideIconFile(String iconmealtype) {
   switch (iconmealtype) {
     case "Vegetarisches Gericht":
       icon = Image.asset("assets/images/vegetarian-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 60, fit: BoxFit.cover);
       break;
     case "Fleischgericht":
       icon = Image.asset("assets/images/meat-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 60, fit: BoxFit.cover);
       break;
     case "Fischgericht":
       icon = Image.asset("assets/images/fish-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "Veganes Gericht":
       icon = Image.asset("assets/images/vegan-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "Pastateller":
       icon = Image.asset("assets/images/pasta-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "Dessert":
       icon = Image.asset("assets/images/dessert-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "Smoothie":
       icon = Image.asset("assets/images/smoothie-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "WOK":
       icon = Image.asset("assets/images/wok-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "Salat":
       icon = Image.asset("assets/images/salat-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "Gemüsebeilage":
       icon = Image.asset("assets/images/gemuesebeilage-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     case "Sättigungsbeilage":
       icon = Image.asset("assets/images/saettigungsbeilage-icon.png",
-          width: 40, fit: BoxFit.cover);
+          height: 50, fit: BoxFit.cover);
       break;
     default:
       icon = Image.asset("assets/images/default-icon.png",
-          width: 40, height: 40, fit: BoxFit.cover);
+          height: 60, fit: BoxFit.cover);
       break;
   }
   return icon;
