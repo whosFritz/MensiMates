@@ -35,6 +35,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                         builder: (context) => MensiSchedule(
                               mensiID: mensi.id,
                               mensiName: mensi.name,
+                              oeffnungszeiten: mensi.oeffnungszeitenalles,
                             )));
                   },
                 );

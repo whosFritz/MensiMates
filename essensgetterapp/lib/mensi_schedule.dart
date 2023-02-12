@@ -14,9 +14,13 @@ import 'navigation_drawer.dart';
 
 class MensiSchedule extends StatefulWidget {
   const MensiSchedule(
-      {super.key, required this.mensiID, required this.mensiName});
+      {super.key,
+      required this.mensiID,
+      required this.mensiName,
+      required this.oeffnungszeiten});
   final int mensiID;
   final String mensiName;
+  final List<String> oeffnungszeiten;
 
   @override
   State<MensiSchedule> createState() {
@@ -30,7 +34,8 @@ class _MensiScheduleState extends State<MensiSchedule>
   late Future<List<Dish>> dishesfromOle;
   int currentPage = 0;
   DateTime anzeigeDatum = DateTime.now();
-  bool klappung = false;
+  Map<int, bool> _expansionState = {};
+
   // Initiierung
   @override
   void initState() {
@@ -167,10 +172,6 @@ class _MensiScheduleState extends State<MensiSchedule>
 
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
-    /*
-     ? Liste der Dishgruppeninstanzen holen und diese gruppieren nach datum
-     ? danach 
-    */
     final groupedDishesDat = groupByDate(dishes);
     return PageView.builder(
         controller: PageController(initialPage: 2),
@@ -178,21 +179,23 @@ class _MensiScheduleState extends State<MensiSchedule>
         onPageChanged: (int index) {
           setState(() {
             anzeigeDatum = groupedDishesDat[index].date;
+            _expansionState = {};
           });
           currentPage =
               index; // ? remove?, weil das war mal button überbleibsel
         },
         itemBuilder: (context, index) {
-          final group = groupedDishesDat[index];
-          final grouppedbycatListe = groupByCat(group.gerichteingruppe);
+          final grouppedbycatListe =
+              groupByCat(groupedDishesDat[index].gerichteingruppe);
           return SingleChildScrollView(
             child: ExpansionPanelList(
-                expansionCallback: (panelIndex, isExpanded) {
-                  setState(() {
-                    klappung = !isExpanded;
-                  });
-                },
-                children: buildexpansionpanels(grouppedbycatListe)),
+              expansionCallback: (panelIndex, isExpanded) {
+                setState(() {
+                  _expansionState[panelIndex] = !isExpanded;
+                });
+              },
+              children: buildexpansionpanels(grouppedbycatListe),
+            ),
           );
         });
   }
@@ -200,10 +203,10 @@ class _MensiScheduleState extends State<MensiSchedule>
   List<ExpansionPanel> buildexpansionpanels(
       List<DishGroupCat> grouppedbycatListe) {
     List<ExpansionPanel> exppanelist = [];
-    for (final grouppedbycat in grouppedbycatListe) {
+    for (int i = 0; i < grouppedbycatListe.length; i++) {
+      final grouppedbycat = grouppedbycatListe[i];
       exppanelist.add(
         ExpansionPanel(
-          canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
             return Text(
               grouppedbycat.kategorie,
@@ -225,7 +228,7 @@ class _MensiScheduleState extends State<MensiSchedule>
               );
             },
           ),
-          isExpanded: klappung,
+          isExpanded: _expansionState[i] ?? false,
         ),
       );
     }
@@ -349,95 +352,41 @@ class _MensiScheduleState extends State<MensiSchedule>
                 children: [
                   Expanded(
                     child: Container(
-                      width: double.infinity,
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 224, 224, 224),
+                          color: const Color(0xffE0E0E0),
                           borderRadius: BorderRadius.circular(0),
                           shape: BoxShape.rectangle),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  7, 7, 7, 7),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 0, 0, 0),
-                                        child: Text("Öffnungszeiten:",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 15,
-                                                )),
-                                      ),
-                                    ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Öffnungszeiten:",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 15,
                                   ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8, 0, 0, 0),
-                                        child: Text(
-                                          "Mo - Fr: 8.30-15.45 Uhr",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge
-                                              ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 12),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 0, 0, 0),
-                                        child: Text("Mittagessen:",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 15,
-                                                )),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8, 0, 0, 0),
-                                        child: Text(
-                                          "Mo - Fr: 11.30-14.00 Uhr",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge
-                                              ?.copyWith(
-                                                  fontFamily: "Open Sans",
-                                                  fontSize: 13),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
                             ),
-                          ),
-                        ],
+                            for (String zeile in widget.oeffnungszeiten)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 7),
+                                child: Text(
+                                  zeile,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                        fontFamily: "Open Sans",
+                                        fontSize: 12,
+                                      ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
