@@ -86,16 +86,14 @@ class _MensiScheduleState extends State<MensiSchedule>
 
 //Navigation zur Detailpage
   void navigateToDetailRatingPage(BuildContext context, Dish dishdetailed) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) {
-            return DetailRatingPage(
-              dishdetailed: dishdetailed,
-              mensiID: widget.mensiID,
-            );
-          },
-          fullscreenDialog: true),
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return DetailRatingPage(
+          dishdetailed: dishdetailed,
+          mensiID: widget.mensiID,
+        );
+      },
+    ));
   }
 
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
@@ -207,13 +205,20 @@ class _MensiScheduleState extends State<MensiSchedule>
       final grouppedbycat = grouppedbycatListe[i];
       exppanelist.add(
         ExpansionPanel(
+          backgroundColor: decideContainerColor(grouppedbycat.kategorie),
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return Text(
-              grouppedbycat.kategorie,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            return Row(
+              children: [
+                decideIconFile(grouppedbycat.kategorie),
+                const SizedBox(width: 16),
+                Text(
+                  grouppedbycat.kategorie,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             );
           },
           body: ListView.builder(
@@ -222,9 +227,139 @@ class _MensiScheduleState extends State<MensiSchedule>
             physics: const ClampingScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
               Dish dish = grouppedbycat.gerichteingruppe[index];
-              return ListTile(
-                title: Text("${dish.name} für ${dish.price.substring(0, 5)}"),
-                subtitle: Text(dish.description),
+              return InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return DetailRatingPage(
+                          dishdetailed: dish,
+                          mensiID: widget.mensiID,
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Text(dish.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                          fontFamily: "Open Sans")),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 4, 4, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                        "Preis: ${dish.price.substring(0, 5)}",
+                                        style: const TextStyle(
+                                            fontFamily: "Open Sans",
+                                            fontSize: 13)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0, 4, 4, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "Beilagen & Zutaten: ${dish.description}",
+                                      style: const TextStyle(
+                                          fontFamily: "Open Sans",
+                                          fontSize: 13),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8, 8, 8, 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        const Icon(
+                                          Icons.star_rounded,
+                                          color: Color(0xFFE47B13),
+                                          size: 24,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0, 0, 6, 0),
+                                          child: Text(
+                                            "${dish.rating} / 5",
+                                            style: const TextStyle(
+                                                fontFamily: "Open Sans",
+                                                fontSize: 15),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(children: [
+                                      Text(
+                                        "Votes: ${dish.votes}",
+                                        style: const TextStyle(
+                                            fontFamily: "Open Sans",
+                                            fontSize: 15),
+                                      ),
+                                    ]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
           ),
@@ -243,12 +378,11 @@ class _MensiScheduleState extends State<MensiSchedule>
         backgroundColor: Colors.white,
         title: Text(
           widget.mensiName,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontFamily: "Open Sans",
-                color: Colors.black,
-                fontSize: 20,
-                letterSpacing: 2,
-              ),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFamily: "Open Sans",
+              fontSize: 20,
+              letterSpacing: 2),
         ),
         centerTitle: true,
       ),
@@ -361,28 +495,18 @@ class _MensiScheduleState extends State<MensiSchedule>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Öffnungszeiten:",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    fontFamily: "Open Sans",
-                                    fontSize: 15,
-                                  ),
+                              style: TextStyle(
+                                  fontFamily: "Open Sans", fontSize: 13),
                             ),
                             for (String zeile in widget.oeffnungszeiten)
                               Padding(
                                 padding: const EdgeInsets.only(top: 7),
                                 child: Text(
                                   zeile,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                        fontFamily: "Open Sans",
-                                        fontSize: 12,
-                                      ),
+                                  style: const TextStyle(
+                                      fontFamily: "Open Sans", fontSize: 12),
                                 ),
                               ),
                           ],
@@ -455,77 +579,44 @@ Image decideIconFile(String iconmealtype) {
   return icon;
 }
 
-List<Color> decideContainerColor(String category) {
-  List<Color> colors;
+Color decideContainerColor(String category) {
+  Color colors;
   switch (category) {
     case "Vegetarisches Gericht":
-      colors = [
-        const Color.fromARGB(255, 69, 218, 77),
-        const Color.fromARGB(255, 52, 187, 58),
-      ];
+      colors = const Color.fromARGB(255, 52, 187, 58);
       break;
     case "Fleischgericht":
-      colors = [
-        const Color.fromARGB(255, 244, 120, 32),
-        const Color.fromARGB(255, 220, 102, 13)
-      ];
+      colors = const Color.fromARGB(255, 220, 102, 13);
       break;
     case "Veganes Gericht":
-      colors = [
-        const Color.fromARGB(255, 138, 238, 143),
-        const Color.fromARGB(255, 125, 213, 130),
-      ];
+      colors = const Color.fromARGB(255, 125, 213, 130);
       break;
     case "Pastateller":
-      colors = [
-        const Color.fromARGB(255, 212, 185, 149),
-        const Color.fromARGB(255, 209, 177, 134),
-      ];
+      colors = const Color.fromARGB(255, 209, 177, 134);
       break;
     case "Fischgericht":
-      colors = [
-        const Color.fromARGB(255, 52, 174, 236),
-        const Color.fromARGB(255, 37, 169, 235),
-      ];
+      colors = const Color.fromARGB(255, 37, 169, 235);
       break;
     case "Dessert":
-      colors = [
-        const Color.fromARGB(255, 158, 137, 236),
-        const Color.fromARGB(255, 134, 107, 230),
-      ];
+      colors = const Color.fromARGB(255, 134, 107, 230);
       break;
     case "Smoothie":
-      colors = [
-        const Color.fromARGB(255, 214, 117, 238),
-        const Color.fromARGB(255, 179, 97, 199),
-      ];
+      colors = const Color.fromARGB(255, 179, 97, 199);
       break;
     case "WOK":
-      colors = [
-        const Color.fromARGB(255, 255, 223, 83),
-        const Color.fromARGB(255, 211, 183, 58),
-      ];
+      colors = const Color.fromARGB(255, 211, 183, 58);
       break;
     case "Salat":
-      colors = [
-        const Color.fromARGB(255, 31, 150, 41),
-        const Color.fromARGB(255, 24, 128, 32),
-      ];
+      colors = const Color.fromARGB(255, 67, 185, 77);
       break;
     case "Gemüsebeilage":
-      colors = [
-        const Color.fromARGB(255, 150, 243, 62),
-        const Color.fromARGB(255, 118, 199, 42),
-      ];
+      colors = const Color.fromARGB(255, 118, 199, 42);
       break;
     case "Sättigungsbeilage":
-      colors = [
-        const Color.fromARGB(255, 235, 219, 80),
-        const Color.fromARGB(255, 235, 219, 80),
-      ];
+      colors = const Color.fromARGB(255, 235, 219, 80);
       break;
     default:
-      colors = [Colors.white, Colors.white];
+      colors = Colors.white;
       break;
   }
   return colors;

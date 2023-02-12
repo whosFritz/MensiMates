@@ -81,17 +81,13 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
       color: const Color.fromARGB(255, 218, 179, 97),
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
-        children: [
-          const Image(
-              image: AssetImage("assets/images/applogo512.png"), width: 80),
+        children: const [
+          Image(image: AssetImage("assets/images/applogo512.png"), width: 80),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Text(
               "MensiMates",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontFamily: "Open Sans", fontSize: 19),
+              style: TextStyle(fontFamily: "Open Sans", fontSize: 19),
             ),
           )
         ],
