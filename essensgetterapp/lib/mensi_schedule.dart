@@ -11,7 +11,6 @@ import "dish_helper_class.dart";
 import 'dishgroup_cat.dart';
 import 'dishgroup_date.dart';
 import 'navigation_drawer.dart';
-import 'dart:developer';
 
 class MensiSchedule extends StatefulWidget {
   const MensiSchedule(
@@ -31,6 +30,7 @@ class _MensiScheduleState extends State<MensiSchedule>
   late Future<List<Dish>> dishesfromOle;
   int currentPage = 0;
   DateTime anzeigeDatum = DateTime.now();
+  bool klappung = false;
   // Initiierung
   @override
   void initState() {
@@ -158,7 +158,7 @@ class _MensiScheduleState extends State<MensiSchedule>
     for (final dish in dishes) {
       final cat = dish.category;
       if (!groups.containsKey(cat)) {
-        groups[cat] = DishGroupCat(cat, []);
+        groups[cat] = DishGroupCat(cat, [], false);
       }
       groups[cat]!.gerichteingruppe.add(dish);
     }
@@ -171,39 +171,63 @@ class _MensiScheduleState extends State<MensiSchedule>
      ? Liste der Dishgruppeninstanzen holen und diese gruppieren nach datum
      ? danach 
     */
-    final groupedDishes = groupByDate(dishes);
+    final groupedDishesDat = groupByDate(dishes);
     return PageView.builder(
         controller: PageController(initialPage: 2),
-        itemCount: groupedDishes.length,
+        itemCount: groupedDishesDat.length,
         onPageChanged: (int index) {
           setState(() {
-            anzeigeDatum = groupedDishes[index].date;
+            anzeigeDatum = groupedDishesDat[index].date;
           });
           currentPage =
               index; // ? remove?, weil das war mal button überbleibsel
         },
         itemBuilder: (context, index) {
-          final group = groupedDishes[index];
+          final group = groupedDishesDat[index];
           final grouppedbycatListe = groupByCat(group.gerichteingruppe);
-          for (var grpobj in grouppedbycatListe) {
-            debugPrint(grpobj.kategorie.toString());
-          }
-          final dish = group.gerichteingruppe[index];
           return SingleChildScrollView(
             child: ExpansionPanelList(
+                expansionCallback: (panelIndex, isExpanded) {
+                  setState(() {
+                    klappung = !isExpanded;
+                  });
+                },
                 children: buildexpansionpanels(grouppedbycatListe)),
           );
         });
   }
 
-  List<ExpansionPanel> buildexpansionpanels(List<DishGroupCat> grouppedbycatListe) {
+  List<ExpansionPanel> buildexpansionpanels(
+      List<DishGroupCat> grouppedbycatListe) {
     List<ExpansionPanel> exppanelist = [];
     for (final grouppedbycat in grouppedbycatListe) {
-      exppanelist.add(ExpansionPanel(
+      exppanelist.add(
+        ExpansionPanel(
+          canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return Text(grouppedbycat.kategorie);
+            return Text(
+              grouppedbycat.kategorie,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            );
           },
-          body: Text("body expansionpanel")));
+          body: ListView.builder(
+            itemCount: grouppedbycat.gerichteingruppe.length,
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              Dish dish = grouppedbycat.gerichteingruppe[index];
+              return ListTile(
+                title: Text("${dish.name} für ${dish.price.substring(0, 5)}"),
+                subtitle: Text(dish.description),
+              );
+            },
+          ),
+          isExpanded: klappung,
+        ),
+      );
     }
     return exppanelist;
   }
@@ -225,7 +249,7 @@ class _MensiScheduleState extends State<MensiSchedule>
         ),
         centerTitle: true,
       ),
-      drawer: const NavigationDrawer(),
+      drawer: const MyNavigationDrawer(),
       body: SafeArea(
         child: GestureDetector(
           child: Column(

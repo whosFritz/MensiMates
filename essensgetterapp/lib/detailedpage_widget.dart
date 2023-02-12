@@ -210,7 +210,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                         "Preis: ${widget.dishdetailed.price}",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .titleLarge
                                             ?.copyWith(
                                                 fontFamily: "Open Sans",
                                                 fontSize: 13),
@@ -230,7 +230,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                         "Beilagen & Zutaten: ${widget.dishdetailed.description}",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .titleLarge
                                             ?.copyWith(
                                                 fontFamily: "Open Sans",
                                                 fontSize: 13),
@@ -276,7 +276,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                               "${widget.dishdetailed.rating} / 5",
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1
+                                                  .titleLarge
                                                   ?.copyWith(
                                                       fontFamily: "Open Sans",
                                                       fontSize: 15),
@@ -292,7 +292,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                           "Votes: ${widget.dishdetailed.votes}",
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText1
+                                              .titleLarge
                                               ?.copyWith(
                                                   fontFamily: "Open Sans",
                                                   fontSize: 15),
@@ -582,7 +582,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                             "Preis: ${widget.dishdetailed.price}",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1
+                                                .titleLarge
                                                 ?.copyWith(
                                                     fontFamily: "Open Sans",
                                                     fontSize: 13),
@@ -603,7 +603,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                             "Beilagen & Zutaten: ${widget.dishdetailed.description}",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1
+                                                .titleLarge
                                                 ?.copyWith(
                                                     fontFamily: "Open Sans",
                                                     fontSize: 13),
@@ -649,7 +649,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                                   "${widget.dishdetailed.rating} / 5",
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
+                                                      .titleLarge
                                                       ?.copyWith(
                                                           fontFamily:
                                                               "Open Sans",
@@ -666,7 +666,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                               "Votes: ${widget.dishdetailed.votes}",
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .bodyText1
+                                                  .titleLarge
                                                   ?.copyWith(
                                                       fontFamily: "Open Sans",
                                                       fontSize: 15),

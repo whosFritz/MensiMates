@@ -1,5 +1,7 @@
-import 'package:essensgetterapp/navigation_drawer.dart';
 import 'package:flutter/material.dart';
+
+import 'mensi_schedule.dart';
+import 'navigation_drawer.dart';
 
 class HomeScreenWidget extends StatefulWidget {
   const HomeScreenWidget({super.key});
@@ -12,12 +14,31 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const NavigationDrawer(),
+        drawer: const MyNavigationDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.orange,
           title: const Text("Home"),
           centerTitle: true,
         ),
-        body: Container());
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+              itemCount: mensenliste.length,
+              itemBuilder: ((context, index) {
+                final mensi = mensenliste[index];
+                return ListTile(
+                  leading: const Icon(Icons.food_bank_outlined),
+                  title: Text(mensi.name),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MensiSchedule(
+                              mensiID: mensi.id,
+                              mensiName: mensi.name,
+                            )));
+                  },
+                );
+              })),
+        ));
   }
 }

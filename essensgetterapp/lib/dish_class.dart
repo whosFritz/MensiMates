@@ -1,16 +1,17 @@
 import "dart:convert";
 
 class Dish {
-  Dish(
-      {required this.id,
-      required this.name,
-      required this.description,
-      required this.price,
-      required this.category,
-      required this.servingDate,
-      required this.responseCode,
-      required this.rating,
-      required this.votes});
+  Dish({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.category,
+    required this.servingDate,
+    required this.responseCode,
+    required this.rating,
+    required this.votes,
+  });
 
   final int id;
   final String name;

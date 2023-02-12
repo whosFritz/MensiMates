@@ -16,22 +16,18 @@ List<Mensi> mensenliste = [
   Mensi(id: 140, name: "Mensa Schönauer Straße"),
 ];
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+class MyNavigationDrawer extends StatefulWidget {
+  const MyNavigationDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            buildHeader(context),
-            buildMensiItems(context),
-          ],
-        ),
-      ),
-    );
+  State<MyNavigationDrawer> createState() => _MyNavigationDrawerState();
+}
+
+class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   Widget buildHeader(BuildContext context) {
@@ -71,7 +67,7 @@ class NavigationDrawer extends StatelessWidget {
           ),
           const Divider(color: Colors.grey),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.5,
             child: ListView.builder(
                 itemCount: mensenliste.length,
                 itemBuilder: ((context, index) {
@@ -100,6 +96,21 @@ class NavigationDrawer extends StatelessWidget {
             },
           )
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(context),
+            buildMensiItems(context),
+          ],
+        ),
       ),
     );
   }
