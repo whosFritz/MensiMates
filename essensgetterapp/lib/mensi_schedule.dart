@@ -43,7 +43,34 @@ class MensiScheduleState extends State<MensiSchedule>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const SizedBox(
+              height: 24 * 1.5,
+              width: 24 * 1.5,
+              child: Icon(Icons.sync),
+            ),
+            onPressed: () {
+              refresh();
+            },
+          )
+        ],
+        iconTheme: const IconThemeData(color: Colors.blueGrey),
+        backgroundColor: Colors.white,
+        title: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Text(
+            widget.mensiobj.name,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: "Open Sans",
+                fontSize: 20,
+                color: Colors.black,
+                letterSpacing: 2),
+          ),
+        ),
+      ),
       drawer: const MyNavigationDrawer(),
       body: SafeArea(
         child: GestureDetector(
@@ -93,32 +120,7 @@ class MensiScheduleState extends State<MensiSchedule>
               ),
               const Divider(
                 thickness: 3,
-                color: Color(0xFFFA9C00)appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const SizedBox(
-              height: 24 * 1.5,
-              width: 24 * 1.5,
-              child: Icon(Icons.sync),
-            ),
-            onPressed: () {
-              // Perform the sync operation here
-            },
-          )
-        ],
-        iconTheme: const IconThemeData(color: Colors.blueGrey),
-        backgroundColor: Colors.white,
-        title: Text(
-          widget.mensiobj.name,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: "Open Sans",
-              fontSize: 20,
-              color: Colors.black,
-              letterSpacing: 2),
-        ),
-        centerTitle: true,
-      ),,
+                color: Color(0xFFFA9C00),
               ),
               Expanded(
                   child: FutureBuilder(
@@ -345,6 +347,7 @@ class MensiScheduleState extends State<MensiSchedule>
               groupByCat(groupedDishesDat[index].gerichteingruppe);
           return SingleChildScrollView(
             child: ExpansionPanelList(
+              animationDuration: const Duration(milliseconds: 800),
               expansionCallback: (panelIndex, isExpanded) {
                 setState(() {
                   _expansionState[panelIndex] = !isExpanded;
@@ -576,6 +579,34 @@ Image decideIconFile(String iconmealtype) {
       icon = Image.asset("assets/images/saettigungsbeilage-icon.png",
           width: 40, fit: BoxFit.scaleDown);
       break;
+    case "Schneller Teller":
+      icon = Image.asset("assets/images/schneller-teller-icon.png",
+          width: 40, fit: BoxFit.scaleDown);
+      break;
+    case "Hauptkomponente":
+      icon = Image.asset("assets/images/hauptkomponente-icon.png",
+          width: 40, fit: BoxFit.scaleDown);
+      break;
+    case "Grill":
+      icon = Image.asset("assets/images/grill-icon.png",
+          width: 40, fit: BoxFit.scaleDown);
+      break;
+    case "Pizza":
+      icon = Image.asset("assets/images/pizza-icon.png",
+          width: 40, fit: BoxFit.scaleDown);
+      break;
+    case "Suppe / Eintopf":
+      icon = Image.asset("assets/images/suppe-icon.png",
+          width: 40, fit: BoxFit.scaleDown);
+      break;
+    case "mensaVital":
+      icon = Image.asset("assets/images/mensaVital-icon.png",
+          width: 40, fit: BoxFit.scaleDown);
+      break;
+    case "Aktion":
+      icon = Image.asset("assets/images/aktion-icon.png",
+          width: 40, fit: BoxFit.scaleDown);
+      break;
     default:
       icon = Image.asset("assets/images/default-icon.png",
           width: 40, fit: BoxFit.scaleDown);
@@ -619,6 +650,27 @@ Color decideContainerColor(String category) {
       break;
     case "Sättigungsbeilage":
       colors = const Color.fromARGB(255, 235, 219, 80);
+      break;
+    case "Schneller Teller":
+      colors = const Color.fromARGB(255, 66, 202, 161);
+      break;
+    case "Hauptkomponente":
+      colors = const Color.fromARGB(255, 41, 218, 224);
+      break;
+    case "Grill":
+      colors = const Color.fromARGB(255, 223, 104, 58);
+      break;
+    case "Pizza":
+      colors = Color.fromARGB(255, 243, 208, 111);
+      break;
+    case "Suppe / Eintopf":
+      colors = const Color.fromARGB(255, 154, 202, 66);
+      break;
+    case "mensaVital":
+      colors = const Color.fromARGB(255, 99, 209, 8);
+      break;
+    case "Aktion":
+      colors = const Color.fromARGB(255, 221, 69, 120);
       break;
     default:
       colors = Colors.white;
