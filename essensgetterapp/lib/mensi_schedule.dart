@@ -291,9 +291,15 @@ class MensiScheduleState extends State<MensiSchedule>
     for (final dish in dishes) {
       final cat = dish.category;
       if (!groups.containsKey(cat)) {
-        groups[cat] = DishGroupCat(cat, [], false);
+        int anzahl = 0;
+        groups[cat] = DishGroupCat(
+            kategorie: cat,
+            gerichteingruppe: [],
+            isexpanded: false,
+            anzahlgerichte: anzahl);
       }
       groups[cat]!.gerichteingruppe.add(dish);
+      groups[cat]!.anzahlgerichte += 1;
     }
     return groups.values.toList();
   }
@@ -364,7 +370,7 @@ class MensiScheduleState extends State<MensiSchedule>
                   width: 16,
                 ),
                 Text(
-                  grouppedbycat.kategorie,
+                  "${grouppedbycat.kategorie}: (${grouppedbycat.anzahlgerichte})",
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
