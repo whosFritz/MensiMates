@@ -360,12 +360,12 @@ class MensiScheduleState extends State<MensiSchedule>
           canTapOnHeader: true,
           backgroundColor: decideContainerColor(grouppedbycat.kategorie),
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
+            return FittedBox(
+              fit: BoxFit.fitWidth,
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(10, 4, 4, 4),
                     child: decideIconFile(grouppedbycat.kategorie),
                   ),
                   const SizedBox(
