@@ -331,11 +331,24 @@ class MensiScheduleState extends State<MensiSchedule>
     return groups.values.toList();
   }
 
+  int findinitalPagedisplay(List<DishGroupDate> groupedDishesDat) {
+    int indexToBeReturned = 0;
+    int i = 0;
+    for (final gruppe in groupedDishesDat) {
+      if (DateFormat("yyyy-MM-dd").format(gruppe.date) ==
+          DateFormat("yyyy-MM-dd").format(heute)) {
+        indexToBeReturned = i;
+      }
+    }
+    return indexToBeReturned;
+  }
+
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
     final groupedDishesDat = groupByDate(dishes);
     return PageView.builder(
-        controller: PageController(initialPage: 2),
+        controller: PageController(
+            initialPage: findinitalPagedisplay(groupedDishesDat)),
         itemCount: groupedDishesDat.length,
         onPageChanged: (int index) {
           print(groupedDishesDat[index].date);
