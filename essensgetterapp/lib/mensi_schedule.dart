@@ -335,10 +335,14 @@ class MensiScheduleState extends State<MensiSchedule>
     int indexToBeReturned = 0;
     int i = 0;
     for (final gruppe in groupedDishesDat) {
+      print("for each anfang");
       if (DateFormat("yyyy-MM-dd").format(gruppe.date) ==
           DateFormat("yyyy-MM-dd").format(heute)) {
+        print("hit");
         indexToBeReturned = i;
+        break;
       }
+      i++;
     }
     return indexToBeReturned;
   }
