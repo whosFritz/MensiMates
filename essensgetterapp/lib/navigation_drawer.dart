@@ -64,8 +64,8 @@ List<Mensi> mensenliste = [
 ];
 
 class MyNavigationDrawer extends StatefulWidget {
-  const MyNavigationDrawer({super.key});
-
+  const MyNavigationDrawer({super.key, required this.mensipara});
+  final Mensi mensipara;
   @override
   State<MyNavigationDrawer> createState() => _MyNavigationDrawerState();
 }

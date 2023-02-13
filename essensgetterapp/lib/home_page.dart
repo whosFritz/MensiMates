@@ -14,7 +14,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const MyNavigationDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.orange,
           title: const Text("Home"),
