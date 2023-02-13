@@ -23,6 +23,43 @@ class MensiSchedule extends StatefulWidget {
   }
 }
 
+void navigateToDetailRatingPage(
+    BuildContext context, Dish dishdetailed, Mensi mensiobj) {
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) {
+      return DetailRatingPage(
+        dishdetailed: dishdetailed,
+        mensiobjfordetailpage: mensiobj,
+      );
+    },
+  ));
+}
+
+// Methode um Gerichte zu holen und umzuwandeln.
+Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
+  // ! Caching
+  // try {
+  String mealsForFritzLink = decideMensi(mensiobj.id)[0];
+  final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
+        const Duration(seconds: 6),
+      );
+  if (response.statusCode == 200) {
+    final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
+    listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
+    //! Caching
+    setofflineDishes(listvondishes);
+    return listvondishes;
+  } else {
+    throw Exception();
+  }
+  /** 
+    *! } catch (e) {
+    *!  return getofflineDishes();
+    *!}
+    */
+}
+
 class MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   // Variablen
@@ -36,7 +73,7 @@ class MensiScheduleState extends State<MensiSchedule>
   @override
   void initState() {
     setState(() {
-      dishesfromOle = getDishesfromOle();
+      dishesfromOle = getDishesfromOle(widget.mensiobj);
     });
     super.initState();
   }
@@ -209,31 +246,6 @@ class MensiScheduleState extends State<MensiSchedule>
       ),
     );
   }
-
-  // Methode um Gerichte zu holen und umzuwandeln.
-  Future<List<Dish>> getDishesfromOle() async {
-    // ! Caching
-    // try {
-    String mealsForFritzLink = decideMensi(widget.mensiobj.id)[0];
-    final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
-          const Duration(seconds: 6),
-        );
-    if (response.statusCode == 200) {
-      final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-      List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
-      listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-      //! Caching
-      setofflineDishes(listvondishes);
-      return listvondishes;
-    } else {
-      throw Exception();
-    }
-    /** 
-    *! } catch (e) {
-    *!  return getofflineDishes();
-    *!}
-    */
-  }
   /*
   // Methode um Gerichte nach Datum zu filtern
   Future<List<Dish>> filterDishes() async {
@@ -245,21 +257,11 @@ class MensiScheduleState extends State<MensiSchedule>
   */
 
 //Navigation zur Detailpage
-  void navigateToDetailRatingPage(BuildContext context, Dish dishdetailed) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-        return DetailRatingPage(
-          dishdetailed: dishdetailed,
-          mensiID: widget.mensiobj.id,
-        );
-      },
-    ));
-  }
 
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
-      dishesfromOle = getDishesfromOle();
+      dishesfromOle = getDishesfromOle(widget.mensiobj);
     });
   }
 
@@ -415,16 +417,7 @@ class MensiScheduleState extends State<MensiSchedule>
               Dish dish = grouppedbycat.gerichteingruppe[index];
               return InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return DetailRatingPage(
-                          dishdetailed: dish,
-                          mensiID: widget.mensiobj.id,
-                        );
-                      },
-                    ),
-                  );
+                  navigateToDetailRatingPage(context, dish, widget.mensiobj);
                 },
                 child: buildlistitemBox(context, dish),
               );
@@ -677,7 +670,7 @@ Color decideContainerColor(String category) {
       colors = const Color.fromARGB(255, 41, 218, 224);
       break;
     case "Grill":
-      colors = Color.fromARGB(255, 255, 178, 62);
+      colors = const Color.fromARGB(255, 255, 178, 62);
       break;
     case "Pizza":
       colors = const Color.fromARGB(255, 243, 208, 111);
