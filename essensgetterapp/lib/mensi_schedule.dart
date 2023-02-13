@@ -71,7 +71,9 @@ class MensiScheduleState extends State<MensiSchedule>
           ),
         ),
       ),
-      drawer: const MyNavigationDrawer(),
+      drawer: MyNavigationDrawer(
+        mensipara: widget.mensiobj,
+      ),
       body: SafeArea(
         child: GestureDetector(
           child: Column(
@@ -661,7 +663,7 @@ Color decideContainerColor(String category) {
       colors = const Color.fromARGB(255, 223, 104, 58);
       break;
     case "Pizza":
-      colors = Color.fromARGB(255, 243, 208, 111);
+      colors = const Color.fromARGB(255, 243, 208, 111);
       break;
     case "Suppe / Eintopf":
       colors = const Color.fromARGB(255, 154, 202, 66);

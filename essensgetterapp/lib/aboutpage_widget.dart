@@ -145,7 +145,8 @@ class _AboutPageState extends State<AboutPage> {
                                           style: TextStyle(
                                               fontFamily: "Open Sans",
                                               color: Colors.black,
-                                              fontSize: 15,fontWeight: FontWeight.bold)),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold)),
                                     )
                                   ],
                                 ),

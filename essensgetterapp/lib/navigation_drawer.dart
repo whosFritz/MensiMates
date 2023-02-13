@@ -64,8 +64,8 @@ List<Mensi> mensenliste = [
 ];
 
 class MyNavigationDrawer extends StatefulWidget {
-  const MyNavigationDrawer({super.key});
-
+  const MyNavigationDrawer({super.key, required this.mensipara});
+  final Mensi mensipara;
   @override
   State<MyNavigationDrawer> createState() => _MyNavigationDrawerState();
 }
@@ -74,6 +74,21 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildHeader(context),
+            buildMensiItems(context),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildHeader(BuildContext context) {
@@ -118,11 +133,15 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
                     leading: const Icon(Icons.food_bank_outlined),
                     title: Text(mensi.name),
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MensiSchedule(
-                                mensiobj: mensi,
-                              )));
+                      if (widget.mensipara.id == mensi.id) {
+                        Navigator.pop(context);
+                      } else {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MensiSchedule(
+                                  mensiobj: mensi,
+                                )));
+                      }
                     },
                   );
                 })),
@@ -137,21 +156,6 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
             },
           )
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            buildHeader(context),
-            buildMensiItems(context),
-          ],
-        ),
       ),
     );
   }
