@@ -25,7 +25,6 @@ The app also includes a rating system that allows users to rate the meals.
 <p>Displays meals and meal types of a Mensa</p>
 <p>Will include a rating system for meals</p>
 <p>User-friendly interface</p>
-<p>Scrollable list of meals</p>
 <p>Built using Flutter and Dart</p>
 
 ## Getting started
