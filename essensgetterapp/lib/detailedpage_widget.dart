@@ -218,7 +218,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                         votes: dishobj.votes);
                                     // Convert the Dish object to JSON
                                     String dishjsontosend = dishtosend.toJson();
-                                    debugPrint(dishjsontosend);
                                     sendMealsbacktoOle(dishjsontosend);
                                     showSnackBar1(context);
                                     ratedDishesIDList.add(dishobj.id);
@@ -226,7 +225,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                     writeListToStorage(ratedDishesIDList);
                                     Navigator.pop(context);
                                     /*
-                                    ? trying to fix refreshing button
+                                    //// ? müssen wir mal fixen
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                             builder: (context) => MensiSchedule(
@@ -234,12 +233,12 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                                       .mensiobjfordetailpage,
                                                 )))
                                         .then((value) {
-                                      dishesfromOle = getDishesfromOle(
-                                          widget.mensiobjfordetailpage);
-
                                       Future.delayed(
                                           const Duration(milliseconds: 1000),
-                                          () {});
+                                          () {
+                                        dishesfromOle = getDishesfromOle(
+                                            widget.mensiobjfordetailpage);
+                                      });
                                     });
                                     */
                                   } else {
