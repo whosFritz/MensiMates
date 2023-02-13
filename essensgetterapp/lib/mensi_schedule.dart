@@ -59,6 +59,7 @@ class MensiScheduleState extends State<MensiSchedule>
         ],
         iconTheme: const IconThemeData(color: Colors.blueGrey),
         backgroundColor: Colors.white,
+        centerTitle: true,
         title: FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
@@ -676,7 +677,7 @@ Color decideContainerColor(String category) {
       colors = const Color.fromARGB(255, 41, 218, 224);
       break;
     case "Grill":
-      colors = const Color.fromARGB(255, 223, 104, 58);
+      colors = Color.fromARGB(255, 255, 178, 62);
       break;
     case "Pizza":
       colors = const Color.fromARGB(255, 243, 208, 111);
