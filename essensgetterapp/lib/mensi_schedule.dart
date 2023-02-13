@@ -43,32 +43,7 @@ class MensiScheduleState extends State<MensiSchedule>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const SizedBox(
-              height: 24 * 1.5,
-              width: 24 * 1.5,
-              child: Icon(Icons.sync),
-            ),
-            onPressed: () {
-              // Perform the sync operation here
-            },
-          )
-        ],
-        iconTheme: const IconThemeData(color: Colors.blueGrey),
-        backgroundColor: Colors.white,
-        title: Text(
-          widget.mensiobj.name,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: "Open Sans",
-              fontSize: 20,
-              color: Colors.black,
-              letterSpacing: 2),
-        ),
-        centerTitle: true,
-      ),
+      
       drawer: const MyNavigationDrawer(),
       body: SafeArea(
         child: GestureDetector(
@@ -118,7 +93,32 @@ class MensiScheduleState extends State<MensiSchedule>
               ),
               const Divider(
                 thickness: 3,
-                color: Color(0xFFFA9C00),
+                color: Color(0xFFFA9C00)appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const SizedBox(
+              height: 24 * 1.5,
+              width: 24 * 1.5,
+              child: Icon(Icons.sync),
+            ),
+            onPressed: () {
+              // Perform the sync operation here
+            },
+          )
+        ],
+        iconTheme: const IconThemeData(color: Colors.blueGrey),
+        backgroundColor: Colors.white,
+        title: Text(
+          widget.mensiobj.name,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFamily: "Open Sans",
+              fontSize: 20,
+              color: Colors.black,
+              letterSpacing: 2),
+        ),
+        centerTitle: true,
+      ),,
               ),
               Expanded(
                   child: FutureBuilder(
@@ -363,6 +363,7 @@ class MensiScheduleState extends State<MensiSchedule>
       final grouppedbycat = grouppedbycatListe[i];
       exppanelist.add(
         ExpansionPanel(
+          canTapOnHeader: true,
           backgroundColor: decideContainerColor(grouppedbycat.kategorie),
           headerBuilder: (BuildContext context, bool isExpanded) {
             return Row(
