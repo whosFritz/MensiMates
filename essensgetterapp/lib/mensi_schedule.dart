@@ -335,10 +335,8 @@ class MensiScheduleState extends State<MensiSchedule>
     int indexToBeReturned = 0;
     int i = 0;
     for (final gruppe in groupedDishesDat) {
-      print("for each anfang");
       if (DateFormat("yyyy-MM-dd").format(gruppe.date) ==
           DateFormat("yyyy-MM-dd").format(heute)) {
-        print("hit");
         indexToBeReturned = i;
         break;
       }
@@ -355,7 +353,6 @@ class MensiScheduleState extends State<MensiSchedule>
             initialPage: findinitalPagedisplay(groupedDishesDat)),
         itemCount: groupedDishesDat.length,
         onPageChanged: (int index) {
-          print(groupedDishesDat[index].date);
           setState(() {
             anzeigeDatum = groupedDishesDat[index].date;
             _expansionState = {};
