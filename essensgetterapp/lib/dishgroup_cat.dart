@@ -4,12 +4,13 @@ class DishGroupCat {
   final String kategorie;
   final List<Dish> gerichteingruppe;
   bool isexpanded;
+  int anzahlgerichte;
 
   DishGroupCat(
-    this.kategorie,
-    this.gerichteingruppe,
-    this.isexpanded
-  );
+      {required this.kategorie,
+      required this.gerichteingruppe,
+      required this.isexpanded,
+      this.anzahlgerichte = 0});
 
   @override
   String toString() {
