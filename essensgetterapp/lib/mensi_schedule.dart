@@ -12,6 +12,8 @@ import 'dishgroup_date.dart';
 import "mensi_class.dart";
 import 'navigation_drawer.dart';
 
+late Future<List<Dish>> dishesfromOle;
+
 class MensiSchedule extends StatefulWidget {
   final Mensi mensiobj;
 
@@ -23,47 +25,9 @@ class MensiSchedule extends StatefulWidget {
   }
 }
 
-void navigateToDetailRatingPage(
-    BuildContext context, Dish dishdetailed, Mensi mensiobj) {
-  Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) {
-      return DetailRatingPage(
-        dishdetailed: dishdetailed,
-        mensiobjfordetailpage: mensiobj,
-      );
-    },
-  ));
-}
-
-// Methode um Gerichte zu holen und umzuwandeln.
-Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
-  // ! Caching
-  // try {
-  String mealsForFritzLink = decideMensi(mensiobj.id)[0];
-  final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
-        const Duration(seconds: 6),
-      );
-  if (response.statusCode == 200) {
-    final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-    List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
-    listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-    //! Caching
-    setofflineDishes(listvondishes);
-    return listvondishes;
-  } else {
-    throw Exception();
-  }
-  /** 
-    *! } catch (e) {
-    *!  return getofflineDishes();
-    *!}
-    */
-}
-
 class MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   // Variablen
-  late Future<List<Dish>> dishesfromOle;
   int currentPage = 0;
   DateTime anzeigeDatum = DateTime.now();
   DateTime heute = DateTime.now();
@@ -689,4 +653,41 @@ Color decideContainerColor(String category) {
       break;
   }
   return colors;
+}
+
+void navigateToDetailRatingPage(
+    BuildContext context, Dish dishdetailed, Mensi mensiobj) {
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) {
+      return DetailRatingPage(
+        dishdetailed: dishdetailed,
+        mensiobjfordetailpage: mensiobj,
+      );
+    },
+  ));
+}
+
+// Methode um Gerichte zu holen und umzuwandeln.
+Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
+  // ! Caching
+  // try {
+  String mealsForFritzLink = decideMensi(mensiobj.id)[0];
+  final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
+        const Duration(seconds: 6),
+      );
+  if (response.statusCode == 200) {
+    final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
+    listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
+    //! Caching
+    setofflineDishes(listvondishes);
+    return listvondishes;
+  } else {
+    throw Exception();
+  }
+  /** 
+    *! } catch (e) {
+    *!  return getofflineDishes();
+    *!}
+    */
 }

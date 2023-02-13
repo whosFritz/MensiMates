@@ -225,6 +225,23 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                     // * Then save dish to memory
                                     writeListToStorage(ratedDishesIDList);
                                     Navigator.pop(context);
+                                    /*
+                                    ? trying to fix refreshing button
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => MensiSchedule(
+                                                  mensiobj: widget
+                                                      .mensiobjfordetailpage,
+                                                )))
+                                        .then((value) {
+                                      dishesfromOle = getDishesfromOle(
+                                          widget.mensiobjfordetailpage);
+
+                                      Future.delayed(
+                                          const Duration(milliseconds: 1000),
+                                          () {});
+                                    });
+                                    */
                                   } else {
                                     // * Restrict hrim cause not rated everything
                                     showSnackbar3(context);
