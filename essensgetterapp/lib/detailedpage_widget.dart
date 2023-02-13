@@ -55,8 +55,9 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                   color: decideContainerColor(widget.dishdetailed.category),
                   child: MensiScheduleState.buildlistitemBox(
                       context, widget.dishdetailed)),
-              Expanded(
-                child: SingleChildScrollView(
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
                       Row(
@@ -227,19 +228,14 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                   }
                                 }
                               },
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                              child: const Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     30, 5, 30, 5),
-                                child: Text(
-                                  "Bewerten",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                          fontFamily: "Open Sans",
-                                          fontSize: 20,
-                                          color: Colors.white),
-                                ),
+                                child: Text("Bewerten",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Open Sans",
+                                        fontSize: 20)),
                               ),
                             ),
                           ),

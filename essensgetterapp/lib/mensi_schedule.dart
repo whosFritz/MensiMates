@@ -29,6 +29,7 @@ class MensiScheduleState extends State<MensiSchedule>
   late Future<List<Dish>> dishesfromOle;
   int currentPage = 0;
   DateTime anzeigeDatum = DateTime.now();
+  DateTime heute = DateTime.now();
   Map<int, bool> _expansionState = {};
 
   // Initiierung
@@ -337,6 +338,7 @@ class MensiScheduleState extends State<MensiSchedule>
         controller: PageController(initialPage: 2),
         itemCount: groupedDishesDat.length,
         onPageChanged: (int index) {
+          print(groupedDishesDat[index].date);
           setState(() {
             anzeigeDatum = groupedDishesDat[index].date;
             _expansionState = {};
