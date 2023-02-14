@@ -1,22 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-// Import for Android features.
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-// Import for iOS features.
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-// #enddocregion platform_imports
+import 'package:essensgetterapp/mensi_schedule.dart';
+import "package:flutter/material.dart";
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
+import 'dish_class.dart';
 
 class WebPageSearch extends StatefulWidget {
-  const WebPageSearch({super.key, required this.searchString});
-  final String searchString;
+  const WebPageSearch({super.key, required this.searchDish});
+  final Dish searchDish;
 
   @override
   State<WebPageSearch> createState() => _WebPageSearchState();
 }
 
 class _WebPageSearchState extends State<WebPageSearch> {
-  late WebViewController controllerWeb;
-
   @override
   void initState() {
     super.initState();
@@ -25,8 +21,19 @@ class _WebPageSearchState extends State<WebPageSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const Text("Google-Picture-Search"), centerTitle: true),
-        body: WebViewWidget(controller: controllerWeb));
+      appBar:
+          AppBar(title: const Text("Google-Picture-Search"), centerTitle: true, backgroundColor: decideContainerColor(widget.searchDish.category),),
+      body: Column(
+        children: [
+          Expanded(
+            child: InAppWebView(
+              initialUrlRequest: URLRequest(
+              url: Uri.parse(
+                  'https://www.google.com/search?q=${widget.searchDish.name}&tbm=isch')),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

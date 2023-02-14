@@ -1,36 +1,42 @@
 import 'package:essensgetterapp/aboutpage_widget.dart';
 import 'package:essensgetterapp/home_page.dart';
 import 'package:essensgetterapp/mensi_schedule.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mensi_class.dart';
 
 List<Mensi> mensenliste = [
   Mensi(id: 153, name: "Cafeteria Dittrichring", oeffnungszeitenalles: [
-    "Montag-Donnerstag 8.00-16.30 Uhr",
-    "Freitag 8.00-15.00 Uhr",
+    "Montag-Donnerstag: 8.00-16.30 Uhr",
+    "Freitag: 8.00-15.00 Uhr",
     "Mittagessen:",
-    "Montag-Freitag 11.30-13.30 Uhr"
+    "Montag-Freitag: 11.30-13.30 Uhr"
   ]),
   Mensi(id: 118, name: "Mensa Academica", oeffnungszeitenalles: [
     "Mensa:",
-    "Montag-Freitag 11.00-14.00 Uhr",
+    "Montag-Freitag: 11.00-14.00 Uhr",
     "Cafeteria:",
-    "Montag-Freitag8.30-15.00 Uhr"
+    "Montag-Freitag: 8.30-15.00 Uhr"
   ]),
   Mensi(id: 115, name: "Mensa am Elsterbecken", oeffnungszeitenalles: [
     "Mensa:",
-    "Montag-Freitag 11.00-14.00 Uhr",
+    "Montag-Freitag: 11.00-14.00 Uhr",
     "Cafeteria:",
-    "Montag-Donnerstag	09.00-17.00 Uhr",
-    "Freitag 09.00-15.00 Uhr",
+    "Montag-Donnerstag: 09.00-17.00 Uhr",
+    "Freitag: 09.00-15.00 Uhr",
     "Kaffeeinsel im OG:",
-    "Montag-Freitag:	11.00-14.00 Uhr"
+    "Montag-Freitag: 11.00-14.00 Uhr"
+  ]),
+  Mensi(id: 140, name: "Mensa Schönauer Straße", oeffnungszeitenalles: [
+    "Montag-Freitag	8.30-15.45 Uhr",
+    "Mittagessen:",
+    "Montag-Freitag: 11.30-14.00 Uhr"
   ]),
   Mensi(id: 162, name: "Mensa am Medizincampus", oeffnungszeitenalles: [
     "Mensa:",
-    "Montag-Freitag 10.45-14.00 Uhr",
+    "Montag-Freitag: 10.45-14.00 Uhr",
     "Cafeteria:",
-    "Montag-Freitag 08.00-15.00 Uhr"
+    "Montag-Freitag: 08.00-15.00 Uhr"
   ]),
   Mensi(id: 106, name: "Mensa am Park", oeffnungszeitenalles: [
     "Montag-Donnerstag: 10.45-18.30 Uhr",
@@ -39,28 +45,23 @@ List<Mensi> mensenliste = [
   ]),
   Mensi(id: 111, name: "Mensa Peterssteinweg", oeffnungszeitenalles: [
     "Mensa:",
-    "Montag-Freitag	11.00-14.00 Uhr",
+    "Montag-Freitag: 11.00-14.00 Uhr",
     "Cafeteria:",
-    "Montag-Freitag	11.00-14.00 Uhr"
+    "Montag-Freitag: 11.00-14.00 Uhr"
   ]),
   Mensi(id: 170, name: "Mensa Tierklinik", oeffnungszeitenalles: [
     "Mensa:",
-    "Montag-Freitag 11.00-14.00 Uhr",
+    "Montag-Freitag: 11.00-14.00 Uhr",
     "Cafeteria:",
-    "Montag-Donnerstag	7.30-14.15 Uhr",
-    "Freitag	7.30-14.00 Uhr"
+    "Montag-Donnerstag: 7.30-14.15 Uhr",
+    "Freitag: 7.30-14.00 Uhr"
   ]),
   Mensi(id: 127, name: "Mensaria am Botanischen Garten", oeffnungszeitenalles: [
     "Mensa:",
-    "Montag-Freitag	11.00-14.00 Uhr",
+    "Montag-Freitag: 11.00-14.00 Uhr",
     "Cafeteria:",
-    "Montag-Freitag	09.00-14.00 Uhr"
-  ]),
-  Mensi(id: 140, name: "Mensa Schönauer Straße", oeffnungszeitenalles: [
-    "Montag-Freitag	8.30-15.45 Uhr",
-    "Mittagessen:",
-    "Montag-Freitag	11.30-14.00 Uhr"
-  ]),
+    "Montag-Freitag: 09.00-14.00 Uhr"
+  ])
 ];
 
 class MyNavigationDrawer extends StatefulWidget {
@@ -123,29 +124,35 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
             },
           ),
           const Divider(color: Colors.grey),
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 1.5,
-            child: ListView.builder(
-                itemCount: mensenliste.length,
-                itemBuilder: ((context, index) {
-                  final mensi = mensenliste[index];
-                  return ListTile(
-                    leading: const Icon(Icons.food_bank_outlined),
-                    title: Text(mensi.name),
-                    onTap: () {
-                      if (widget.mensipara.id == mensi.id) {
-                        Navigator.pop(context);
-                      } else {
-                        Navigator.pop(context);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MensiSchedule(
-                                  mensiobj: mensi,
-                                )));
-                      }
-                    },
-                  );
-                })),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 2,
+              child: CupertinoScrollbar(
+                child: ListView.builder(
+                    itemCount: mensenliste.length,
+                    itemBuilder: ((context, index) {
+                      final mensi = mensenliste[index];
+                      return ListTile(
+                        leading: const Icon(Icons.food_bank_outlined),
+                        title: Text(mensi.name),
+                        onTap: () {
+                          if (widget.mensipara.id == mensi.id) {
+                            Navigator.pop(context);
+                          } else {
+                            Navigator.pop(context);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MensiSchedule(
+                                      mensiobj: mensi,
+                                    )));
+                          }
+                        },
+                      );
+                    })),
+              ),
+            ),
           ),
+          const Divider(color: Colors.grey),
           ListTile(
             leading: const Icon(Icons.info_outline_rounded),
             title: const Text("About"),

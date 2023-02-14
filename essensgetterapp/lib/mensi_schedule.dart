@@ -435,14 +435,12 @@ class MensiScheduleState extends State<MensiSchedule>
                     ),
                     IconButton(
                       onPressed: () {
-                        gerichtesearch(dish.name);
-                        /*
+                        // gerichtesearch(dish.name);
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) {
-                            return WebPageSearch(searchString: dish.name);
+                            return WebPageSearch(searchDish: dish);
                           },
                         ));
-                        */
                       },
                       icon: const Icon(Icons.search),
                     )
