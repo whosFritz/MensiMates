@@ -106,7 +106,7 @@ class _AboutPageState extends State<AboutPage> {
                                             context: context,
                                             applicationName: "MensiMates",
                                             applicationVersion:
-                                                "Preview for Ole",
+                                                "Beta 2.1",
                                             applicationLegalese:
                                                 "\u00a9 2023 MensiMates by Fritz Schubert",
                                             applicationIcon: Padding(
