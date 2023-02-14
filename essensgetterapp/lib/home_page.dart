@@ -1,7 +1,17 @@
 import "package:flutter/material.dart";
 import "mensi_schedule.dart";
+import "mensi_class.dart";
 import "navigation_drawer.dart";
 import "package:quick_actions/quick_actions.dart";
+
+Mensi shortcutreturn(String type) {
+  for (final mensi in mensenliste) {
+    if (mensi.name == type) {
+      return mensi;
+    }
+  }
+  return Mensi(id: 0, name: "keine Mensa", oeffnungszeitenalles: ["immer"]);
+}
 
 class HomeScreenWidget extends StatefulWidget {
   const HomeScreenWidget({super.key});
@@ -14,15 +24,22 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   @override
   void initState() {
     super.initState();
+
     const QuickActions quickActions = QuickActions();
 
     quickActions.setShortcutItems(<ShortcutItem>[
       for (final mensi in mensenliste)
         ShortcutItem(
-            type: mensi.name,
-            localizedTitle: mensi.name,
-            icon: "launcher_icon")
+            type: mensi.name, localizedTitle: mensi.name, icon: "launcher_icon")
     ]);
+
+    quickActions.initialize((type) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  MensiSchedule(mensiobj: shortcutreturn(type))));
+    });
   }
 
   @override
