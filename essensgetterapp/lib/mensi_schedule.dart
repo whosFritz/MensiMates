@@ -1,7 +1,9 @@
 import "dart:convert";
+import "package:essensgetterapp/webpagepicsearch_page.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
+import "package:url_launcher/url_launcher.dart";
 import 'detailedpage_widget.dart';
 import "dish_class.dart";
 import "api_links.dart";
@@ -185,7 +187,9 @@ class MensiScheduleState extends State<MensiSchedule>
                             const Text(
                               "Öffnungszeiten:",
                               style: TextStyle(
-                                  fontFamily: "Open Sans", fontSize: 13),
+                                  fontFamily: "Open Sans",
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500),
                             ),
                             for (String zeile
                                 in widget.mensiobj.oeffnungszeitenalles)
@@ -429,6 +433,19 @@ class MensiScheduleState extends State<MensiSchedule>
                               fontSize: 18,
                               fontFamily: "Open Sans")),
                     ),
+                    IconButton(
+                      onPressed: () {
+                        gerichtesearch(dish.name);
+                        /*
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) {
+                            return WebPageSearch(searchString: dish.name);
+                          },
+                        ));
+                        */
+                      },
+                      icon: const Icon(Icons.search),
+                    )
                   ],
                 ),
                 Padding(
@@ -465,9 +482,6 @@ class MensiScheduleState extends State<MensiSchedule>
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -667,6 +681,11 @@ Color decideContainerColor(String category) {
       break;
   }
   return colors;
+}
+
+void gerichtesearch(String query) async {
+  final url = 'https://www.google.com/search?q=$query&tbm=isch';
+    launchUrl(Uri.parse(url));
 }
 
 void navigateToDetailRatingPage(

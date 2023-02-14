@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'mensi_schedule.dart';
 import 'navigation_drawer.dart';
 
@@ -19,24 +18,54 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           title: const Text("Home"),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-              itemCount: mensenliste.length,
-              itemBuilder: ((context, index) {
-                final mensi = mensenliste[index];
-                return ListTile(
-                  leading: const Icon(Icons.food_bank_outlined),
-                  title: Text(mensi.name),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MensiSchedule(
-                              mensiobj: mensi,
-                            )));
-                  },
-                );
-              })),
+        body: SafeArea(
+          child: GestureDetector(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(10, 30, 10, 30),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Wo möchtest du speisen? 👀",
+                          style: TextStyle(fontSize: 20, fontFamily: "Open Sans"),
+                        ),
+                      )),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
+                    child: ListView.builder(
+                        itemCount: mensenliste.length,
+                        itemBuilder: ((context, index) {
+                          final mensi = mensenliste[index];
+                          return ListTile(
+                            leading: const Icon(Icons.fastfood_outlined),
+                            title: Text(mensi.name),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => MensiSchedule(
+                                        mensiobj: mensi,
+                                      )));
+                            },
+                          );
+                        })),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ));
   }
 }

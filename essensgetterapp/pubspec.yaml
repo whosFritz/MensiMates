@@ -27,6 +27,8 @@ dependencies:
   flutter_native_splash: ^2.2.16
   msix: ^3.7.0
   package_info: ^2.0.2
+  icon_forest: ^1.1.8
+  webview_flutter: ^4.0.2
 
 dev_dependencies:
   flutter_test:

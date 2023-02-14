@@ -242,7 +242,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                     });
                                     */
                                   } else {
-                                    // * Restrict hrim cause not rated everything
+                                    // * Restrict user cause not rated everything
                                     showSnackbar3(context);
                                   }
                                 }
