@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "mensi_schedule.dart";
 import "navigation_drawer.dart";
-import "package:quick_actions/quick_actions.dart";
+
 
 class HomeScreenWidget extends StatefulWidget {
   const HomeScreenWidget({super.key});
@@ -14,15 +14,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   @override
   void initState() {
     super.initState();
-    const QuickActions quickActions = QuickActions();
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      for (final mensi in mensenliste)
-        ShortcutItem(
-            type: mensi.name,
-            localizedTitle: mensi.name,
-            icon: "launcher_icon")
-    ]);
   }
 
   @override

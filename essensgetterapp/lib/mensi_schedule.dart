@@ -683,7 +683,7 @@ Color decideContainerColor(String category) {
 
 void gerichtesearch(String query) async {
   final url = 'https://www.google.com/search?q=$query&tbm=isch';
-    launchUrl(Uri.parse(url));
+  launchUrl(Uri.parse(url));
 }
 
 void navigateToDetailRatingPage(
