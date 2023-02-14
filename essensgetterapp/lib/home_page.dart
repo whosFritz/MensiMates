@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'mensi_schedule.dart';
-import 'navigation_drawer.dart';
+import "package:flutter/material.dart";
+import "mensi_schedule.dart";
+import "navigation_drawer.dart";
+import "package:quick_actions/quick_actions.dart";
 
 class HomeScreenWidget extends StatefulWidget {
   const HomeScreenWidget({super.key});
@@ -10,6 +11,20 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
+  @override
+  void initState() {
+    super.initState();
+    const QuickActions quickActions = QuickActions();
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      for (final mensi in mensenliste)
+        ShortcutItem(
+            type: mensi.name,
+            localizedTitle: mensi.name,
+            icon: "launcher_icon")
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +45,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                   child: Container(
                       decoration: BoxDecoration(
                         color: Colors.orange,
-                        
                         borderRadius: BorderRadius.circular(10),
                       ),
                       alignment: Alignment.center,
@@ -38,7 +52,8 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                         padding: EdgeInsets.all(10),
                         child: Text(
                           "Wo möchtest du speisen? 👀",
-                          style: TextStyle(fontSize: 20, fontFamily: "Open Sans"),
+                          style:
+                              TextStyle(fontSize: 20, fontFamily: "Open Sans"),
                         ),
                       )),
                 ),

@@ -28,7 +28,7 @@ List<Mensi> mensenliste = [
     "Montag-Freitag: 11.00-14.00 Uhr"
   ]),
   Mensi(id: 140, name: "Mensa Schönauer Straße", oeffnungszeitenalles: [
-    "Montag-Freitag	8.30-15.45 Uhr",
+    "Montag-Freitag: 8.30-15.45 Uhr",
     "Mittagessen:",
     "Montag-Freitag: 11.30-14.00 Uhr"
   ]),
@@ -72,11 +72,6 @@ class MyNavigationDrawer extends StatefulWidget {
 }
 
 class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
