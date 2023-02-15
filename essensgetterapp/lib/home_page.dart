@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
+import "package:quick_actions/quick_actions.dart";
+import "mensi_class.dart";
 import "mensi_schedule.dart";
 import "navigation_drawer.dart";
-
 
 class HomeScreenWidget extends StatefulWidget {
   const HomeScreenWidget({super.key});
@@ -10,10 +11,35 @@ class HomeScreenWidget extends StatefulWidget {
   State<HomeScreenWidget> createState() => _HomeScreenWidgetState();
 }
 
+Mensi shortcutreturn(String type) {
+  for (final mensi in mensenliste) {
+    if (mensi.name == type) {
+      return mensi;
+    }
+  }
+  return Mensi(id: 0, name: "keine Mensa", oeffnungszeitenalles: ["immer"]);
+}
+
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   @override
   void initState() {
     super.initState();
+
+    const QuickActions quickActions = QuickActions();
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      for (final mensi in mensenliste)
+        ShortcutItem(
+            type: mensi.name, localizedTitle: mensi.name, icon: "launcher_icon")
+    ]);
+
+    quickActions.initialize((type) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  MensiSchedule(mensiobj: shortcutreturn(type))));
+    });
   }
 
   @override
@@ -27,33 +53,58 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         body: SafeArea(
           child: GestureDetector(
             child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(10, 30, 10, 30),
                   child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(10),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Wo möchtest du speisen?",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "Open Sans",
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(4),
+                                child: Text(
+                                  "👀",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      alignment: Alignment.center,
-                      child: const Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          "Wo möchtest du speisen? 👀",
-                          style:
-                              TextStyle(fontSize: 20, fontFamily: "Open Sans"),
-                        ),
-                      )),
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
-                    child: ListView.builder(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Center(
+                      child: ListView.builder(
                         itemCount: mensenliste.length,
-                        itemBuilder: ((context, index) {
+                        itemBuilder: (context, index) {
                           final mensi = mensenliste[index];
                           return ListTile(
                             leading: const Icon(Icons.fastfood_outlined),
@@ -61,12 +112,15 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                             onTap: () {
                               Navigator.pop(context);
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MensiSchedule(
-                                        mensiobj: mensi,
-                                      )));
+                                builder: (context) => MensiSchedule(
+                                  mensiobj: mensi,
+                                ),
+                              ));
                             },
                           );
-                        })),
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ],

@@ -1,4 +1,5 @@
 import "dart:convert";
+import "package:collection/collection.dart";
 import "package:essensgetterapp/webpagepicsearch_page.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
@@ -305,7 +306,9 @@ class MensiScheduleState extends State<MensiSchedule>
       groups[cat]!.gerichteingruppe.add(dish);
       groups[cat]!.anzahlgerichte += 1;
     }
-    return groups.values.toList();
+    List<DishGroupCat> gruppenListeCat = groups.values.toList();
+    gruppenListeCat.sort((a, b) => a.kategorie.compareTo(b.kategorie));
+    return gruppenListeCat;
   }
 
   int findinitalPagedisplay(List<DishGroupDate> groupedDishesDat) {
@@ -710,6 +713,7 @@ Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
     final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
     List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
     listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
+    // ? removeFalseInformation(listvondishes);
     //! Caching
     setofflineDishes(listvondishes);
     return listvondishes;
@@ -722,3 +726,19 @@ Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
     *!}
     */
 }
+
+/*
+void removeFalseInformation(List<Dish> dishes) {
+  List<String> striiings = [];
+  for (var dish in dishes) {
+    if (dish.category == "Fleischgericht") {
+      if (dish.description.contains("Vegetarisches Gericht") ||
+          dish.description.contains("Veganes Gericht")) {
+        dish.description.replaceAll("Vegetarisches Gericht", " ");
+        dish.description.replaceAll("Veganes Gericht", " ");
+        striiings = dish.description.split(", ").toList();
+      }
+    }
+  }
+}
+*/
