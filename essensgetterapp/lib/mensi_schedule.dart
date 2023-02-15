@@ -565,7 +565,7 @@ Image decideIconFile(String iconmealtype) {
           width: 40, fit: BoxFit.scaleDown);
       break;
     case "Smoothie":
-      icon = Image.asset("assets/images/smoothie-icon.png",
+      icon = Image.asset("assets/images/smoothie3-icon.png",
           width: 40, fit: BoxFit.scaleDown);
       break;
     case "WOK":
@@ -642,7 +642,7 @@ Color decideContainerColor(String category) {
       colors = const Color.fromARGB(255, 134, 107, 230);
       break;
     case "Smoothie":
-      colors = const Color.fromARGB(255, 179, 97, 199);
+      colors = Color.fromARGB(255, 230, 121, 175);
       break;
     case "WOK":
       colors = const Color.fromARGB(255, 211, 183, 58);
