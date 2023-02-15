@@ -1,6 +1,6 @@
 import "dart:convert";
-import "package:collection/collection.dart";
 import "package:essensgetterapp/webpagepicsearch_page.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
@@ -16,6 +16,7 @@ import "mensi_class.dart";
 import 'navigation_drawer.dart';
 
 late Future<List<Dish>> dishesfromOle;
+late PageController pgcontroller;
 
 class MensiSchedule extends StatefulWidget {
   final Mensi mensiobj;
@@ -51,18 +52,8 @@ class MensiScheduleState extends State<MensiSchedule>
       appBar: AppBar(
         actions: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-            child: IconButton(
-              icon: const SizedBox(
-                height: 24 * 1.5,
-                width: 24 * 1.5,
-                child: Icon(Icons.sync),
-              ),
-              onPressed: () {
-                refresh();
-              },
-            ),
-          )
+              padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+              child: platformPageViewButtons())
         ],
         iconTheme: const IconThemeData(color: Colors.blueGrey),
         backgroundColor: Colors.white,
@@ -228,13 +219,69 @@ class MensiScheduleState extends State<MensiSchedule>
   }
   */
 
-//Navigation zur Detailpage
-
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
       dishesfromOle = getDishesfromOle(widget.mensiobj);
     });
+  }
+
+  Widget platformPageViewButtons() {
+    if (defaultTargetPlatform != TargetPlatform.android &&
+        defaultTargetPlatform != TargetPlatform.iOS) {
+      return Row(
+        children: [
+          Tooltip(
+            message: "Vorheriger Tag",
+            child: IconButton(
+                onPressed: () {
+                  pgcontroller.previousPage(
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut);
+                },
+                icon: const Icon(Icons.keyboard_arrow_left_rounded)),
+          ),
+          Tooltip(
+            message: "Nächster Tag",
+            child: IconButton(
+                onPressed: () {
+                  pgcontroller.nextPage(
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut);
+                },
+                icon: const Icon(Icons.keyboard_arrow_right_rounded)),
+          ),
+          Tooltip(
+            message: "Aktualisieren",
+            child: IconButton(
+              icon: const SizedBox(
+                height: 24 * 1.5,
+                width: 24 * 1.5,
+                child: Icon(Icons.sync),
+              ),
+              onPressed: () {
+                refresh();
+              },
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        children: [
+          IconButton(
+            icon: const SizedBox(
+              height: 24 * 1.5,
+              width: 24 * 1.5,
+              child: Icon(Icons.sync),
+            ),
+            onPressed: () {
+              refresh();
+            },
+          ),
+        ],
+      );
+    }
   }
 
   // Reload button nur für die WebApp
@@ -331,9 +378,10 @@ class MensiScheduleState extends State<MensiSchedule>
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
     final groupedDishesDat = groupByDate(dishes);
+    pgcontroller =
+        PageController(initialPage: findinitalPagedisplay(groupedDishesDat));
     return PageView.builder(
-        controller: PageController(
-            initialPage: findinitalPagedisplay(groupedDishesDat)),
+        controller: pgcontroller,
         itemCount: groupedDishesDat.length,
         onPageChanged: (int index) {
           setState(() {
@@ -645,7 +693,7 @@ Color decideContainerColor(String category) {
       colors = const Color.fromARGB(255, 134, 107, 230);
       break;
     case "Smoothie":
-      colors = Color.fromARGB(255, 230, 121, 175);
+      colors = const Color.fromARGB(255, 230, 121, 175);
       break;
     case "WOK":
       colors = const Color.fromARGB(255, 211, 183, 58);
@@ -692,6 +740,7 @@ void gerichtesearch(String query) async {
   launchUrl(Uri.parse(url));
 }
 
+//Navigation zur Detailpage
 void navigateToDetailRatingPage(
     BuildContext context, Dish dishdetailed, Mensi mensiobj) {
   Navigator.of(context).push(MaterialPageRoute(
