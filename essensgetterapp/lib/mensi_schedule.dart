@@ -50,15 +50,18 @@ class MensiScheduleState extends State<MensiSchedule>
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: const SizedBox(
-              height: 24 * 1.5,
-              width: 24 * 1.5,
-              child: Icon(Icons.sync),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+            child: IconButton(
+              icon: const SizedBox(
+                height: 24 * 1.5,
+                width: 24 * 1.5,
+                child: Icon(Icons.sync),
+              ),
+              onPressed: () {
+                refresh();
+              },
             ),
-            onPressed: () {
-              refresh();
-            },
           )
         ],
         iconTheme: const IconThemeData(color: Colors.blueGrey),
