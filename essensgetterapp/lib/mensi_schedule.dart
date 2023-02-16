@@ -490,8 +490,7 @@ class MensiScheduleState extends State<MensiSchedule>
                     IconButton(
                       onPressed: () {
                         if (defaultTargetPlatform != TargetPlatform.android &&
-                            defaultTargetPlatform != TargetPlatform.iOS &&
-                            defaultTargetPlatform != TargetPlatform.windows) {
+                            defaultTargetPlatform != TargetPlatform.iOS) {
                           gerichtesearch(dish.name);
                         } else {
                           Navigator.of(context).push(MaterialPageRoute(
