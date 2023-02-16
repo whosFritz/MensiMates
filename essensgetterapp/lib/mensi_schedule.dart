@@ -489,12 +489,17 @@ class MensiScheduleState extends State<MensiSchedule>
                     ),
                     IconButton(
                       onPressed: () {
-                        // gerichtesearch(dish.name);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) {
-                            return WebPageSearch(searchDish: dish);
-                          },
-                        ));
+                        if (defaultTargetPlatform != TargetPlatform.android &&
+                            defaultTargetPlatform != TargetPlatform.iOS &&
+                            defaultTargetPlatform != TargetPlatform.windows) {
+                          gerichtesearch(dish.name);
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) {
+                              return WebPageSearch(searchDish: dish);
+                            },
+                          ));
+                        }
                       },
                       icon: const Icon(Icons.search),
                     )
