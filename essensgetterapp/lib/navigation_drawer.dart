@@ -107,58 +107,51 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
   }
 
   Widget buildMensiItems(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text("Home"),
-            onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const HomeScreenWidget()));
-            },
+    return Column(
+      children: [
+        ListTile(
+          leading: const Icon(Icons.home_outlined),
+          title: const Text("Home"),
+          onTap: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => const HomeScreenWidget()));
+          },
+        ),
+        const Divider(color: Colors.grey),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+          child: Column(
+            children: [
+          for (final mensi in mensenliste)
+            ListTile(
+              leading: const Icon(Icons.food_bank_outlined),
+              title: Text(mensi.name),
+              onTap: () {
+                if (widget.mensipara.id == mensi.id) {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MensiSchedule(
+                            mensiobj: mensi,
+                          )));
+                }
+              },
+            )
+            ],
           ),
-          const Divider(color: Colors.grey),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              child: CupertinoScrollbar(
-                child: ListView.builder(
-                    itemCount: mensenliste.length,
-                    itemBuilder: ((context, index) {
-                      final mensi = mensenliste[index];
-                      return ListTile(
-                        leading: const Icon(Icons.food_bank_outlined),
-                        title: Text(mensi.name),
-                        onTap: () {
-                          if (widget.mensipara.id == mensi.id) {
-                            Navigator.pop(context);
-                          } else {
-                            Navigator.pop(context);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MensiSchedule(
-                                      mensiobj: mensi,
-                                    )));
-                          }
-                        },
-                      );
-                    })),
-              ),
-            ),
-          ),
-          const Divider(color: Colors.grey),
-          ListTile(
-            leading: const Icon(Icons.info_outline_rounded),
-            title: const Text("About"),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AboutPage()));
-            },
-          )
-        ],
-      ),
+        ),
+        const Divider(color: Colors.grey),
+        ListTile(
+          leading: const Icon(Icons.info_outline_rounded),
+          title: const Text("About"),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AboutPage()));
+          },
+        )
+      ],
     );
   }
 }
