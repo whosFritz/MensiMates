@@ -262,6 +262,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_automation:
+    dependency: "direct main"
+    description:
+      name: flutter_automation
+      sha256: "68b53b5fb8287aa4c9707fc48db7247a69ba5878b38e2906c9296234573d77de"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter_datetime_picker:
     dependency: "direct main"
     description:

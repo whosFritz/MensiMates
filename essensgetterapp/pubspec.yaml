@@ -30,6 +30,7 @@ dependencies:
   webview_flutter: ^4.0.2
   flutter_inappwebview: ^5.7.2+3
   quick_actions: ^1.0.1
+  flutter_automation: ^2.0.0
 
 dev_dependencies:
   flutter_test:
