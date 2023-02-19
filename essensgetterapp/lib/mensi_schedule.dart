@@ -131,7 +131,7 @@ class MensiScheduleState extends State<MensiSchedule>
                           Object? errormessage = snapshot.error;
                           if (errormessage.toString() ==
                               "Failed host lookup: 'api.olech2412.de'") {
-                            return const Text("🥵 API Error 🥵");
+                            return const Text("🥵 API-Error 🥵");
                           } else {
                             return Text("🤮 $errormessage 🤮");
                           }
