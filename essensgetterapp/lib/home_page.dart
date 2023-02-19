@@ -111,7 +111,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                             leading: const Icon(Icons.fastfood_outlined),
                             title: Text(mensi.name),
                             onTap: () {
-                              Navigator.pop(context);
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => MensiSchedule(
                                   mensiobj: mensi,
@@ -128,7 +127,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                   leading: const Icon(Icons.info_outline_rounded),
                   title: const Text("About"),
                   onTap: () {
-                    Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const AboutPage()));
                   },
