@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:quick_actions/quick_actions.dart";
+import "aboutpage_widget.dart";
 import "mensi_class.dart";
 import "mensi_schedule.dart";
 import "navigation_drawer.dart";
@@ -123,6 +124,15 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     ),
                   ),
                 ),
+                ListTile(
+                  leading: const Icon(Icons.info_outline_rounded),
+                  title: const Text("About"),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AboutPage()));
+                  },
+                )
               ],
             ),
           ),
