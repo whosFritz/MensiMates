@@ -46,3 +46,5 @@ app.*.map.json
 
 # My git ignore files
 /lib/api_links.dart
+/keys/
+.gitignore
