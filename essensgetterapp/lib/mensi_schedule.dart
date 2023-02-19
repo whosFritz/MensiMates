@@ -17,6 +17,7 @@ import 'navigation_drawer.dart';
 
 late Future<List<Dish>> dishesfromOle;
 late PageController pgcontroller;
+late List<DishGroupDate> groupedDishesDat;
 
 class MensiSchedule extends StatefulWidget {
   final Mensi mensiobj;
@@ -35,6 +36,7 @@ class MensiScheduleState extends State<MensiSchedule>
   int currentPage = 0;
   DateTime anzeigeDatum = DateTime.now(), heute = DateTime.now();
   Map<int, bool> _expansionState = {};
+  int indexToBeReturned = 0;
 
   // Initiierung
   @override
@@ -80,49 +82,6 @@ class MensiScheduleState extends State<MensiSchedule>
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              blurRadius: 4,
-                              color: Color(0x33000000),
-                              offset: Offset(0, 2),
-                              spreadRadius: 2,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(DateFormat("E dd.MM.yyyy", "de_DE")
-                                .format(anzeigeDatum))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Divider(
-                thickness: 3,
-                color: Color(0xFFFA9C00),
-              ),
-              const Divider(
-                thickness: 3,
-                color: Color(0xFFFA9C00),
-              ),
               Expanded(
                   child: FutureBuilder(
                       future: dishesfromOle,
@@ -150,7 +109,6 @@ class MensiScheduleState extends State<MensiSchedule>
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // works!
                                 Container(
                                   alignment: Alignment.center,
                                   child: const Center(
@@ -208,15 +166,6 @@ class MensiScheduleState extends State<MensiSchedule>
       ),
     );
   }
-  /*
-  // Methode um Gerichte nach Datum zu filtern
-  Future<List<Dish>> filterDishes() async {
-    final dishes = await dishesfromOle;
-    return dishes.where((dish) {
-      return dish.servingDate == anzeigeDatum;
-    }).toList();
-  }
-  */
 
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
@@ -285,10 +234,6 @@ class MensiScheduleState extends State<MensiSchedule>
 
   // Reload button nur für die WebApp
   Widget platformrefreshbutton() {
-    /*
-    if (defaultTargetPlatform != TargetPlatform.android &&
-        defaultTargetPlatform != TargetPlatform.iOS) {
-          */
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
@@ -310,23 +255,7 @@ class MensiScheduleState extends State<MensiSchedule>
         ),
       ),
     );
-    /*
-    } else {
-      return Container();
-    }
-    */
   }
-
-  /*
-  Future<void> changeAnzeigeDatum(DateTime gruppendatum) async {
-    await Future.delayed(
-        const Duration(seconds: 1)); // wait for 100 millisecond
-
-    setState(() {
-      anzeigeDatum = gruppendatum;
-    });
-  }
-  */
 
   List<DishGroupDate> groupByDate(List<Dish> dishes) {
     final groups = <DateTime, DishGroupDate>{};
@@ -361,7 +290,6 @@ class MensiScheduleState extends State<MensiSchedule>
   }
 
   int findinitalPagedisplay(List<DishGroupDate> groupedDishesDat) {
-    int indexToBeReturned = 0;
     int i = 0;
     for (final gruppe in groupedDishesDat) {
       if (DateFormat("yyyy-MM-dd").format(gruppe.date) ==
@@ -374,9 +302,10 @@ class MensiScheduleState extends State<MensiSchedule>
     return indexToBeReturned;
   }
 
+
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
-    final groupedDishesDat = groupByDate(dishes);
+    groupedDishesDat = groupByDate(dishes);
     pgcontroller =
         PageController(initialPage: findinitalPagedisplay(groupedDishesDat));
     return PageView.builder(
@@ -394,15 +323,62 @@ class MensiScheduleState extends State<MensiSchedule>
           final grouppedbycatListe =
               groupByCat(groupedDishesDat[index].gerichteingruppe);
           return SingleChildScrollView(
-            child: ExpansionPanelList(
-              animationDuration: const Duration(milliseconds: 800),
-              expansionCallback: (panelIndex, isExpanded) {
-                setState(() {
-                  _expansionState[panelIndex] = !isExpanded;
-                });
-              },
-              children: buildexpansionpanels(grouppedbycatListe),
-            ),
+            child: Column(children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: Color(0x33000000),
+                              offset: Offset(0, 2),
+                              spreadRadius: 2,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(DateFormat("E dd.MM.yyyy", "de_DE").format(
+                                groupedDishesDat[index].date))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(
+                thickness: 3,
+                color: Color(0xFFFA9C00),
+              ),
+              const Divider(
+                thickness: 3,
+                color: Color(0xFFFA9C00),
+              ),
+              SingleChildScrollView(
+                child: ExpansionPanelList(
+                  animationDuration: const Duration(milliseconds: 800),
+                  expansionCallback: (panelIndex, isExpanded) {
+                    setState(() {
+                      _expansionState[panelIndex] = !isExpanded;
+                    });
+                  },
+                  children: buildexpansionpanels(grouppedbycatListe),
+                ),
+              )
+            ]),
           );
         });
   }
