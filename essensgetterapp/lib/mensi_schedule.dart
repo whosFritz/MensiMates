@@ -302,9 +302,6 @@ class MensiScheduleState extends State<MensiSchedule>
     return indexToBeReturned;
   }
 
-  DateTime initalanzeigedatum(List<DishGroupDate> gruppenliste) {
-    return (gruppenliste[indexToBeReturned].date);
-  }
 
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
@@ -354,7 +351,7 @@ class MensiScheduleState extends State<MensiSchedule>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(DateFormat("E dd.MM.yyyy", "de_DE").format(
-                                groupedDishesDat[indexToBeReturned].date))
+                                groupedDishesDat[index].date))
                           ],
                         ),
                       ),
