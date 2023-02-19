@@ -1,7 +1,6 @@
 import 'package:essensgetterapp/aboutpage_widget.dart';
 import 'package:essensgetterapp/home_page.dart';
 import 'package:essensgetterapp/mensi_schedule.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mensi_class.dart';
 

@@ -33,8 +33,7 @@ class MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   // Variablen
   int currentPage = 0;
-  DateTime anzeigeDatum = DateTime.now();
-  DateTime heute = DateTime.now();
+  DateTime anzeigeDatum = DateTime.now(), heute = DateTime.now();
   Map<int, bool> _expansionState = {};
 
   // Initiierung
