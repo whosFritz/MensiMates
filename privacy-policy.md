@@ -7,6 +7,7 @@ Die in dieser Datenschutzrichtlinie verwendeten Begriffe haben die gleiche Bedeu
 
 ## Sammlung und Verwendung von Informationen
 Für ein besseres Erlebnis bei der Verwendung unseres Services können wir Sie bitten, uns bestimmte personenbezogene Informationen bereitzustellen, einschließlich, aber nicht beschränkt auf Benutzername, E-Mail-Adresse, Geschlecht, Standort, Bilder. Die von uns angeforderten Informationen werden von uns aufbewahrt und gemäß dieser Datenschutzrichtlinie verwendet.
+Die anonymen Bewertungen werden an einen Server geschickt und gespeichert. Es kann lediglich durch die IP-Adresse der ungenaue Standort bestimmt werden.
 Die App nutzt Drittanbieterdienste, die Informationen verwenden können, um Sie zu identifizieren.
 
 ## Cookies
@@ -30,6 +31,9 @@ Wir möchten die Benutzer dieses Dienstes darüber informieren, dass diese Dritt
 
 ## Sicherheit
 Wir schätzen Ihr Vertrauen, indem Sie uns Ihre persönlichen Informationen zur Verfügung stellen, und bemühen uns daher, kommerziell akzeptable Mittel zum Schutz zu verwenden. Bitte beachten Sie jedoch, dass keine Übertragungsmethode über das Internet oder elektronische Speichermethode 100% sicher und zuverlässig ist und wir deren absolute Sicherheit nicht garantieren können.
+
+##Löschung von Daten
+Auf Wunsch kann die Löschung der erhobenen Daten gefordert werden. Dabei werden alle personenbezognen Daten und Geräteinformationen gelöscht.
 
 ## Kinder-Datenschutz
 Dieser Dienst richtet sich nicht an Personen unter 13 Jahren. Wir sammeln keine personenbezogenen Informationen von Kindern unter 13 Jahren. Falls wir entdecken, dass ein Kind unter 13 Jahren uns personenbezogene Informationen zur Verfügung gestellt hat, löschen wir diese sofort von unseren Servern. Wenn Sie Elternteil oder Vormund sind und wissen, dass Ihr Kind uns personenbezogene Informationen zur Verfügung gestellt hat, kontaktieren Sie uns bitte, damit wir die notwendigen Maßnahmen ergreifen können.
