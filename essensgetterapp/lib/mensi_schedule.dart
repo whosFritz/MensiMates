@@ -37,6 +37,31 @@ class MensiScheduleState extends State<MensiSchedule>
   DateTime anzeigeDatum = DateTime.now(), heute = DateTime.now();
   Map<int, bool> _expansionState = {};
   int indexToBeReturned = 0;
+  final sortOrder = {
+    "Aktion": 0,
+    "mensaVital": 1,
+    "Vegetarisches Gericht": 2,
+    "Veganes Gericht": 3,
+    "Salat": 4,
+    "Fleischgericht": 5,
+    "Fischgericht": 6,
+    "Pizza": 7,
+    "Suppe / Eintopf": 8,
+    "Pastateller": 9,
+    "WOK": 10,
+    "Schneller Teller": 11,
+    "Grill": 12,
+    "Dessert": 13,
+    "Smoothie": 14,
+    "Sättigungsbeilage": 15,
+    "Hauptkomponente": 16,
+    "Gemüsebeilage": 17,
+    "Beilagen": 18,
+  };
+  int compareDishGroupCat(DishGroupCat a, DishGroupCat b) {
+    int differenz = sortOrder[a.kategorie]! - sortOrder[b.kategorie]!;
+    return differenz;
+  }
 
   // Initiierung
   @override
@@ -285,7 +310,8 @@ class MensiScheduleState extends State<MensiSchedule>
       groups[cat]!.anzahlgerichte += 1;
     }
     List<DishGroupCat> gruppenListeCat = groups.values.toList();
-    gruppenListeCat.sort((a, b) => a.kategorie.compareTo(b.kategorie));
+    //  gruppenListeCat.sort((a, b) => a.kategorie.compareTo(b.kategorie));
+    gruppenListeCat.sort(compareDishGroupCat);
     return gruppenListeCat;
   }
 
