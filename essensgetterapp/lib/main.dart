@@ -31,9 +31,9 @@ class _MensiMatesState extends State<MensiMates> {
   }
 
   @override
-  Widget build(BuildContext context) => RateAppInitWidget(
-      builder: (rateMyApp) => MaterialApp(
-            theme: ThemeData(fontFamily: "Open Sans"),
-            home: HomeScreenWidget(rateMyApp: rateMyApp),
-          ));
+  Widget build(BuildContext context) => MaterialApp(
+      theme: ThemeData(fontFamily: "Open Sans"),
+      home: RateAppInitWidget(
+        builder: (rateMyApp) => HomeScreenWidget(rateMyApp: rateMyApp),
+      ));
 }

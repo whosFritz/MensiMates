@@ -21,15 +21,28 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
 
   @override
   Widget build(BuildContext context) => RateMyAppBuilder(
+        rateMyApp: RateMyApp(
+            googlePlayIdentifier: playStoreId,
+            minDays: 0,
+            minLaunches: 5,
+            remindLaunches: 5),
         onInitialized: ((context, rateMyApp) {
           setState(() {
             this.rateMyApp = rateMyApp;
             rateMyApp2 = rateMyApp;
           });
+          if (rateMyApp.shouldOpenDialog) {
+            rateMyApp.showRateDialog(context,
+                title: "Bitte Bewerte die App",
+                message:
+                    "Hi, wenn dir die App gefällt dann bewerte sie doch. Würde mich sehr drüber freuen. 😍",
+                rateButton: "Jetzt",
+                laterButton: "Später",
+                noButton: "Nicht mehr fragen");
+          }
         }),
         builder: (context) => rateMyApp == null
             ? const Center(child: CircularProgressIndicator())
             : widget.builder(rateMyApp!),
-        rateMyApp: RateMyApp(googlePlayIdentifier: playStoreId),
       );
 }

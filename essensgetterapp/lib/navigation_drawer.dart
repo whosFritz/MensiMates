@@ -73,13 +73,15 @@ class MyNavigationDrawer extends StatefulWidget {
 }
 
 class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: CupertinoScrollbar(
-        controller: ScrollController(),
+        controller: _scrollController,
         thumbVisibility: true,
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

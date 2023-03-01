@@ -140,12 +140,6 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                         builder: (context) => const AboutPage()));
                   },
                 ),
-                TextButton(
-                  onPressed: () {
-                    widget.rateMyApp.showRateDialog(context,);
-                  },
-                  child: const Text("Schuss"),
-                )
               ],
             ),
           ),
