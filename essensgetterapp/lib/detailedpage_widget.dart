@@ -56,7 +56,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
             child: Column(children: [
               Container(
                   color: decideContainerColor(widget.dishdetailed.category),
-                  child: MensiScheduleState.buildlistitemBox(
+                  child: MensiScheduleState.builddishBox(
                       context, widget.dishdetailed)),
               SingleChildScrollView(
                 child: Padding(
@@ -289,7 +289,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                   color: decideContainerColor(widget.dishdetailed.category),
                   child: Container(
                       color: decideContainerColor(widget.dishdetailed.category),
-                      child: MensiScheduleState.buildlistitemBox(
+                      child: MensiScheduleState.builddishBox(
                           context, widget.dishdetailed)),
                 ),
                 Padding(

@@ -1,13 +1,15 @@
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:quick_actions/quick_actions.dart";
+import "package:rate_my_app/rate_my_app.dart";
 import "aboutpage_widget.dart";
 import "mensi_class.dart";
 import "mensi_schedule.dart";
 import "navigation_drawer.dart";
 
 class HomeScreenWidget extends StatefulWidget {
-  const HomeScreenWidget({super.key});
-
+  const HomeScreenWidget({super.key, required this.rateMyApp});
+  final RateMyApp rateMyApp;
   @override
   State<HomeScreenWidget> createState() => _HomeScreenWidgetState();
 }
@@ -22,6 +24,8 @@ Mensi shortcutreturn(String type) {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -103,22 +107,27 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Center(
-                      child: ListView.builder(
-                        itemCount: mensenliste.length,
-                        itemBuilder: (context, index) {
-                          final mensi = mensenliste[index];
-                          return ListTile(
-                            leading: const Icon(Icons.fastfood_outlined),
-                            title: Text(mensi.name),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MensiSchedule(
-                                  mensiobj: mensi,
-                                ),
-                              ));
-                            },
-                          );
-                        },
+                      child: CupertinoScrollbar(
+                        controller: _scrollController,
+                        thumbVisibility: true,
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: mensenliste.length,
+                          itemBuilder: (context, index) {
+                            final mensi = mensenliste[index];
+                            return ListTile(
+                              leading: const Icon(Icons.fastfood_outlined),
+                              title: Text(mensi.name),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => MensiSchedule(
+                                    mensiobj: mensi,
+                                  ),
+                                ));
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -130,7 +139,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const AboutPage()));
                   },
-                )
+                ),
               ],
             ),
           ),

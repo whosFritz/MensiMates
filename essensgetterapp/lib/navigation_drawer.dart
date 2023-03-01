@@ -1,6 +1,8 @@
 import 'package:essensgetterapp/aboutpage_widget.dart';
 import 'package:essensgetterapp/home_page.dart';
 import 'package:essensgetterapp/mensi_schedule.dart';
+import 'package:essensgetterapp/rate_app_init_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mensi_class.dart';
 
@@ -71,16 +73,22 @@ class MyNavigationDrawer extends StatefulWidget {
 }
 
 class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            buildHeader(context),
-            buildMensiItems(context),
-          ],
+      child: CupertinoScrollbar(
+        controller: _scrollController,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              buildHeader(context),
+              buildMensiItems(context),
+            ],
+          ),
         ),
       ),
     );
@@ -113,7 +121,9 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
           title: const Text("Home"),
           onTap: () {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const HomeScreenWidget()));
+                builder: (context) => HomeScreenWidget(
+                      rateMyApp: rateMyApp2,
+                    )));
           },
         ),
         const Divider(color: Colors.grey),
@@ -121,22 +131,22 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
           padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
           child: Column(
             children: [
-          for (final mensi in mensenliste)
-            ListTile(
-              leading: const Icon(Icons.food_bank_outlined),
-              title: Text(mensi.name),
-              onTap: () {
-                if (widget.mensipara.id == mensi.id) {
-                  Navigator.pop(context);
-                } else {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => MensiSchedule(
-                            mensiobj: mensi,
-                          )));
-                }
-              },
-            )
+              for (final mensi in mensenliste)
+                ListTile(
+                  leading: const Icon(Icons.food_bank_outlined),
+                  title: Text(mensi.name),
+                  onTap: () {
+                    if (widget.mensipara.id == mensi.id) {
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MensiSchedule(
+                                mensiobj: mensi,
+                              )));
+                    }
+                  },
+                )
             ],
           ),
         ),

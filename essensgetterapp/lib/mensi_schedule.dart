@@ -302,7 +302,6 @@ class MensiScheduleState extends State<MensiSchedule>
     return indexToBeReturned;
   }
 
-
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
     groupedDishesDat = groupByDate(dishes);
@@ -350,8 +349,8 @@ class MensiScheduleState extends State<MensiSchedule>
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(DateFormat("E dd.MM.yyyy", "de_DE").format(
-                                groupedDishesDat[index].date))
+                            Text(DateFormat("E dd.MM.yyyy", "de_DE")
+                                .format(groupedDishesDat[index].date))
                           ],
                         ),
                       ),
@@ -430,7 +429,7 @@ class MensiScheduleState extends State<MensiSchedule>
                 onTap: () {
                   navigateToDetailRatingPage(context, dish, widget.mensiobj);
                 },
-                child: buildlistitemBox(context, dish),
+                child: builddishBox(context, dish),
               );
             },
           ),
@@ -441,7 +440,7 @@ class MensiScheduleState extends State<MensiSchedule>
     return exppanelist;
   }
 
-  static Widget buildlistitemBox(BuildContext context, Dish dish) {
+  static Widget builddishBox(BuildContext context, Dish dish) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -476,7 +475,7 @@ class MensiScheduleState extends State<MensiSchedule>
                         }
                       },
                       icon: const Icon(Icons.search),
-                    )
+                    ),
                   ],
                 ),
                 Padding(
@@ -738,7 +737,7 @@ Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
   // try {
   String mealsForFritzLink = decideMensi(mensiobj.id)[0];
   final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
-        const Duration(seconds: 6),
+        const Duration(seconds: 10),
       );
   if (response.statusCode == 200) {
     final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
