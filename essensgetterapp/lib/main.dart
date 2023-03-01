@@ -4,6 +4,8 @@ import "package:flutter/services.dart";
 import "package:intl/date_symbol_data_local.dart";
 import "package:flutter_neumorphic/flutter_neumorphic.dart";
 
+import "rate_app_init_widget.dart";
+
 void main() {
   initializeDateFormatting("de_DE");
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +16,6 @@ void main() {
   ]);
   runApp(const MensiMates());
 }
-
 
 class MensiMates extends StatefulWidget {
   const MensiMates({super.key});
@@ -27,14 +28,12 @@ class _MensiMatesState extends State<MensiMates> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(fontFamily: "Open Sans"),
-      home: const HomeScreenWidget(),
-    );
-  }
+  Widget build(BuildContext context) => RateAppInitWidget(
+      builder: (rateMyApp) => MaterialApp(
+            theme: ThemeData(fontFamily: "Open Sans"),
+            home: HomeScreenWidget(rateMyApp: rateMyApp),
+          ));
 }
