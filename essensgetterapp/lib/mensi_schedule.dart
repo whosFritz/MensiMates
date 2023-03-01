@@ -368,7 +368,7 @@ class MensiScheduleState extends State<MensiSchedule>
               ),
               SingleChildScrollView(
                 child: ExpansionPanelList(
-                  animationDuration: const Duration(milliseconds: 800),
+                  animationDuration: const Duration(milliseconds: 600),
                   expansionCallback: (panelIndex, isExpanded) {
                     setState(() {
                       _expansionState[panelIndex] = !isExpanded;
