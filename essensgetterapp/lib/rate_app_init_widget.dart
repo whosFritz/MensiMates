@@ -34,7 +34,7 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
           });
           if (rateMyApp.shouldOpenDialog) {
             rateMyApp.showRateDialog(context,
-                title: "Bitte Bewerte die App",
+                title: "Bewerte die App",
                 message:
                     "Hi, wenn dir die App gefällt dann bewerte sie doch. Würde mich sehr drüber freuen. 😍",
                 rateButton: "Jetzt",

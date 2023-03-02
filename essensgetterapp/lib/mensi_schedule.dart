@@ -214,27 +214,33 @@ class MensiScheduleState extends State<MensiSchedule>
                 },
                 icon: const Icon(Icons.keyboard_arrow_left_rounded)),
           ),
-          Tooltip(
-            message: "Nächster Tag",
-            child: IconButton(
-                onPressed: () {
-                  pgcontroller.nextPage(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut);
-                },
-                icon: const Icon(Icons.keyboard_arrow_right_rounded)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+            child: Tooltip(
+              message: "Nächster Tag",
+              child: IconButton(
+                  onPressed: () {
+                    pgcontroller.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut);
+                  },
+                  icon: const Icon(Icons.keyboard_arrow_right_rounded)),
+            ),
           ),
-          Tooltip(
-            message: "Aktualisieren",
-            child: IconButton(
-              icon: const SizedBox(
-                height: 24 * 1.5,
-                width: 24 * 1.5,
-                child: Icon(Icons.sync),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+            child: Tooltip(
+              message: "Aktualisieren",
+              child: IconButton(
+                icon: const SizedBox(
+                  height: 24 * 1.5,
+                  width: 24 * 1.5,
+                  child: Icon(Icons.sync),
+                ),
+                onPressed: () {
+                  refresh();
+                },
               ),
-              onPressed: () {
-                refresh();
-              },
             ),
           ),
         ],
