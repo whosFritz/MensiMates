@@ -345,7 +345,7 @@ class MensiScheduleState extends State<MensiSchedule>
         onPageChanged: (int index) {
           setState(() {
             anzeigeDatum = groupedDishesDat[index].date;
-            _expansionState = {};
+            // * _expansionState = {};
           });
           currentPage =
               index; // ? remove?, weil das war mal button überbleibsel
