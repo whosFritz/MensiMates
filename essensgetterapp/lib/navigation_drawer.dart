@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'mensi_class.dart';
 
+const String navigationDrawerToolTip = "Navigationsleiste";
 List<Mensi> mensenliste = [
   Mensi(id: 153, name: "Cafeteria Dittrichring", oeffnungszeitenalles: [
     "Montag-Donnerstag: 8.00-16.30 Uhr",
@@ -74,6 +75,7 @@ class MyNavigationDrawer extends StatefulWidget {
 
 class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
   final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(

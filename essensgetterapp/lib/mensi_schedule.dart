@@ -75,118 +75,122 @@ class MensiScheduleState extends State<MensiSchedule>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-              child: platformPageViewButtons())
-        ],
-        iconTheme: const IconThemeData(color: Colors.blueGrey),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: FittedBox(
-          fit: BoxFit.fitWidth,
-          child: Text(
-            widget.mensiobj.name,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: "Open Sans",
-                fontSize: 20,
-                color: Colors.black,
-                letterSpacing: 2),
+    return Title(
+      color: Colors.black,
+      title: widget.mensiobj.name,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                child: platformPageViewButtons())
+          ],
+          iconTheme: const IconThemeData(color: Colors.blueGrey),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              widget.mensiobj.name,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Open Sans",
+                  fontSize: 20,
+                  color: Colors.black,
+                  letterSpacing: 2),
+            ),
           ),
         ),
-      ),
-      drawer: MyNavigationDrawer(
-        mensipara: widget.mensiobj,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: FutureBuilder(
-                      future: dishesfromOle,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          Object? errormessage = snapshot.error;
-                          if (errormessage.toString() ==
-                              "Failed host lookup: 'api.olech2412.de'") {
-                            return const Text("🥵 API-Error 🥵");
-                          } else {
-                            return Text("🤮 $errormessage 🤮");
-                          }
-                        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                          return const Center(
-                            child: Text(
-                              "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        } else if (snapshot.hasData) {
-                          final dishes = snapshot.data!;
-                          return buildDishes(dishes);
-                        } else {
-                          return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: const Center(
-                                      child: CircularProgressIndicator(
-                                    backgroundColor: Colors.white,
-                                    color: Color.fromARGB(255, 0, 166, 255),
-                                  )),
-                                )
-                              ]);
-                        }
-                      })),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: const Color(0xffE0E0E0),
-                          borderRadius: BorderRadius.circular(0),
-                          shape: BoxShape.rectangle),
-                      child: Padding(
-                        padding: const EdgeInsets.all(7),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Öffnungszeiten:",
-                              style: TextStyle(
-                                  fontFamily: "Open Sans",
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            for (String zeile
-                                in widget.mensiobj.oeffnungszeitenalles)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 7),
-                                child: Text(
-                                  zeile,
-                                  style: const TextStyle(
-                                      fontFamily: "Open Sans", fontSize: 12),
-                                ),
+        drawer: MyNavigationDrawer(
+          mensipara: widget.mensiobj,
+        ),
+        body: SafeArea(
+          child: GestureDetector(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                    child: FutureBuilder(
+                        future: dishesfromOle,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            Object? errormessage = snapshot.error;
+                            if (errormessage.toString() ==
+                                "Failed host lookup: 'api.olech2412.de'") {
+                              return const Text("🥵 API-Error 🥵");
+                            } else {
+                              return Text("🤮 $errormessage 🤮");
+                            }
+                          } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
+                                textAlign: TextAlign.center,
                               ),
-                          ],
+                            );
+                          } else if (snapshot.hasData) {
+                            final dishes = snapshot.data!;
+                            return buildDishes(dishes);
+                          } else {
+                            return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: const Center(
+                                        child: CircularProgressIndicator(
+                                      backgroundColor: Colors.white,
+                                      color: Color.fromARGB(255, 0, 166, 255),
+                                    )),
+                                  )
+                                ]);
+                          }
+                        })),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color(0xffE0E0E0),
+                            borderRadius: BorderRadius.circular(0),
+                            shape: BoxShape.rectangle),
+                        child: Padding(
+                          padding: const EdgeInsets.all(7),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Öffnungszeiten:",
+                                style: TextStyle(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              for (String zeile
+                                  in widget.mensiobj.oeffnungszeitenalles)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 7),
+                                  child: Text(
+                                    zeile,
+                                    style: const TextStyle(
+                                        fontFamily: "Open Sans", fontSize: 12),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
