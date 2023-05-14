@@ -36,6 +36,7 @@ class MensiScheduleState extends State<MensiSchedule>
   // Variablen
   int currentPage = 0;
   DateTime anzeigeDatum = DateTime.now(), heute = DateTime.now();
+  // ignore: prefer_final_fields
   Map<int, bool> _expansionState = {};
   final sortOrder = {
     "Aktion": 0,
