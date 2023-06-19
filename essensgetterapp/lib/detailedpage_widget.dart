@@ -226,7 +226,6 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                       String dishjsontosend =
                                           dishtosend.toJson();
                                       saveRatingForMeal(dishjsontosend);
-                                      showSnackBar1(context);
                                       ratedDishesIDList.add(dishobj.id);
                                       // * Then save dish to memory
                                       writeListToStorage(ratedDishesIDList);
@@ -434,6 +433,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
 
         if (sendingResponse.statusCode == 200) {
           // wenn senden erfolgreich
+          showSnackBar1(context);
         } else {
           print(
               'Error when trying to send Data: ${sendingResponse.statusCode}');
