@@ -5,7 +5,6 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "dish_class.dart";
 import "api_links.dart";
-import "package:flutter_neumorphic/flutter_neumorphic.dart";
 import "mensi_class.dart";
 import 'mensi_schedule.dart';
 
@@ -401,8 +400,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
 
   void sendMealsbacktoOle(String jsonbody) {
     try {
-      String mealsFromFritzLink =
-          decideMensi(widget.mensiobjfordetailpage.id)[1];
+      String mealsFromFritzLink = decideMensi(widget.mensiobjfordetailpage.id);
       http.post(
         Uri.parse(mealsFromFritzLink),
         headers: {

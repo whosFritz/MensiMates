@@ -10,7 +10,7 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  final String version = "1.1.0";
+  final String version = "1.2.0";
   final ScrollController _scrollController = ScrollController();
 
   @override
