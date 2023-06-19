@@ -763,7 +763,7 @@ void navigateToDetailRatingPage(
     builder: (context) {
       return DetailRatingPage(
         dishdetailed: dishdetailed,
-        mensiobjfordetailpage: mensiObj,
+        mensiObjForDetailPage: mensiObj,
       );
     },
   ));

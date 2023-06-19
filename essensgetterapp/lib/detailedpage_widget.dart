@@ -12,12 +12,12 @@ import 'mensi_schedule.dart';
 
 class DetailRatingPage extends StatefulWidget {
   final Dish dishdetailed;
-  final Mensi mensiobjfordetailpage;
+  final Mensi mensiObjForDetailPage;
 
   const DetailRatingPage(
       {Key? key,
       required this.dishdetailed,
-      required this.mensiobjfordetailpage})
+      required this.mensiObjForDetailPage})
       : super(key: key);
 
   @override
@@ -422,7 +422,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         print('JWT Token: $token');
 
         String mealsFromFritzLink =
-            decideMensi(widget.mensiobjfordetailpage.id);
+            decideMensi(widget.mensiObjForDetailPage.id);
         final sendingResponse = await http.post(
           Uri.parse("$mealsFromFritzLink/sendRating"),
           headers: {
