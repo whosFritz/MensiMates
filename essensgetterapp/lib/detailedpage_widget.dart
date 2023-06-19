@@ -1,3 +1,5 @@
+import "dart:convert";
+
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
@@ -223,7 +225,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                       // Convert the Dish object to JSON
                                       String dishjsontosend =
                                           dishtosend.toJson();
-                                      sendMealsbacktoOle(dishjsontosend);
+                                      saveRatingForMeal(dishjsontosend);
                                       showSnackBar1(context);
                                       ratedDishesIDList.add(dishobj.id);
                                       // * Then save dish to memory
@@ -380,7 +382,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   */
   Future<List<int>> readListFromStorage() async {
     final prefs = await SharedPreferences.getInstance();
-    List<String>? list = prefs.getStringList("ratedDishesmem");
+    List<String>? list = prefs.getStringList("ratedDishesInMemory");
     if (list == null) {
       return [];
     }
@@ -395,23 +397,53 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   Future<void> writeListToStorage(List<int> list) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setStringList(
-        "ratedDishesmem", list.map((e) => e.toString()).toList());
+        "ratedDishesInMemory", list.map((e) => e.toString()).toList());
   }
 
-  void sendMealsbacktoOle(String jsonbody) {
+  Future<void> saveRatingForMeal(String jsonBody) async {
+    const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
+    const user = apiUsername;
+    const pw = password;
+
     try {
-      String mealsFromFritzLink = decideMensi(widget.mensiobjfordetailpage.id);
-      http.post(
-        Uri.parse(mealsFromFritzLink),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonbody,
-      );
-    } on Exception catch (_) {}
+      final loginResponse = await http
+          .post(Uri.parse(loginUrl),
+              headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json',
+              },
+              body: jsonEncode({
+                'apiUsername': user,
+                'password': pw,
+              }))
+          .timeout(const Duration(seconds: 10));
+
+      if (loginResponse.statusCode == 200) {
+        final token = loginResponse.body;
+        print('JWT Token: $token');
+
+        String mealsFromFritzLink =
+            decideMensi(widget.mensiobjfordetailpage.id);
+        final sendingResponse = await http.post(
+          Uri.parse("$mealsFromFritzLink/sendRating"),
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonBody,
+        );
+
+        if (sendingResponse.statusCode == 200) {
+          // wenn senden erfolgreich
+        } else {
+          print(
+              'Error when trying to send Data: ${sendingResponse.statusCode}');
+        }
+      } else {
+        print('Error when trying to Login: ${loginResponse.statusCode}');
+      }
+    } catch (error) {
+      print('Exception: $error');
+    }
   }
 
   Color decideAppBarcolor(String category) {
