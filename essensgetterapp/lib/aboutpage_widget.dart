@@ -191,12 +191,12 @@ class _AboutPageState extends State<AboutPage> {
                     ],
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Column(
-                      children: const [
+                      children: [
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
                           child:
