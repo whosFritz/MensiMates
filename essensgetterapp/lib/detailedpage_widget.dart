@@ -205,31 +205,14 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                     int mapLenght = mapRatingValues.length;
                                     if (mapLenght == 3) {
                                       // let User rate
-
                                       double sum = mapRatingValues.values
                                           .reduce((value, element) {
                                         return value + element;
                                       });
                                       double ratingValue =
                                           sum / mapRatingValues.length;
-                                      Dish dishToSave = Dish(
-                                          id: dishObj.id,
-                                          name: dishObj.name,
-                                          description: dishObj.description,
-                                          price: dishObj.price,
-                                          category: dishObj.category,
-                                          servingDate: dishObj.servingDate,
-                                          responseCode: dishObj.responseCode,
-                                          rating: ratingValue,
-                                          votes: dishObj.votes);
-                                      // Convert the Dish object to JSON
-                                      String dishJsonToSave =
-                                          dishToSave.toJson();
-                                      sendRatingForMeal(dishJsonToSave);
-                                      // ratedDishesIDList.add(dishObj.id);
-                                      // Then save dish to memory
-                                      // writeListToStorage(ratedDishesIDList);
-                                      // Navigator.pop(context);
+                                      sendRatingForMeal(ratingValue,
+                                          ratedDishesIDList, dishObj);
                                     } else {
                                       // Restrict user cause not rated everything
                                       showSnackbar3(context);
@@ -341,7 +324,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
 
   void showSnackbar4(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Es trat ein Fehler auf."),
+        content:
+            Text("Es konnte keine Verbindung zum Server hergestellt werden."),
         backgroundColor: Colors.blueGrey,
         elevation: 6,
         duration: Duration(seconds: 2)));
@@ -367,7 +351,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         "ratedDishesInMemory", list.map((e) => e.toString()).toList());
   }
 
-  Future<void> sendRatingForMeal(String jsonBody) async {
+  Future<void> sendRatingForMeal(
+      double ratingValue, List<int> ratedDishesIDList, Dish dishObj) async {
     const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
     const user = apiUsername;
     const pw = password;
@@ -386,14 +371,22 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
           .timeout(const Duration(seconds: 10));
 
       if (loginResponse.statusCode == 200) {
-        final sendingToken = loginResponse.body;
-        log('JWT Token: $sendingToken');
+        Dish dishToSend = Dish(
+            id: dishObj.id,
+            name: dishObj.name,
+            description: dishObj.description,
+            price: dishObj.price,
+            category: dishObj.category,
+            servingDate: dishObj.servingDate,
+            responseCode: dishObj.responseCode,
+            rating: ratingValue,
+            votes: dishObj.votes);
+        // Convert the Dish object to JSON
+        String dishJsonToSend = dishToSend.toJson();
 
+        final sendingToken = loginResponse.body;
         String cafeteriaMealsLink =
             decideMensi(widget.mensiObjForDetailPage.id);
-        log(cafeteriaMealsLink);
-        log("$cafeteriaMealsLink/sendRating");
-        log(jsonBody);
         final sendingResponse = await http.post(
           Uri.parse("$cafeteriaMealsLink/sendRating"),
           headers: {
@@ -401,13 +394,16 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
             'Authorization': 'Bearer $sendingToken',
             'Content-Type': 'application/json',
           },
-          body: jsonBody,
+          body: dishJsonToSend,
         );
 
         if (sendingResponse.statusCode == 200) {
           // wenn senden erfolgreich
           showSnackBar1(context);
           log("Sending rating was successful");
+          ratedDishesIDList.add(dishObj.id);
+          // Then save dish to memory
+          writeListToStorage(ratedDishesIDList);
         } else {
           showSnackbar4(context);
           log('Error when trying to send Data: ${sendingResponse.statusCode}');
@@ -418,6 +414,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       }
     } catch (error) {
       log('Exception: $error');
+      showSnackbar4(context);
     }
   }
 
