@@ -1,5 +1,5 @@
 name: essensgetterapp
-description: Rate the dishes.
+description: Rate the dishes!
 publish_to: "none"
 version: 1.2.0+1
 environment:
@@ -41,10 +41,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/images/mensen/
     - assets/images/
     - assets/audio/
     - assets/fonts/
     - assets/
+
 
 flutter_icons:
   android: "launcher_icon"
