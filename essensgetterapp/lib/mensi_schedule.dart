@@ -1,4 +1,5 @@
 import "dart:convert";
+import "dart:developer";
 import "package:essensgetterapp/webpagepicsearch_page.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -8,22 +9,20 @@ import "package:url_launcher/url_launcher.dart";
 import 'detailedpage_widget.dart';
 import "dish_class.dart";
 import "api_links.dart";
-import "package:flutter_neumorphic/flutter_neumorphic.dart";
-import "dish_helper_class.dart";
 import 'dishgroup_cat.dart';
 import 'dishgroup_date.dart';
 import "mensi_class.dart";
 import 'navigation_drawer.dart';
 
-late Future<List<Dish>> dishesfromOle;
-late PageController pgcontroller;
+late Future<List<Dish>> dishesFromApi;
+late PageController pageController;
 late List<DishGroupDate> groupedDishesDat;
 int indexToBeReturned = 1;
 
 class MensiSchedule extends StatefulWidget {
-  final Mensi mensiobj;
+  final Mensi mensiObj;
 
-  const MensiSchedule({super.key, required this.mensiobj});
+  const MensiSchedule({super.key, required this.mensiObj});
 
   @override
   State<MensiSchedule> createState() {
@@ -68,7 +67,8 @@ class MensiScheduleState extends State<MensiSchedule>
   @override
   void initState() {
     setState(() {
-      dishesfromOle = getDishesfromOle(widget.mensiobj);
+      // dishesfromOle = getDishesfromOle(widget.mensiobj);
+      dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
     });
     super.initState();
   }
@@ -77,7 +77,7 @@ class MensiScheduleState extends State<MensiSchedule>
   Widget build(BuildContext context) {
     return Title(
       color: Colors.black,
-      title: widget.mensiobj.name,
+      title: widget.mensiObj.name,
       child: Scaffold(
         appBar: AppBar(
           actions: [
@@ -91,7 +91,7 @@ class MensiScheduleState extends State<MensiSchedule>
           title: FittedBox(
             fit: BoxFit.fitWidth,
             child: Text(
-              widget.mensiobj.name,
+              widget.mensiObj.name,
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: "Open Sans",
@@ -102,7 +102,7 @@ class MensiScheduleState extends State<MensiSchedule>
           ),
         ),
         drawer: MyNavigationDrawer(
-          mensipara: widget.mensiobj,
+          mensipara: widget.mensiObj,
         ),
         body: SafeArea(
           child: GestureDetector(
@@ -113,7 +113,7 @@ class MensiScheduleState extends State<MensiSchedule>
               children: [
                 Expanded(
                     child: FutureBuilder(
-                        future: dishesfromOle,
+                        future: dishesFromApi,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             Object? errormessage = snapshot.error;
@@ -123,7 +123,8 @@ class MensiScheduleState extends State<MensiSchedule>
                             } else {
                               return Text("🤮 $errormessage 🤮");
                             }
-                          } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                          } else if (snapshot.hasData &&
+                              snapshot.data!.isEmpty) {
                             return const Center(
                               child: Text(
                                 "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
@@ -173,7 +174,7 @@ class MensiScheduleState extends State<MensiSchedule>
                                     fontWeight: FontWeight.w500),
                               ),
                               for (String zeile
-                                  in widget.mensiobj.oeffnungszeitenalles)
+                                  in widget.mensiObj.oeffnungszeitenalles)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 7),
                                   child: Text(
@@ -200,7 +201,8 @@ class MensiScheduleState extends State<MensiSchedule>
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
-      dishesfromOle = getDishesfromOle(widget.mensiobj);
+      dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
+      // dishesfromOle = getDishesfromOle(widget.mensiobj);
     });
   }
 
@@ -213,7 +215,7 @@ class MensiScheduleState extends State<MensiSchedule>
             message: "Vorheriger Tag",
             child: IconButton(
                 onPressed: () {
-                  pgcontroller.previousPage(
+                  pageController.previousPage(
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut);
                 },
@@ -225,7 +227,7 @@ class MensiScheduleState extends State<MensiSchedule>
               message: "Nächster Tag",
               child: IconButton(
                   onPressed: () {
-                    pgcontroller.nextPage(
+                    pageController.nextPage(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOut);
                   },
@@ -342,10 +344,10 @@ class MensiScheduleState extends State<MensiSchedule>
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
     groupedDishesDat = groupByDate(dishes);
-    pgcontroller =
+    pageController =
         PageController(initialPage: findinitalPagedisplay(groupedDishesDat));
     return PageView.builder(
-        controller: pgcontroller,
+        controller: pageController,
         itemCount: groupedDishesDat.length,
         onPageChanged: (int index) {
           setState(() {
@@ -464,7 +466,7 @@ class MensiScheduleState extends State<MensiSchedule>
               Dish dish = grouppedbycat.gerichteingruppe[index];
               return InkWell(
                 onTap: () {
-                  navigateToDetailRatingPage(context, dish, widget.mensiobj);
+                  navigateToDetailRatingPage(context, dish, widget.mensiObj);
                 },
                 child: builddishBox(context, dish),
               );
@@ -502,7 +504,7 @@ class MensiScheduleState extends State<MensiSchedule>
                       onPressed: () {
                         if (defaultTargetPlatform != TargetPlatform.android &&
                             defaultTargetPlatform != TargetPlatform.iOS) {
-                          gerichtesearch(dish.name);
+                          searchGerichte(dish.name);
                         } else {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) {
@@ -750,62 +752,102 @@ Color decideContainerColor(String category) {
   return colors;
 }
 
-void gerichtesearch(String query) async {
+void searchGerichte(String query) async {
   final url = 'https://www.google.com/search?q=$query&tbm=isch';
   launchUrl(Uri.parse(url));
 }
 
-//Navigation zur Detailpage
+//Navigation zur Detail page
 void navigateToDetailRatingPage(
-    BuildContext context, Dish dishdetailed, Mensi mensiobj) {
+    BuildContext context, Dish dishdetailed, Mensi mensiObj) {
   Navigator.of(context).push(MaterialPageRoute(
     builder: (context) {
       return DetailRatingPage(
         dishdetailed: dishdetailed,
-        mensiobjfordetailpage: mensiobj,
+        mensiObjForDetailPage: mensiObj,
       );
     },
   ));
 }
 
 // Methode um Gerichte zu holen und umzuwandeln.
-Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
-  // ! Caching
-  // try {
-  String mealsForFritzLink = decideMensi(mensiobj.id)[0];
-  final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
-        const Duration(seconds: 10),
-      );
-  if (response.statusCode == 200) {
-    final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-    List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
-    listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-    // ? removeFalseInformation(listvondishes);
-    //! Caching
-    setofflineDishes(listvondishes);
-    return listvondishes;
-  } else {
-    throw Exception();
-  }
-  /** 
-    *! } catch (e) {
-    *!  return getofflineDishes();
-    *!}
-    */
-}
+// Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
+// ! Caching
+// try {
+// String mealsForFritzLink = decideMensi(mensiobj.id);
+// final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
+//       const Duration(seconds: 10),
+//     );
+// if (response.statusCode == 200) {
+//   final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
+//   List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
+//   listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
+// ? removeFalseInformation(listvondishes);
+//! Caching
+//   setofflineDishes(listvondishes);
+//   return listvondishes;
+// } else {
+//   throw Exception();
+// }
+//   } catch (e) {
+//    return getofflineDishes();
+//   }
+// }
 
-/*
-void removeFalseInformation(List<Dish> dishes) {
-  List<String> striiings = [];
-  for (var dish in dishes) {
-    if (dish.category == "Fleischgericht") {
-      if (dish.description.contains("Vegetarisches Gericht") ||
-          dish.description.contains("Veganes Gericht")) {
-        dish.description.replaceAll("Vegetarisches Gericht", " ");
-        dish.description.replaceAll("Veganes Gericht", " ");
-        striiings = dish.description.split(", ").toList();
+// Methode um Gerichte zu holen und umzuwandeln.
+Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
+  DateTime currentDate = DateTime.now();
+  DateTime dayInPast = currentDate.subtract(const Duration(days: 10));
+  DateTime dayInFuture = currentDate.add(const Duration(days: 10));
+
+  // Formatting the date as "yyyy-MM-dd"
+  String dayInPastAsString = DateFormat('yyyy-MM-dd').format(dayInPast);
+  String dayInFutureAsString = DateFormat("yyyy-MM-dd").format(dayInFuture);
+  String mealsForFritzBaseLink = decideMensi(mensiObj.id);
+  const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
+  final getDataUrl =
+      "$mealsForFritzBaseLink/getMeals/from/$dayInPastAsString/to/$dayInFutureAsString";
+  const user = apiUsername;
+  const pw = password;
+
+  try {
+    final loginResponse = await http
+        .post(Uri.parse(loginUrl),
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'apiUsername': user,
+              'password': pw,
+            }))
+        .timeout(const Duration(seconds: 10));
+
+    if (loginResponse.statusCode == 200) {
+      final token = loginResponse.body;
+      log('JWT Token: $token');
+
+      final dataResponse = await http.get(
+        Uri.parse(getDataUrl),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (dataResponse.statusCode == 200) {
+        final jsonData = jsonDecode(utf8.decode(dataResponse.bodyBytes));
+        List<Dish> listOfDishes = jsonData.map<Dish>(Dish.fromJson).toList();
+        listOfDishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
+        return listOfDishes; // Return the list of dishes
+      } else {
+        log('Error when trying to get Data: ${dataResponse.statusCode}');
       }
+    } else {
+      log('Error when trying to Login: ${loginResponse.statusCode}');
     }
+  } catch (error) {
+    log('Exception: $error');
   }
+
+  return []; // Return an empty list if there is an error or no data
 }
-*/

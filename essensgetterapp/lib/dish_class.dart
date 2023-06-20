@@ -1,6 +1,16 @@
 import "dart:convert";
 
 class Dish {
+  final int id;
+  final String name;
+  final String description;
+  final String price;
+  final String category;
+  final DateTime servingDate;
+  final int responseCode;
+  final double rating;
+  final int votes;
+
   Dish({
     required this.id,
     required this.name,
@@ -13,24 +23,9 @@ class Dish {
     required this.votes,
   });
 
-  final int id;
-  final String name;
-  final String description;
-  final String price;
-  final String category;
-  final DateTime servingDate;
-  final int responseCode;
-  final double rating;
-  final int votes;
-
-  @override
-  String toString() {
-    return "$responseCode Gericht ID: $id: Es gibt am $servingDate $name mit $description zum Preis von $price und einer Bewertung von $rating Sternen.";
-  }
-
   static Dish fromJson(json) {
     return Dish(
-      id: json["id"] ?? 10000,
+      id: json["id"] ?? 1000000,
       name: json["name"] ?? "keine Angaben",
       description: json["description"] ?? "keine Angaben",
       price: json["price"] ?? "keine Angaben",
@@ -40,6 +35,11 @@ class Dish {
       rating: json["rating"] ?? 3.0,
       votes: json["votes"] ?? 0,
     );
+  }
+
+  @override
+  String toString() {
+    return 'Dish: $name, Category: $category, Price: ${price.substring(0, 5)}';
   }
 
   String toJson() {

@@ -100,8 +100,8 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
     return Container(
       color: const Color.fromARGB(255, 218, 179, 97),
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      child: Column(
-        children: const [
+      child: const Column(
+        children: [
           Image(image: AssetImage("assets/images/applogo512.png"), width: 80),
           Padding(
             padding: EdgeInsets.all(8.0),
@@ -144,7 +144,7 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
                       Navigator.pop(context);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => MensiSchedule(
-                                mensiobj: mensi,
+                                mensiObj: mensi,
                               )));
                     }
                   },

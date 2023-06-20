@@ -57,7 +57,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
         minSdkVersion 20 // flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion // flutter.targetSdkVersion
         versionCode 2
-        versionName "1.1.0"
+        versionName "1.2.0"
     }
 
     signingConfigs {
