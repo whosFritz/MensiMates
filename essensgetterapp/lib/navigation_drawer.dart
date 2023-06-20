@@ -30,7 +30,7 @@ List<Mensi> mensenliste = [
       imageLink: "assets/images/mensen/mensa_academica.jpg"),
   Mensi(
     id: 115,
-    name: "Mensa am Elsterbecken",
+    name: "Elsterbecken",
     oeffnungszeitenalles: [
       "Mensa:",
       "Montag-Freitag: 11.00-14.00 Uhr",
@@ -44,7 +44,7 @@ List<Mensi> mensenliste = [
   ),
   Mensi(
       id: 140,
-      name: "Mensa Schönauer Straße",
+      name: "Schönauer Straße",
       oeffnungszeitenalles: [
         "Montag-Freitag: 8.30-15.45 Uhr",
         "Mittagessen:",
@@ -53,7 +53,7 @@ List<Mensi> mensenliste = [
       imageLink: "assets/images/mensen/mensa_schoenauer_str.jpg"),
   Mensi(
       id: 162,
-      name: "Mensa am Medizincampus",
+      name: "Medizincampus",
       oeffnungszeitenalles: [
         "Mensa:",
         "Montag-Freitag: 10.45-14.00 Uhr",
@@ -93,7 +93,7 @@ List<Mensi> mensenliste = [
       imageLink: "assets/images/mensen/mensa_tierklinik.jpg"),
   Mensi(
       id: 127,
-      name: "Mensaria am Botanischen Garten",
+      name: "Botanischer Garten",
       oeffnungszeitenalles: [
         "Mensa:",
         "Montag-Freitag: 11.00-14.00 Uhr",
