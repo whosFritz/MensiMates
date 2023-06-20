@@ -163,7 +163,8 @@ class HomeScreenWidgetState extends State<HomeScreenWidget> {
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/pizza-background.jpg'),
+                    image: AssetImage(
+                        'assets/images/backgrounds/pizza-background.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),

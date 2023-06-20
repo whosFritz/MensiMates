@@ -46,6 +46,7 @@ flutter:
     - assets/audio/
     - assets/fonts/
     - assets/
+    - assets/images/backgrounds/
 
 
 flutter_icons:
