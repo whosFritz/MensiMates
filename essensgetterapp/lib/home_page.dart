@@ -43,7 +43,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  MensiSchedule(mensiobj: shortcutreturn(type))));
+                  MensiSchedule(mensiObj: shortcutreturn(type))));
     });
   }
 
@@ -121,7 +121,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => MensiSchedule(
-                                    mensiobj: mensi,
+                                    mensiObj: mensi,
                                   ),
                                 ));
                               },

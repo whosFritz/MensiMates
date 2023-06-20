@@ -1,4 +1,5 @@
 import "dart:convert";
+import "dart:developer";
 import "package:essensgetterapp/webpagepicsearch_page.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -13,15 +14,15 @@ import 'dishgroup_date.dart';
 import "mensi_class.dart";
 import 'navigation_drawer.dart';
 
-late Future<List<Dish>> dishesfromOle;
-late PageController pgcontroller;
+late Future<List<Dish>> dishesFromApi;
+late PageController pageController;
 late List<DishGroupDate> groupedDishesDat;
 int indexToBeReturned = 1;
 
 class MensiSchedule extends StatefulWidget {
-  final Mensi mensiobj;
+  final Mensi mensiObj;
 
-  const MensiSchedule({super.key, required this.mensiobj});
+  const MensiSchedule({super.key, required this.mensiObj});
 
   @override
   State<MensiSchedule> createState() {
@@ -67,7 +68,7 @@ class MensiScheduleState extends State<MensiSchedule>
   void initState() {
     setState(() {
       // dishesfromOle = getDishesfromOle(widget.mensiobj);
-      dishesfromOle = fetchDataWithJwtToken(widget.mensiobj);
+      dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
     });
     super.initState();
   }
@@ -76,7 +77,7 @@ class MensiScheduleState extends State<MensiSchedule>
   Widget build(BuildContext context) {
     return Title(
       color: Colors.black,
-      title: widget.mensiobj.name,
+      title: widget.mensiObj.name,
       child: Scaffold(
         appBar: AppBar(
           actions: [
@@ -90,7 +91,7 @@ class MensiScheduleState extends State<MensiSchedule>
           title: FittedBox(
             fit: BoxFit.fitWidth,
             child: Text(
-              widget.mensiobj.name,
+              widget.mensiObj.name,
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: "Open Sans",
@@ -101,7 +102,7 @@ class MensiScheduleState extends State<MensiSchedule>
           ),
         ),
         drawer: MyNavigationDrawer(
-          mensipara: widget.mensiobj,
+          mensipara: widget.mensiObj,
         ),
         body: SafeArea(
           child: GestureDetector(
@@ -112,7 +113,7 @@ class MensiScheduleState extends State<MensiSchedule>
               children: [
                 Expanded(
                     child: FutureBuilder(
-                        future: dishesfromOle,
+                        future: dishesFromApi,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             Object? errormessage = snapshot.error;
@@ -173,7 +174,7 @@ class MensiScheduleState extends State<MensiSchedule>
                                     fontWeight: FontWeight.w500),
                               ),
                               for (String zeile
-                                  in widget.mensiobj.oeffnungszeitenalles)
+                                  in widget.mensiObj.oeffnungszeitenalles)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 7),
                                   child: Text(
@@ -200,7 +201,7 @@ class MensiScheduleState extends State<MensiSchedule>
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
   Future refresh() async {
     setState(() {
-      dishesfromOle = fetchDataWithJwtToken(widget.mensiobj);
+      dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
       // dishesfromOle = getDishesfromOle(widget.mensiobj);
     });
   }
@@ -214,7 +215,7 @@ class MensiScheduleState extends State<MensiSchedule>
             message: "Vorheriger Tag",
             child: IconButton(
                 onPressed: () {
-                  pgcontroller.previousPage(
+                  pageController.previousPage(
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut);
                 },
@@ -226,7 +227,7 @@ class MensiScheduleState extends State<MensiSchedule>
               message: "Nächster Tag",
               child: IconButton(
                   onPressed: () {
-                    pgcontroller.nextPage(
+                    pageController.nextPage(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOut);
                   },
@@ -343,10 +344,10 @@ class MensiScheduleState extends State<MensiSchedule>
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
     groupedDishesDat = groupByDate(dishes);
-    pgcontroller =
+    pageController =
         PageController(initialPage: findinitalPagedisplay(groupedDishesDat));
     return PageView.builder(
-        controller: pgcontroller,
+        controller: pageController,
         itemCount: groupedDishesDat.length,
         onPageChanged: (int index) {
           setState(() {
@@ -465,7 +466,7 @@ class MensiScheduleState extends State<MensiSchedule>
               Dish dish = grouppedbycat.gerichteingruppe[index];
               return InkWell(
                 onTap: () {
-                  navigateToDetailRatingPage(context, dish, widget.mensiobj);
+                  navigateToDetailRatingPage(context, dish, widget.mensiObj);
                 },
                 child: builddishBox(context, dish),
               );
@@ -824,7 +825,7 @@ Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
 
     if (loginResponse.statusCode == 200) {
       final token = loginResponse.body;
-      print('JWT Token: $token');
+      log('JWT Token: $token');
 
       final dataResponse = await http.get(
         Uri.parse(getDataUrl),
@@ -839,13 +840,13 @@ Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
         listOfDishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
         return listOfDishes; // Return the list of dishes
       } else {
-        print('Error when trying to get Data: ${dataResponse.statusCode}');
+        log('Error when trying to get Data: ${dataResponse.statusCode}');
       }
     } else {
-      print('Error when trying to Login: ${loginResponse.statusCode}');
+      log('Error when trying to Login: ${loginResponse.statusCode}');
     }
   } catch (error) {
-    print('Exception: $error');
+    log('Exception: $error');
   }
 
   return []; // Return an empty list if there is an error or no data

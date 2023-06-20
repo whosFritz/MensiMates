@@ -1,5 +1,5 @@
 import "dart:convert";
-
+import 'dart:developer';
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
@@ -26,8 +26,8 @@ class DetailRatingPage extends StatefulWidget {
 
 class _DetailRatingPageState extends State<DetailRatingPage> {
   // Variablen
-  Map<String, double> mapratingvalues = {};
-  String pagename = "Detailansicht";
+  Map<String, double> mapRatingValues = {};
+  String pageName = "Detailansicht";
   // TODO: look other todo and get dishes from initstae
 
   @override
@@ -36,7 +36,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     // TODO: "getting list from memory"
   }
 
-  final String webpagetitle = "Bewertung abgeben";
+  final String webPageTitle = "Bewertung abgeben";
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +44,11 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         DateFormat("yyy-MM-dd").format(DateTime.now())) {
       return Title(
         color: Colors.black,
-        title: webpagetitle,
+        title: webPageTitle,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(pagename),
-            backgroundColor: decideAppBarcolor(widget.dishdetailed.category),
+            title: Text(pageName),
+            backgroundColor: decideAppBarColor(widget.dishdetailed.category),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               color: Colors.blueGrey,
@@ -90,7 +90,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             RatingBar.builder(
                               onRatingUpdate: (newValue) {
                                 setState(() {
-                                  mapratingvalues["taste"] = newValue;
+                                  mapRatingValues["taste"] = newValue;
                                 });
                               },
                               itemBuilder: (context, index) => const Icon(
@@ -127,7 +127,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             RatingBar.builder(
                               onRatingUpdate: (newValue) {
                                 setState(() {
-                                  mapratingvalues["look"] = newValue;
+                                  mapRatingValues["look"] = newValue;
                                 });
                               },
                               itemBuilder: (context, index) => const Icon(
@@ -164,7 +164,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                             RatingBar.builder(
                               onRatingUpdate: (newValue) {
                                 setState(() {
-                                  mapratingvalues["price"] = newValue;
+                                  mapRatingValues["price"] = newValue;
                                 });
                               },
                               itemBuilder: (context, index) => const Icon(
@@ -195,58 +195,41 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                             borderRadius:
                                                 BorderRadius.circular(15)))),
                                 onPressed: () async {
-                                  Dish dishobj = widget.dishdetailed;
+                                  Dish dishObj = widget.dishdetailed;
                                   List<int> ratedDishesIDList =
                                       await readListFromStorage();
-                                  if (ratedDishesIDList.contains(dishobj.id)) {
-                                    // * Restrict User from rating cause already voted
+                                  if (ratedDishesIDList.contains(dishObj.id)) {
+                                    // Restrict User from rating cause already voted
                                     showSnackBar2(context);
                                   } else {
-                                    int mapLenght = mapratingvalues.length;
+                                    int mapLenght = mapRatingValues.length;
                                     if (mapLenght == 3) {
-                                      // * finally let User rate
+                                      // let User rate
 
-                                      double sum = mapratingvalues.values
+                                      double sum = mapRatingValues.values
                                           .reduce((value, element) {
                                         return value + element;
                                       });
-                                      double ratingvalue =
-                                          sum / mapratingvalues.length;
-                                      Dish dishtosend = Dish(
-                                          id: dishobj.id,
-                                          name: dishobj.name,
-                                          description: dishobj.description,
-                                          price: dishobj.price,
-                                          category: dishobj.category,
-                                          servingDate: dishobj.servingDate,
-                                          responseCode: dishobj.responseCode,
-                                          rating: ratingvalue,
-                                          votes: dishobj.votes);
+                                      double ratingValue =
+                                          sum / mapRatingValues.length;
+                                      Dish dishToSave = Dish(
+                                          id: dishObj.id,
+                                          name: dishObj.name,
+                                          description: dishObj.description,
+                                          price: dishObj.price,
+                                          category: dishObj.category,
+                                          servingDate: dishObj.servingDate,
+                                          responseCode: dishObj.responseCode,
+                                          rating: ratingValue,
+                                          votes: dishObj.votes);
                                       // Convert the Dish object to JSON
-                                      String dishjsontosend =
-                                          dishtosend.toJson();
-                                      saveRatingForMeal(dishjsontosend);
-                                      ratedDishesIDList.add(dishobj.id);
-                                      // * Then save dish to memory
-                                      writeListToStorage(ratedDishesIDList);
-                                      Navigator.pop(context);
-                                      /*
-                                      //// ? müssen wir mal fixen
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) => MensiSchedule(
-                                                    mensiobj: widget
-                                                        .mensiobjfordetailpage,
-                                                  )))
-                                          .then((value) {
-                                        Future.delayed(
-                                            const Duration(milliseconds: 1000),
-                                            () {
-                                          dishesfromOle = getDishesfromOle(
-                                              widget.mensiobjfordetailpage);
-                                        });
-                                      });
-                                      */
+                                      String dishJsonToSave =
+                                          dishToSave.toJson();
+                                      sendRatingForMeal(dishJsonToSave);
+                                      // ratedDishesIDList.add(dishObj.id);
+                                      // Then save dish to memory
+                                      // writeListToStorage(ratedDishesIDList);
+                                      // Navigator.pop(context);
                                     } else {
                                       // * Restrict user cause not rated everything
                                       showSnackbar3(context);
@@ -278,11 +261,11 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     } else {
       return Title(
         color: Colors.black,
-        title: webpagetitle,
+        title: webPageTitle,
         child: Scaffold(
           appBar: AppBar(
-            title: Text(pagename),
-            backgroundColor: decideAppBarcolor(widget.dishdetailed.category),
+            title: Text(pageName),
+            backgroundColor: decideAppBarColor(widget.dishdetailed.category),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               color: Colors.blueGrey,
@@ -333,52 +316,37 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   }
 
   Future<void> showSnackBar1(BuildContext context) async {
-    const snackBarinternet = SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("👍 Bewertung abgegeben"),
         backgroundColor: Colors.blueGrey,
         elevation: 6,
-        duration: Duration(seconds: 2));
-    ScaffoldMessenger.of(context).showSnackBar(snackBarinternet);
+        duration: Duration(seconds: 2)));
   }
 
   Future<void> showSnackBar2(BuildContext context) async {
-    const snackBarinternet = SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Dieses Gericht hast du schon bewertet. 🙃"),
         backgroundColor: Colors.blueGrey,
         elevation: 6,
-        duration: Duration(seconds: 2));
-    ScaffoldMessenger.of(context).showSnackBar(snackBarinternet);
+        duration: Duration(seconds: 2)));
   }
 
   void showSnackbar3(BuildContext context) {
-    const snackBarallesRaten = SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Bitte Bewertung vollständig ausfüllen."),
         backgroundColor: Colors.blueGrey,
         elevation: 6,
-        duration: Duration(seconds: 2));
-    ScaffoldMessenger.of(context).showSnackBar(snackBarallesRaten);
+        duration: Duration(seconds: 2)));
   }
 
-  /*
-  void _getlastRatingDate() async {
-    SharedPreferences olddate = await SharedPreferences.getInstance();
-    String? ratedDate = olddate.getString("ratedDate");
-    setState(() {
-      _lastRatingDate = ratedDate;
-    });
+  void showSnackbar4(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Es trat ein Fehler auf."),
+        backgroundColor: Colors.blueGrey,
+        elevation: 6,
+        duration: Duration(seconds: 2)));
   }
-  */
-  /*
 
-  void _setRatingDate() async {
-    SharedPreferences olddate = await SharedPreferences.getInstance();
-    String datumheute = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    await olddate.setString("ratedDate", datumheute);
-    setState(() {
-      _lastRatingDate = datumheute;
-    });
-  }
-  */
   Future<List<int>> readListFromStorage() async {
     final prefs = await SharedPreferences.getInstance();
     List<String>? list = prefs.getStringList("ratedDishesInMemory");
@@ -386,11 +354,11 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       return [];
     }
 
-    List<int> intIDliste = [];
+    List<int> intIdListe = [];
     for (String stringID in list) {
-      intIDliste.add(int.parse(stringID));
+      intIdListe.add(int.parse(stringID));
     }
-    return intIDliste;
+    return intIdListe;
   }
 
   Future<void> writeListToStorage(List<int> list) async {
@@ -399,7 +367,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         "ratedDishesInMemory", list.map((e) => e.toString()).toList());
   }
 
-  Future<void> saveRatingForMeal(String jsonBody) async {
+  Future<void> sendRatingForMeal(String jsonBody) async {
     const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
     const user = apiUsername;
     const pw = password;
@@ -418,15 +386,20 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
           .timeout(const Duration(seconds: 10));
 
       if (loginResponse.statusCode == 200) {
-        final token = loginResponse.body;
-        print('JWT Token: $token');
+        final sendingToken = loginResponse.body;
+        log('JWT Token: $sendingToken');
 
-        String mealsFromFritzLink =
+        String cafeteriaMealsLink =
             decideMensi(widget.mensiObjForDetailPage.id);
+        log(cafeteriaMealsLink);
+        log("$cafeteriaMealsLink/sendRating");
+        log(jsonBody);
         final sendingResponse = await http.post(
-          Uri.parse("$mealsFromFritzLink/sendRating"),
+          Uri.parse("$cafeteriaMealsLink/sendRating"),
           headers: {
-            'Authorization': 'Bearer $token',
+            'Accept': '*/*',
+            'Authorization': 'Bearer $sendingToken',
+            'Content-Type': 'application/json',
           },
           body: jsonBody,
         );
@@ -434,33 +407,35 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         if (sendingResponse.statusCode == 200) {
           // wenn senden erfolgreich
           showSnackBar1(context);
+          log("Sending rating was successful");
         } else {
-          print(
-              'Error when trying to send Data: ${sendingResponse.statusCode}');
+          showSnackbar4(context);
+          log('Error when trying to send Data: ${sendingResponse.statusCode}');
         }
       } else {
-        print('Error when trying to Login: ${loginResponse.statusCode}');
+        showSnackbar4(context);
+        log('Error when trying to Login: ${loginResponse.statusCode}');
       }
     } catch (error) {
-      print('Exception: $error');
+      log('Exception: $error');
     }
   }
 
-  Color decideAppBarcolor(String category) {
-    Color appbarcolor;
+  Color decideAppBarColor(String category) {
+    Color appBarColor;
     if (category == "Vegetarisches Gericht") {
-      appbarcolor = const Color.fromARGB(255, 59, 215, 67);
+      appBarColor = const Color.fromARGB(255, 59, 215, 67);
     } else if (category == "Fleischgericht") {
-      appbarcolor = const Color.fromARGB(255, 244, 120, 32);
+      appBarColor = const Color.fromARGB(255, 244, 120, 32);
     } else if (category == "Veganes Gericht") {
-      appbarcolor = const Color.fromARGB(255, 138, 238, 143);
+      appBarColor = const Color.fromARGB(255, 138, 238, 143);
     } else if (category == "Pastateller") {
-      appbarcolor = const Color.fromRGBO(210, 180, 140, 1);
+      appBarColor = const Color.fromRGBO(210, 180, 140, 1);
     } else if (category == "Fischgericht") {
-      appbarcolor = const Color.fromARGB(255, 52, 174, 236);
+      appBarColor = const Color.fromARGB(255, 52, 174, 236);
     } else {
-      appbarcolor = Colors.white;
+      appBarColor = Colors.white;
     }
-    return appbarcolor;
+    return appBarColor;
   }
 }

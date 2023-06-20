@@ -18,7 +18,7 @@ Future<List<Dish>> getofflineDishes() async {
   }
   /* for (String dishString in listOfDishStringss) {
       var decodedJson = jsonDecode(dishString);
-      print(decodedJson);
+      log(decodedJson);
     }
     */
   return listOfofflineDishes;

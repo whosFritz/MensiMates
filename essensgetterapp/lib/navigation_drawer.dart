@@ -144,7 +144,7 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
                       Navigator.pop(context);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => MensiSchedule(
-                                mensiobj: mensi,
+                                mensiObj: mensi,
                               )));
                     }
                   },
