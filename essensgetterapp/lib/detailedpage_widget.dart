@@ -355,7 +355,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       double ratingValue, List<int> ratedDishesIDList, Dish dishObj) async {
     const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
     const user = apiUsername;
-    const pw = password;
+    const pw = password; // hello
 
     try {
       final loginResponse = await http
