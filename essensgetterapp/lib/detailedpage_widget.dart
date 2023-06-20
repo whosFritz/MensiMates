@@ -231,7 +231,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                       // writeListToStorage(ratedDishesIDList);
                                       // Navigator.pop(context);
                                     } else {
-                                      // * Restrict user cause not rated everything
+                                      // Restrict user cause not rated everything
                                       showSnackbar3(context);
                                     }
                                   }
