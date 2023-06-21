@@ -194,30 +194,39 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                         RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(15)))),
-                                onPressed: () async {
+                                onPressed: () {
                                   Dish dishObj = widget.dishdetailed;
-                                  List<int> ratedDishesIDList =
-                                      await readListFromStorage();
-                                  if (ratedDishesIDList.contains(dishObj.id)) {
-                                    // Restrict User from rating cause already voted
-                                    showSnackBar2(context);
-                                  } else {
-                                    int mapLenght = mapRatingValues.length;
-                                    if (mapLenght == 3) {
-                                      // let User rate
-                                      double sum = mapRatingValues.values
-                                          .reduce((value, element) {
-                                        return value + element;
-                                      });
-                                      double ratingValue =
-                                          sum / mapRatingValues.length;
-                                      sendRatingForMeal(ratingValue,
-                                          ratedDishesIDList, dishObj);
+                                  readListFromStorage()
+                                      .then((List<int> ratedDishesIDList) {
+                                    if (ratedDishesIDList
+                                        .contains(dishObj.id)) {
+                                      // Restrict User from rating cause already voted
+                                      showSnackBar2(context);
                                     } else {
-                                      // Restrict user cause not rated everything
-                                      showSnackbar3(context);
+                                      int mapLenght = mapRatingValues.length;
+                                      if (mapLenght == 3) {
+                                        // let User rate
+                                        double sum = mapRatingValues.values
+                                            .reduce((value, element) {
+                                          return value + element;
+                                        });
+                                        double ratingValue =
+                                            sum / mapRatingValues.length;
+                                        sendRatingForMeal(ratingValue,
+                                                ratedDishesIDList, dishObj)
+                                            .then((bool sendingWasSuccessful) {
+                                          if (sendingWasSuccessful) {
+                                            showSnackBar1(context);
+                                          } else {
+                                            showSnackbar4(context);
+                                          }
+                                        });
+                                      } else {
+                                        // Restrict user cause not rated everything
+                                        showSnackbar3(context);
+                                      }
                                     }
-                                  }
+                                  });
                                 },
                                 child: const Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
@@ -298,7 +307,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     }
   }
 
-  Future<void> showSnackBar1(BuildContext context) async {
+  void showSnackBar1(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("👍 Bewertung abgegeben"),
         backgroundColor: Colors.blueGrey,
@@ -306,7 +315,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         duration: Duration(seconds: 2)));
   }
 
-  Future<void> showSnackBar2(BuildContext context) async {
+  void showSnackBar2(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Dieses Gericht hast du schon bewertet. 🙃"),
         backgroundColor: Colors.blueGrey,
@@ -351,7 +360,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         "ratedDishesInMemory", list.map((e) => e.toString()).toList());
   }
 
-  Future<void> sendRatingForMeal(
+  Future<bool> sendRatingForMeal(
       double ratingValue, List<int> ratedDishesIDList, Dish dishObj) async {
     const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
     const user = apiUsername;
@@ -399,22 +408,22 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
 
         if (sendingResponse.statusCode == 200) {
           // wenn senden erfolgreich
-          showSnackBar1(context);
           log("Sending rating was successful");
           ratedDishesIDList.add(dishObj.id);
           // Then save dish to memory
           writeListToStorage(ratedDishesIDList);
+          return true;
         } else {
-          showSnackbar4(context);
           log('Error when trying to send Data: ${sendingResponse.statusCode}');
+          return false;
         }
       } else {
-        showSnackbar4(context);
         log('Error when trying to Login: ${loginResponse.statusCode}');
+        return false;
       }
     } catch (error) {
       log('Exception: $error');
-      showSnackbar4(context);
+      return false;
     }
   }
 
