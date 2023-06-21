@@ -10,7 +10,7 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  final String version = "1.2.0";
+  final String version = "1.3.0";
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -87,7 +87,7 @@ class _AboutPageState extends State<AboutPage> {
                                         const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
-                                              "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit Ole Einar Christoph und seinem Programm 'EssensGetter 2.0'. Vielen Dank bei der Einrichtung der vollständigen Funktionalität. Schaut gerne auf seinem Github vorbei und abonniert den EssensGetter Newsletter.",
+                                              "Diese App wurde entwickelt von Fritz Schubert in Zusammenarbeit mit Ole Einar Christoph und seinem Projekt 'MensaHub'. Vielen Dank bei der Einrichtung der vollständigen Funktionalität. Schaut gerne auf seinem Github vorbei und abonniert den MensaHub Newsletter.",
                                               style: TextStyle(
                                                   fontFamily: "Open Sans",
                                                   color: Colors.black,

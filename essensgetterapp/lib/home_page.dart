@@ -162,11 +162,15 @@ class HomeScreenWidgetState extends State<HomeScreenWidget> {
             children: [
               Container(
                 decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/backgrounds/pizza-background.jpg'),
-                    fit: BoxFit.cover,
-                  ),
+                  gradient: LinearGradient(colors: [
+                    Color.fromRGBO(141, 252, 255, 100),
+                    Color.fromRGBO(105, 236, 255, 100)
+                  ], begin: Alignment.topCenter, end: Alignment.bottomRight),
+                  // image: DecorationImage(
+                  //   image: AssetImage(
+                  //       'assets/images/backgrounds/pizza-background.jpg'),
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
               ),
               Column(
