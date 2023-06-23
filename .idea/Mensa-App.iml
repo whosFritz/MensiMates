@@ -57,6 +57,12 @@
       <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/windows/flutter/ephemeral/.plugin_symlinks/package_info_plus/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/windows/flutter/ephemeral/.plugin_symlinks/package_info_plus/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/windows/flutter/ephemeral/.plugin_symlinks/package_info_plus/build" />
+      <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/android/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/android/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/linux/flutter/ephemeral" />
+      <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/macos/Flutter/ephemeral" />
+      <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/windows/flutter/ephemeral" />
+      <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/.idea" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
