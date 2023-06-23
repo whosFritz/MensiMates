@@ -48,3 +48,4 @@ app.*.map.json
 /lib/api/password_and_username.dart
 /keys/
 .gitignore
+/lib/api/pw_and_username.dart
