@@ -38,6 +38,10 @@ Once you have the dependencies installed, you can clone this repository to your 
 
 You can then run the app on an emulator or on a physical device connected to your machine.
 
+If u want to be able to fetch meal data from the MensaHub you need ur own apiUsername and password: 
+
+For this please register on <a href="https://mensahub.olech2412.de/">MensaHub </a> and apply for a developer account. Also see this instruction to the API <a href="https://github.com/olech2412/MensaHub-Gateway" target="_blank"> MensaHub-Gateway </a>
+
 ## Contribution
 
 If you would like to contribute to this project, please fork the repository, make your changes and create a pull request. We will review the changes and merge them if they are appropriate.
