@@ -45,6 +45,6 @@ app.*.map.json
 
 
 # My git ignore files
-/lib/api/api_links.dart
+/lib/api/passwordAndUsername.dart
 /keys/
 .gitignore
