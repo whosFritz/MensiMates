@@ -1,6 +1,6 @@
 import "dart:convert";
 import "dart:developer";
-import 'package:essensgetterapp/api/password_and_username.dart';
+import 'package:essensgetterapp/api/pw_and_username.dart';
 import 'package:essensgetterapp/pages/webpagepicsearch_page.dart';
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
