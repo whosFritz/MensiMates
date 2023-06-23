@@ -1,9 +1,9 @@
-import 'package:essensgetterapp/home_page.dart';
+import 'package:essensgetterapp/pages/home_page.dart';
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:intl/date_symbol_data_local.dart";
 
-import "rate_app_init_widget.dart";
+import 'components/rate_app_init_widget.dart';
 
 void main() {
   initializeDateFormatting("de_DE");

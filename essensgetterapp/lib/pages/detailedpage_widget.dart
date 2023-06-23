@@ -1,13 +1,14 @@
 import "dart:convert";
 import 'dart:developer';
+import "package:essensgetterapp/api/password_and_username.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:intl/intl.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
-import "dish_class.dart";
-import "api_links.dart";
-import "mensi_class.dart";
+import '../entities/dish_class.dart';
+import '../api/api_links.dart';
+import '../entities/mensi_class.dart';
 import 'mensi_schedule.dart';
 
 class DetailRatingPage extends StatefulWidget {

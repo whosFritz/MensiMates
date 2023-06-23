@@ -1,18 +1,19 @@
 import "dart:convert";
 import "dart:developer";
-import "package:essensgetterapp/webpagepicsearch_page.dart";
+import 'package:essensgetterapp/api/password_and_username.dart';
+import 'package:essensgetterapp/pages/webpagepicsearch_page.dart';
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
 import "package:url_launcher/url_launcher.dart";
 import 'detailedpage_widget.dart';
-import "dish_class.dart";
-import "api_links.dart";
-import 'dishgroup_cat.dart';
-import 'dishgroup_date.dart';
-import "mensi_class.dart";
-import 'navigation_drawer.dart';
+import '../entities/dish_class.dart';
+import '../api/api_links.dart';
+import '../entities/dishgroup_cat.dart';
+import '../entities/dishgroup_date.dart';
+import '../entities/mensi_class.dart';
+import '../components/navigation_drawer.dart';
 
 late Future<List<Dish>> dishesFromApi;
 late PageController pageController;

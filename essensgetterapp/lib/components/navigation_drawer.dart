@@ -1,10 +1,10 @@
-import 'package:essensgetterapp/aboutpage_widget.dart';
-import 'package:essensgetterapp/home_page.dart';
-import 'package:essensgetterapp/mensi_schedule.dart';
-import 'package:essensgetterapp/rate_app_init_widget.dart';
+import 'package:essensgetterapp/pages/aboutpage_widget.dart';
+import 'package:essensgetterapp/pages/home_page.dart';
+import 'package:essensgetterapp/pages/mensi_schedule.dart';
+import 'package:essensgetterapp/components/rate_app_init_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'mensi_class.dart';
+import '../entities/mensi_class.dart';
 
 const String navigationDrawerToolTip = "Navigationsleiste";
 List<Mensi> mensenliste = [

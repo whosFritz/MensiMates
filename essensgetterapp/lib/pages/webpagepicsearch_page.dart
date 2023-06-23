@@ -1,8 +1,8 @@
-import 'package:essensgetterapp/mensi_schedule.dart';
+import 'package:essensgetterapp/pages/mensi_schedule.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-import 'dish_class.dart';
+import '../entities/dish_class.dart';
 
 class WebPageSearch extends StatefulWidget {
   const WebPageSearch({super.key, required this.searchDish});
@@ -21,15 +21,18 @@ class _WebPageSearchState extends State<WebPageSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: const Text("Google-Picture-Search"), centerTitle: true, backgroundColor: decideContainerColor(widget.searchDish.category),),
+      appBar: AppBar(
+        title: const Text("Google-Picture-Search"),
+        centerTitle: true,
+        backgroundColor: decideContainerColor(widget.searchDish.category),
+      ),
       body: Column(
         children: [
           Expanded(
             child: InAppWebView(
               initialUrlRequest: URLRequest(
-              url: Uri.parse(
-                  'https://www.google.com/search?q=${widget.searchDish.name}&tbm=isch')),
+                  url: Uri.parse(
+                      'https://www.google.com/search?q=${widget.searchDish.name}&tbm=isch')),
             ),
           ),
         ],
