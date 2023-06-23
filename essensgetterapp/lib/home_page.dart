@@ -20,7 +20,11 @@ Mensi shortcutreturn(String type) {
       return mensi;
     }
   }
-  return Mensi(id: 0, name: "keine Mensa", oeffnungszeitenalles: ["immer"]);
+  return Mensi(
+      id: 0,
+      name: "keine Mensa",
+      oeffnungszeitenalles: ["immer"],
+      imageLink: 'nix');
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
