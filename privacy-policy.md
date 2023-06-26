@@ -32,7 +32,7 @@ Wir möchten die Benutzer dieses Dienstes darüber informieren, dass diese Dritt
 ## Sicherheit
 Wir schätzen Ihr Vertrauen, indem Sie uns Ihre persönlichen Informationen zur Verfügung stellen, und bemühen uns daher, kommerziell akzeptable Mittel zum Schutz zu verwenden. Bitte beachten Sie jedoch, dass keine Übertragungsmethode über das Internet oder elektronische Speichermethode 100% sicher und zuverlässig ist und wir deren absolute Sicherheit nicht garantieren können.
 
-##Löschung von Daten
+## Löschung von Daten
 Auf Wunsch kann die Löschung der erhobenen Daten gefordert werden. Dabei werden alle personenbezognen Daten und Geräteinformationen gelöscht.
 
 ## Kinder-Datenschutz
