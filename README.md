@@ -2,7 +2,7 @@
 
 ## in cooperation with olech2412
 <p>
-<a href="https://play.google.com/store/apps/details?id=com.whosfritz.MensiMates&gl=DE">
+<a href="https://play.google.com/store/apps/details?id=com.whosfritz.MensiMates&gl=DE" target="_blank">
   <img src="https://user-images.githubusercontent.com/97552289/217674187-f8aa0711-aa90-4241-9465-de0130ae6dcf.png" width="100" height="100" alt="www-logo">
 </a>
 <a href="https://mensi-mates.whosfritz.de" target="_blank">
