@@ -2,13 +2,13 @@
 
 ## in cooperation with olech2412
 <p>
-<a href="https://www.github.com/whosfritz/Mensa-App/releases">
+<a href="https://play.google.com/store/apps/details?id=com.whosfritz.MensiMates&gl=DE">
   <img src="https://user-images.githubusercontent.com/97552289/217674187-f8aa0711-aa90-4241-9465-de0130ae6dcf.png" width="100" height="100" alt="www-logo">
 </a>
-<a href="https://mensi-mates.whosfritz.de">
+<a href="https://mensi-mates.whosfritz.de" target="_blank">
   <img src="https://user-images.githubusercontent.com/97552289/215055483-bcea49a9-04d4-4041-bc3f-5188f4ef4950.png" width="100" height="100" alt="apple-logo">
 </a>
-<a href="https://mensi-mates.whosfritz.de">
+<a href="https://mensi-mates.whosfritz.de" target="_blank">
   <img src="https://user-images.githubusercontent.com/97552289/215055980-d8811728-b25f-4155-8834-4c7ff9634909.png" width="100" height="100" alt="www-logo">
 </a>
   </p>
