@@ -1,7 +1,7 @@
 # Datenschutzrichtlinie
 ## Einführung
 Unsere Datenschutzrichtlinie hilft Ihnen zu verstehen, welche Informationen wir bei MensiMates sammeln, wie MensiMates sie verwendet und welche Wahlmöglichkeiten Sie haben.
-Fritz Schubert hat die MensiMates-App als kostenlose App erstellt. DiesER DIENST wird von Fritz Schubert kostenfrei bereitgestellt und ist für die Verwendung wie gesehen gedacht.
+Fritz Schubert hat die MensiMates-App als kostenlose App erstellt. Dieser Dienst wird von Fritz Schubert kostenfrei bereitgestellt und ist für die Verwendung wie gesehen gedacht.
 Wenn Sie unser Service nutzen möchten, dann stimmen Sie der Sammlung und Verwendung von Informationen im Zusammenhang mit dieser Richtlinie zu. Die von uns gesammelten personenbezogenen Informationen werden zur Bereitstellung und Verbesserung des Services verwendet. Wir werden Ihre Informationen nicht außer wie in dieser Datenschutzrichtlinie beschrieben nutzen oder teilen.
 Die in dieser Datenschutzrichtlinie verwendeten Begriffe haben die gleiche Bedeutung wie in unseren Nutzungsbedingungen, die auf unserer Website verfügbar sind, es sei denn, sie werden in dieser Datenschutzrichtlinie anders definiert.
 
@@ -33,7 +33,7 @@ Wir möchten die Benutzer dieses Dienstes darüber informieren, dass diese Dritt
 Wir schätzen Ihr Vertrauen, indem Sie uns Ihre persönlichen Informationen zur Verfügung stellen, und bemühen uns daher, kommerziell akzeptable Mittel zum Schutz zu verwenden. Bitte beachten Sie jedoch, dass keine Übertragungsmethode über das Internet oder elektronische Speichermethode 100% sicher und zuverlässig ist und wir deren absolute Sicherheit nicht garantieren können.
 
 ## Löschung von Daten
-Auf Wunsch kann die Löschung der erhobenen Daten gefordert werden. Dabei werden alle personenbezognen Daten und Geräteinformationen gelöscht.
+Auf Wunsch kann die Löschung der gesendeten Ratings gefordert werden. Dieses Rating wird entfernt.
 
 ## Kinder-Datenschutz
 Dieser Dienst richtet sich nicht an Personen unter 13 Jahren. Wir sammeln keine personenbezogenen Informationen von Kindern unter 13 Jahren. Falls wir entdecken, dass ein Kind unter 13 Jahren uns personenbezogene Informationen zur Verfügung gestellt hat, löschen wir diese sofort von unseren Servern. Wenn Sie Elternteil oder Vormund sind und wissen, dass Ihr Kind uns personenbezogene Informationen zur Verfügung gestellt hat, kontaktieren Sie uns bitte, damit wir die notwendigen Maßnahmen ergreifen können.
