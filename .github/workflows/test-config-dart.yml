@@ -27,8 +27,8 @@ jobs:
       - name: pwd
         run: pwd
         
-      - name: ll
-        run: ll
+      - name: ls
+        run: ls
       - name: cd into directory
         run: cd essensgetterapp
         
