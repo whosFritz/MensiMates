@@ -11,23 +11,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v2
       with:
-        flutter-version: stable
-
-    - name: Navigate to essensgetterapp folder
-      run: cd essensgetterapp
-
-    - name: Install dependencies
-      run: flutter pub get
+        distribution: 'zulu'
+        java-version: '11'
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.7.7'
+    - run: flutter pub get
       working-directory: essensgetterapp
 
-    - name: Build APK
-      run: flutter build apk --release
+    - run: flutter test
+      working-directory: essensgetterapp
+
+    - run: flutter build apk
       working-directory: essensgetterapp
 
     - name: Archive artifacts
