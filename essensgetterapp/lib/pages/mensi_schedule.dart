@@ -58,6 +58,7 @@ class MensiScheduleState extends State<MensiSchedule>
     "Hauptkomponente": 16,
     "Gemüsebeilage": 17,
     "Beilagen": 18,
+    "N/A": 19
   };
   int compareDishGroupCat(DishGroupCat a, DishGroupCat b) {
     int differenz = sortOrder[a.kategorie]! - sortOrder[b.kategorie]!;
