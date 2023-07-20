@@ -162,7 +162,7 @@ class MensiScheduleState extends State<MensiSchedule>
                                 snapshot.data!.isEmpty) {
                               return const Center(
                                 child: Text(
-                                  "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
+                                  "Es konnten keine Daten abgerufen werden.🤭",
                                   textAlign: TextAlign.center,
                                 ),
                               );
