@@ -4,6 +4,7 @@ import 'package:essensgetterapp/api/pw_and_username.dart';
 import 'package:essensgetterapp/pages/webpagepicsearch_page.dart';
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
 import "package:url_launcher/url_launcher.dart";
@@ -75,124 +76,159 @@ class MensiScheduleState extends State<MensiSchedule>
     super.initState();
   }
 
+  void skipToYesterDay() {
+    pageController.previousPage(
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+
+  void skipToNextDay() {
+    pageController.nextPage(
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+
+  void handleKeyDownEvent(RawKeyDownEvent event) {
+    final pressedKey = event.logicalKey;
+    switch (pressedKey.keyLabel) {
+      case "Arrow Left":
+        skipToYesterDay();
+        break;
+      case "Arrow Right":
+        skipToNextDay();
+        break;
+      case "R":
+        refresh();
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Title(
       color: Colors.black,
       title: widget.mensiObj.name,
-      child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                child: platformPageViewButtons())
-          ],
-          iconTheme: const IconThemeData(color: Colors.blueGrey),
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Text(
-              widget.mensiObj.name,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Open Sans",
-                  fontSize: 20,
-                  color: Colors.black,
-                  letterSpacing: 2),
+      child: RawKeyboardListener(
+        focusNode: FocusNode(),
+        autofocus: true,
+        onKey: (event) =>
+            event is RawKeyDownEvent ? handleKeyDownEvent(event) : null,
+        child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                  child: platformPageViewButtons())
+            ],
+            iconTheme: const IconThemeData(color: Colors.blueGrey),
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                widget.mensiObj.name,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Open Sans",
+                    fontSize: 20,
+                    color: Colors.black,
+                    letterSpacing: 2),
+              ),
             ),
           ),
-        ),
-        drawer: MyNavigationDrawer(
-          mensipara: widget.mensiObj,
-        ),
-        body: SafeArea(
-          child: GestureDetector(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                    child: FutureBuilder(
-                        future: dishesFromApi,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            Object? errormessage = snapshot.error;
-                            if (errormessage.toString() ==
-                                "Failed host lookup: 'api.olech2412.de'") {
-                              return const Text("🥵 API-Error 🥵");
-                            } else {
-                              return Text("🤮 $errormessage 🤮");
-                            }
-                          } else if (snapshot.hasData &&
-                              snapshot.data!.isEmpty) {
-                            return const Center(
-                              child: Text(
-                                "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          } else if (snapshot.hasData) {
-                            final dishes = snapshot.data!;
-                            return buildDishes(dishes);
-                          } else {
-                            return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: const Center(
-                                        child: CircularProgressIndicator(
-                                      backgroundColor: Colors.white,
-                                      color: Color.fromARGB(255, 0, 166, 255),
-                                    )),
-                                  )
-                                ]);
-                          }
-                        })),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: const Color(0xffE0E0E0),
-                            borderRadius: BorderRadius.circular(0),
-                            shape: BoxShape.rectangle),
-                        child: Padding(
-                          padding: const EdgeInsets.all(7),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Öffnungszeiten:",
-                                style: TextStyle(
-                                    fontFamily: "Open Sans",
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              for (String zeile
-                                  in widget.mensiObj.oeffnungszeitenalles)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7),
-                                  child: Text(
-                                    zeile,
-                                    style: const TextStyle(
-                                        fontFamily: "Open Sans", fontSize: 12),
-                                  ),
+          drawer: MyNavigationDrawer(
+            mensipara: widget.mensiObj,
+          ),
+          body: SafeArea(
+            child: GestureDetector(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: FutureBuilder(
+                          future: dishesFromApi,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              Object? errormessage = snapshot.error;
+                              if (errormessage.toString() ==
+                                  "Failed host lookup: 'api.olech2412.de'") {
+                                return const Text("🥵 API-Error 🥵");
+                              } else {
+                                return Text("🤮 $errormessage 🤮");
+                              }
+                            } else if (snapshot.hasData &&
+                                snapshot.data!.isEmpty) {
+                              return const Center(
+                                child: Text(
+                                  "Keine Speisen an diesem Tag oder noch keine Daten vorhanden.🤭",
+                                  textAlign: TextAlign.center,
                                 ),
-                            ],
+                              );
+                            } else if (snapshot.hasData) {
+                              final dishes = snapshot.data!;
+                              return buildDishes(dishes);
+                            } else {
+                              return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: const Center(
+                                          child: CircularProgressIndicator(
+                                        backgroundColor: Colors.white,
+                                        color: Color.fromARGB(255, 0, 166, 255),
+                                      )),
+                                    )
+                                  ]);
+                            }
+                          })),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: const Color(0xffE0E0E0),
+                              borderRadius: BorderRadius.circular(0),
+                              shape: BoxShape.rectangle),
+                          child: Padding(
+                            padding: const EdgeInsets.all(7),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Öffnungszeiten:",
+                                  style: TextStyle(
+                                      fontFamily: "Open Sans",
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                for (String zeile
+                                    in widget.mensiObj.oeffnungszeitenalles)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 7),
+                                    child: Text(
+                                      zeile,
+                                      style: const TextStyle(
+                                          fontFamily: "Open Sans",
+                                          fontSize: 12),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -216,11 +252,7 @@ class MensiScheduleState extends State<MensiSchedule>
           Tooltip(
             message: "Vorheriger Tag",
             child: IconButton(
-                onPressed: () {
-                  pageController.previousPage(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut);
-                },
+                onPressed: () => skipToYesterDay(),
                 icon: const Icon(Icons.keyboard_arrow_left_rounded)),
           ),
           Padding(
@@ -228,11 +260,7 @@ class MensiScheduleState extends State<MensiSchedule>
             child: Tooltip(
               message: "Nächster Tag",
               child: IconButton(
-                  onPressed: () {
-                    pageController.nextPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOut);
-                  },
+                  onPressed: () => skipToNextDay(),
                   icon: const Icon(Icons.keyboard_arrow_right_rounded)),
             ),
           ),
