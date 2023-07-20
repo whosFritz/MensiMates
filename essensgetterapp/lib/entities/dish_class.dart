@@ -26,10 +26,10 @@ class Dish {
   static Dish fromJson(json) {
     return Dish(
       id: json["id"] ?? 1000000,
-      name: json["name"] ?? "keine Angaben",
-      description: json["description"] ?? "keine Angaben",
-      price: json["price"] ?? "keine Angaben",
-      category: json["category"] ?? "keine Angaben",
+      name: json["name"] ?? "N/A",
+      description: json["description"] ?? "N/A",
+      price: json["price"] ?? "N/A",
+      category: json["category"] ?? "N/A",
       servingDate: DateTime.parse(json["servingDate"]),
       responseCode: json["responseCode"] ?? 200,
       rating: json["rating"] ?? 3.0,
