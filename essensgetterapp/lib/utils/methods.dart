@@ -310,3 +310,107 @@ void setofflineDishes(List<Dish> dishesfromOle) async {
   await offlineDishesset.setStringList(
       'offlineDishes', listOfcurrentDishStrings);
 }
+
+Future<List<int>> readListFromStorage() async {
+  final prefs = await SharedPreferences.getInstance();
+  List<String>? list = prefs.getStringList("ratedDishesInMemory");
+  if (list == null) {
+    return [];
+  }
+
+  List<int> intIdListe = [];
+  for (String stringID in list) {
+    intIdListe.add(int.parse(stringID));
+  }
+  return intIdListe;
+}
+
+Future<void> writeListToStorage(List<int> list) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setStringList(
+      "ratedDishesInMemory", list.map((e) => e.toString()).toList());
+}
+
+Future<bool> sendRatingForMeal(double ratingValue, List<int> ratedDishesIDList,
+    Dish dishObj, Mensi mensi) async {
+  const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
+  const user = apiUsername;
+  const pw = password;
+
+  try {
+    final loginResponse = await http
+        .post(Uri.parse(loginUrl),
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'apiUsername': user,
+              'password': pw,
+            }))
+        .timeout(const Duration(seconds: 10));
+
+    if (loginResponse.statusCode == 200) {
+      Dish dishToSend = Dish(
+          id: dishObj.id,
+          name: dishObj.name,
+          description: dishObj.description,
+          price: dishObj.price,
+          category: dishObj.category,
+          servingDate: dishObj.servingDate,
+          responseCode: dishObj.responseCode,
+          rating: ratingValue,
+          votes: dishObj.votes);
+      // Convert the Dish object to JSON
+      String dishJsonToSend = dishToSend.toJson();
+
+      final sendingToken = loginResponse.body;
+      String cafeteriaMealsLink = decideMensi(mensi.id);
+      final sendingResponse = await http.post(
+        Uri.parse("$cafeteriaMealsLink/sendRating"),
+        headers: {
+          'Accept': '*/*',
+          'Authorization': 'Bearer $sendingToken',
+          'Content-Type': 'application/json',
+        },
+        body: dishJsonToSend,
+      );
+
+      if (sendingResponse.statusCode == 200) {
+        // wenn senden erfolgreich
+        log("Sending rating was successful");
+        ratedDishesIDList.add(dishObj.id);
+        // Then save dish to memory
+        writeListToStorage(ratedDishesIDList);
+        return true;
+      } else {
+        log('Error when trying to send Data: ${sendingResponse.statusCode}');
+        return false;
+      }
+    } else {
+      log('Error when trying to Login: ${loginResponse.statusCode}');
+      return false;
+    }
+  } catch (error) {
+    log('Exception: $error');
+    return false;
+  }
+}
+
+Color decideAppBarColor(String category) {
+  Color appBarColor;
+  if (category == "Vegetarisches Gericht") {
+    appBarColor = const Color.fromARGB(255, 59, 215, 67);
+  } else if (category == "Fleischgericht") {
+    appBarColor = const Color.fromARGB(255, 244, 120, 32);
+  } else if (category == "Veganes Gericht") {
+    appBarColor = const Color.fromARGB(255, 138, 238, 143);
+  } else if (category == "Pastateller") {
+    appBarColor = const Color.fromRGBO(210, 180, 140, 1);
+  } else if (category == "Fischgericht") {
+    appBarColor = const Color.fromARGB(255, 52, 174, 236);
+  } else {
+    appBarColor = Colors.white;
+  }
+  return appBarColor;
+}
