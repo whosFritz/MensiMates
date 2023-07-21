@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:mensimates/utils/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -202,7 +203,6 @@ String buildGetDataUrl(String mealsForFritzBaseLink) {
   return getDataUrl;
 }
 
-String loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
 // Methode um Gerichte zu holen und umzuwandeln.
 Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
   String mealsForFritzBaseLink = decideMensi(mensiObj.id);
@@ -278,37 +278,36 @@ Future<List<Dish>> fetchDishesFromApi(
   }
 }
 
-Future<List<Dish>> getofflineDishes() async {
-  SharedPreferences offlineDishesget = await SharedPreferences.getInstance();
-  List<String>? listOfofflineDishStrings =
-      offlineDishesget.getStringList('oofflineDishes');
+Future<List<Dish>> getOfflineDishes() async {
+  SharedPreferences offlineDishesGet = await SharedPreferences.getInstance();
+  List<String>? listOfflineDishesStrings =
+      offlineDishesGet.getStringList('oofflineDishes');
   /* List<String> listOfofflineDishStringss = [
       '{"id":8435984382,"name":"Rucola-Süßkartoffel Schnitte","servingDate":"2023-02-07","category":"Veganes Gericht","price":"2,40€/ 4,00€/ 5,50€","description":"Chili-Tomatensoße, Rosmarinkartoffeln, glutenhaltiges Getreide, Weizen, Gerste, Veganes Gericht, Konservierungsstoff","rating":2.0,"responseCode":200,"votes":1}',
       '{"id":8435984396,"name":"Kartoffel-Pfanne mit Champignon, Wirsing & Erdnusscreme","servingDate":"2023-02-07","category":"Veganes Gericht","price":"2,40€/ 4,00€/ 5,50€","description":"Erdnüsse, Soja, Veganes Gericht","rating":0.0,"responseCode":200,"votes":0}'
     ];
     */
-  List<Dish> listOfofflineDishes = [];
-  for (String dishString in listOfofflineDishStrings!) {
+  List<Dish> listOfflineDishes = [];
+  for (String dishString in listOfflineDishesStrings!) {
     var decodedJson = jsonDecode(dishString);
-    listOfofflineDishes.add(Dish.fromJson(decodedJson));
+    listOfflineDishes.add(Dish.fromJson(decodedJson));
   }
   /* for (String dishString in listOfDishStringss) {
       var decodedJson = jsonDecode(dishString);
       log(decodedJson);
     }
     */
-  return listOfofflineDishes;
+  return listOfflineDishes;
 }
 
-void setofflineDishes(List<Dish> dishesfromOle) async {
-  SharedPreferences offlineDishesset = await SharedPreferences.getInstance();
-  List<Dish> listcurrentDishes = dishesfromOle;
-  List<String> listOfcurrentDishStrings = [];
-  for (Dish dish in listcurrentDishes) {
-    listOfcurrentDishStrings.add(dish.toJson());
+void setOfflineDishes(List<Dish> dishesfromOle) async {
+  SharedPreferences offlineDishesSet = await SharedPreferences.getInstance();
+  List<Dish> currentDishList = dishesfromOle;
+  List<String> listCurrentDishStrings = [];
+  for (Dish dish in currentDishList) {
+    listCurrentDishStrings.add(dish.toJson());
   }
-  await offlineDishesset.setStringList(
-      'offlineDishes', listOfcurrentDishStrings);
+  await offlineDishesSet.setStringList('offlineDishes', listCurrentDishStrings);
 }
 
 Future<List<int>> readListFromStorage() async {
@@ -333,62 +332,40 @@ Future<void> writeListToStorage(List<int> list) async {
 
 Future<bool> sendRatingForMeal(double ratingValue, List<int> ratedDishesIDList,
     Dish dishObj, Mensi mensi) async {
-  const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
-  const user = apiUsername;
-  const pw = password;
-
   try {
-    final loginResponse = await http
-        .post(Uri.parse(loginUrl),
-            headers: {
-              'Accept': '*/*',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({
-              'apiUsername': user,
-              'password': pw,
-            }))
-        .timeout(const Duration(seconds: 10));
+    Dish dishToSend = Dish(
+        id: dishObj.id,
+        name: dishObj.name,
+        description: dishObj.description,
+        price: dishObj.price,
+        category: dishObj.category,
+        servingDate: dishObj.servingDate,
+        responseCode: dishObj.responseCode,
+        rating: ratingValue,
+        votes: dishObj.votes);
+    // Convert the Dish object to JSON
+    String dishJsonToSend = dishToSend.toJson();
+    String sendingToken = await loginAndGetToken(loginUrl);
+    String cafeteriaMealsLink = decideMensi(mensi.id);
+    final sendingResponse = await http.post(
+      Uri.parse("$cafeteriaMealsLink/sendRating"),
+      headers: {
+        'Accept': '*/*',
+        'Authorization': 'Bearer $sendingToken',
+        'Content-Type': 'application/json',
+      },
+      body: dishJsonToSend,
+    );
 
-    if (loginResponse.statusCode == 200) {
-      Dish dishToSend = Dish(
-          id: dishObj.id,
-          name: dishObj.name,
-          description: dishObj.description,
-          price: dishObj.price,
-          category: dishObj.category,
-          servingDate: dishObj.servingDate,
-          responseCode: dishObj.responseCode,
-          rating: ratingValue,
-          votes: dishObj.votes);
-      // Convert the Dish object to JSON
-      String dishJsonToSend = dishToSend.toJson();
-
-      final sendingToken = loginResponse.body;
-      String cafeteriaMealsLink = decideMensi(mensi.id);
-      final sendingResponse = await http.post(
-        Uri.parse("$cafeteriaMealsLink/sendRating"),
-        headers: {
-          'Accept': '*/*',
-          'Authorization': 'Bearer $sendingToken',
-          'Content-Type': 'application/json',
-        },
-        body: dishJsonToSend,
-      );
-
-      if (sendingResponse.statusCode == 200) {
-        // wenn senden erfolgreich
-        log("Sending rating was successful");
-        ratedDishesIDList.add(dishObj.id);
-        // Then save dish to memory
-        writeListToStorage(ratedDishesIDList);
-        return true;
-      } else {
-        log('Error when trying to send Data: ${sendingResponse.statusCode}');
-        return false;
-      }
+    if (sendingResponse.statusCode == 200) {
+      // wenn senden erfolgreich
+      log("Sending rating was successful");
+      ratedDishesIDList.add(dishObj.id);
+      // Then save dish to memory
+      writeListToStorage(ratedDishesIDList);
+      return true;
     } else {
-      log('Error when trying to Login: ${loginResponse.statusCode}');
+      log('Error when trying to send Data: ${sendingResponse.statusCode}');
       return false;
     }
   } catch (error) {
