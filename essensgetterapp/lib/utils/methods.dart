@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../api/api_links.dart';
@@ -177,59 +178,102 @@ void navigateToDetailRatingPage(
   ));
 } // Methode um Gerichte zu holen und umzuwandeln.
 
-Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
+Future<String?> getTokenFromSharedPreferences() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('jwtToken');
+}
+
+Future<void> setTokenToSharedPreferences(String token) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('jwtToken', token);
+}
+
+// Function to build the data URL for fetching dishes
+String buildGetDataUrl(String mealsForFritzBaseLink) {
   DateTime currentDate = DateTime.now();
   DateTime dayInPast = currentDate.subtract(const Duration(days: 10));
   DateTime dayInFuture = currentDate.add(const Duration(days: 10));
 
-  // Formatting the date as "yyyy-MM-dd"
   String dayInPastAsString = DateFormat('yyyy-MM-dd').format(dayInPast);
   String dayInFutureAsString = DateFormat("yyyy-MM-dd").format(dayInFuture);
-  String mealsForFritzBaseLink = decideMensi(mensiObj.id);
-  const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
-  final getDataUrl =
+  String getDataUrl =
       "$mealsForFritzBaseLink/getMeals/from/$dayInPastAsString/to/$dayInFutureAsString";
-  const user = apiUsername;
-  const pw = password;
+
+  return getDataUrl;
+}
+
+String loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
+// Methode um Gerichte zu holen und umzuwandeln.
+Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
+  String mealsForFritzBaseLink = decideMensi(mensiObj.id);
+
+  String getDataUrl = buildGetDataUrl(mealsForFritzBaseLink);
 
   try {
-    final loginResponse = await http
-        .post(Uri.parse(loginUrl),
-            headers: {
-              'Accept': '*/*',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({
-              'apiUsername': user,
-              'password': pw,
-            }))
-        .timeout(const Duration(seconds: 10));
-
-    if (loginResponse.statusCode == 200) {
-      final token = loginResponse.body;
-      log('JWT Token: $token');
-
-      final dataResponse = await http.get(
-        Uri.parse(getDataUrl),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (dataResponse.statusCode == 200) {
-        final jsonData = jsonDecode(utf8.decode(dataResponse.bodyBytes));
-        List<Dish> listOfDishes = jsonData.map<Dish>(Dish.fromJson).toList();
-        listOfDishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-        return listOfDishes; // Return the list of dishes
-      } else {
-        log('Error when trying to get Data: ${dataResponse.statusCode}');
-      }
-    } else {
-      log('Error when trying to Login: ${loginResponse.statusCode}');
+    String? cookieToken = await getTokenFromSharedPreferences();
+    if (cookieToken != null) {
+      return await fetchDishesFromApi(getDataUrl, cookieToken);
+    }
+    if (cookieToken == null) {
+      return await fetchDishesFromApi(
+          getDataUrl, await loginAndGetToken(loginUrl));
     }
   } catch (error) {
     log('Exception: $error');
   }
 
   return []; // Return an empty list if there is an error or no data
+}
+
+// Function to login and get JWT token
+Future<String> loginAndGetToken(String loginUrl) async {
+  const user = apiUsername;
+  const pw = password;
+
+  final loginResponse = await http
+      .post(Uri.parse(loginUrl),
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'apiUsername': user,
+            'password': pw,
+          }))
+      .timeout(const Duration(seconds: 10));
+
+  if (loginResponse.statusCode == 200) {
+    String token = loginResponse.body;
+    log('JWT Token: $token');
+    return token;
+  } else {
+    log('Error when trying to Login: ${loginResponse.statusCode}');
+    return '';
+  }
+}
+
+// Function to fetch dishes from the API using the JWT token
+Future<List<Dish>> fetchDishesFromApi(
+    String getDataUrl, String localToken) async {
+  final dataResponse = await http.get(
+    Uri.parse(getDataUrl),
+    headers: {
+      'Authorization': 'Bearer $localToken',
+    },
+  );
+
+  if (dataResponse.statusCode == 200) {
+    final jsonData = jsonDecode(utf8.decode(dataResponse.bodyBytes));
+    List<Dish> listOfDishes = jsonData.map<Dish>(Dish.fromJson).toList();
+    listOfDishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
+    setTokenToSharedPreferences(localToken);
+    return listOfDishes;
+  } else if (dataResponse.statusCode == 401) {
+    log("401: Token abgelaufen oder nicht vorhanden");
+    return await fetchDishesFromApi(
+        getDataUrl, await loginAndGetToken(loginUrl));
+  } else {
+    log('Error when trying to get Data: ${dataResponse.statusCode}');
+    return [];
+  }
 }
