@@ -11,11 +11,6 @@ import '../entities/dishgroup_date.dart';
 import '../entities/mensi_class.dart';
 import '../utils/methods.dart';
 
-late Future<List<Dish>> dishesFromApi;
-late PageController pageController;
-late List<DishGroupDate> groupedDishesDat;
-int indexToBeReturned = 1;
-
 class MensiSchedule extends StatefulWidget {
   final Mensi mensiObj;
 
@@ -29,6 +24,10 @@ class MensiSchedule extends StatefulWidget {
 
 class MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
+  late Future<List<Dish>> dishesFromApi;
+  late PageController pageController;
+  late List<DishGroupDate> groupedDishesDat;
+  int indexToBeReturned = 1;
   // Variablen
   int currentPage = 0;
   DateTime anzeigeDatum = DateTime.now(), heute = DateTime.now();

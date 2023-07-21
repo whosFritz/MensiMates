@@ -2,10 +2,11 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:quick_actions/quick_actions.dart";
 import "package:rate_my_app/rate_my_app.dart";
-import 'aboutpage_widget.dart';
+
 import '../entities/mensi_class.dart';
+import '../utils/variables.dart';
+import 'aboutpage_widget.dart';
 import 'mensi_schedule.dart';
-import '../components/navigation_drawer.dart';
 
 class HomeScreenWidget extends StatefulWidget {
   const HomeScreenWidget({super.key, required this.rateMyApp});

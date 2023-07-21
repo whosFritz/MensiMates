@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
-late RateMyApp rateMyApp2;
+import '../utils/variables.dart';
 
 class RateAppInitWidget extends StatefulWidget {
   final Widget Function(RateMyApp) builder;
