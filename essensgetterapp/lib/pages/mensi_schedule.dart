@@ -65,7 +65,6 @@ class MensiScheduleState extends State<MensiSchedule>
   @override
   void initState() {
     setState(() {
-      // dishesfromOle = getDishesfromOle(widget.mensiobj);
       dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
     });
     super.initState();
@@ -235,7 +234,6 @@ class MensiScheduleState extends State<MensiSchedule>
   Future refresh() async {
     setState(() {
       dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
-      // dishesfromOle = getDishesfromOle(widget.mensiobj);
     });
   }
 
