@@ -15,7 +15,7 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 Mensi shortcutreturn(String type) {
-  for (final mensi in mensenliste) {
+  for (final mensi in mensenListe) {
     if (mensi.name == type) {
       return mensi;
     }
@@ -37,7 +37,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     const QuickActions quickActions = QuickActions();
 
     quickActions.setShortcutItems(<ShortcutItem>[
-      for (final mensi in mensenliste)
+      for (final mensi in mensenListe)
         ShortcutItem(
             type: mensi.name, localizedTitle: mensi.name, icon: "launcher_icon")
     ]);
@@ -116,9 +116,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                         thumbVisibility: true,
                         child: ListView.builder(
                           controller: _scrollController,
-                          itemCount: mensenliste.length,
+                          itemCount: mensenListe.length,
                           itemBuilder: (context, index) {
-                            final mensi = mensenliste[index];
+                            final mensi = mensenListe[index];
                             return ListTile(
                               leading: const Icon(Icons.fastfood_outlined),
                               title: Text(mensi.name),

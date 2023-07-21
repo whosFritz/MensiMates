@@ -1,13 +1,13 @@
-import 'package:essensgetterapp/pages/aboutpage_widget.dart';
-import 'package:essensgetterapp/pages/home_page.dart';
-import 'package:essensgetterapp/pages/mensi_schedule.dart';
-import 'package:essensgetterapp/components/rate_app_init_widget.dart';
+import 'package:mensimates/pages/aboutpage_widget.dart';
+import 'package:mensimates/pages/home_page.dart';
+import 'package:mensimates/pages/mensi_schedule.dart';
+import 'package:mensimates/components/rate_app_init_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../entities/mensi_class.dart';
 
 const String navigationDrawerToolTip = "Navigationsleiste";
-List<Mensi> mensenliste = [
+List<Mensi> mensenListe = [
   Mensi(
       id: 153,
       name: "Cafeteria Dittrichring",
@@ -170,7 +170,7 @@ class _MyNavigationDrawerState extends State<MyNavigationDrawer> {
           padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
           child: Column(
             children: [
-              for (final mensi in mensenliste)
+              for (final mensi in mensenListe)
                 ListTile(
                   leading: const Icon(Icons.food_bank_outlined),
                   title: Text(mensi.name),

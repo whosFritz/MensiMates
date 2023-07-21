@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="com.example.essensgetterapp">
+    package="com.whosfritz.MensiMates">
     <uses-permission android:name="android.permission.INTERNET"/>
-   <application
+    <application
         android:label="MensiMates"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">

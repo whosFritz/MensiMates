@@ -1,4 +1,4 @@
-import 'package:essensgetterapp/pages/webpagepicsearch_page.dart';
+import 'package:mensimates/pages/webpagepicsearch_page.dart';
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
