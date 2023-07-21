@@ -30,7 +30,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   // Variablen
   Map<String, double> mapRatingValues = {};
   String pageName = "Detailansicht";
-  // TODO: look other todo and get dishes from initstae
+  // TODO: look other todo and get dishes from initstate
 
   @override
   void initState() {
