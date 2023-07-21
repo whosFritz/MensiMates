@@ -9,6 +9,7 @@ import "package:http/http.dart" as http;
 import '../entities/dish_class.dart';
 import '../api/api_links.dart';
 import '../entities/mensi_class.dart';
+import "../utils/methods.dart";
 import 'mensi_schedule.dart';
 
 class DetailRatingPage extends StatefulWidget {
@@ -63,7 +64,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
               child: Column(children: [
                 Container(
                     color: decideContainerColor(widget.dishdetailed.category),
-                    child: MensiScheduleState.builddishBox(
+                    child: MensiScheduleState.buildDishBox(
                         context, widget.dishdetailed)),
                 SingleChildScrollView(
                   child: Padding(
@@ -276,7 +277,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                     child: Container(
                         color:
                             decideContainerColor(widget.dishdetailed.category),
-                        child: MensiScheduleState.builddishBox(
+                        child: MensiScheduleState.buildDishBox(
                             context, widget.dishdetailed)),
                   ),
                   Padding(

@@ -1,20 +1,15 @@
-import "dart:convert";
-import "dart:developer";
-import 'package:essensgetterapp/api/pw_and_username.dart';
 import 'package:essensgetterapp/pages/webpagepicsearch_page.dart';
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
-import "package:http/http.dart" as http;
 import "package:intl/intl.dart";
-import "package:url_launcher/url_launcher.dart";
-import 'detailedpage_widget.dart';
+
+import '../components/navigation_drawer.dart';
 import '../entities/dish_class.dart';
-import '../api/api_links.dart';
 import '../entities/dishgroup_cat.dart';
 import '../entities/dishgroup_date.dart';
 import '../entities/mensi_class.dart';
-import '../components/navigation_drawer.dart';
+import '../utils/methods.dart';
 
 late Future<List<Dish>> dishesFromApi;
 late PageController pageController;
@@ -76,7 +71,7 @@ class MensiScheduleState extends State<MensiSchedule>
     super.initState();
   }
 
-  void skipToYesterDay() {
+  void skipToYesterday() {
     pageController.previousPage(
         duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
@@ -90,7 +85,7 @@ class MensiScheduleState extends State<MensiSchedule>
     final pressedKey = event.logicalKey;
     switch (pressedKey.keyLabel) {
       case "Arrow Left":
-        skipToYesterDay();
+        skipToYesterday();
         break;
       case "Arrow Right":
         skipToNextDay();
@@ -252,7 +247,7 @@ class MensiScheduleState extends State<MensiSchedule>
           Tooltip(
             message: "Vorheriger Tag",
             child: IconButton(
-                onPressed: () => skipToYesterDay(),
+                onPressed: () => skipToYesterday(),
                 icon: const Icon(Icons.keyboard_arrow_left_rounded)),
           ),
           Padding(
@@ -301,7 +296,7 @@ class MensiScheduleState extends State<MensiSchedule>
   }
 
   // Reload button nur für die WebApp
-  Widget platformrefreshbutton() {
+  Widget platformRefreshButton() {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
@@ -358,7 +353,7 @@ class MensiScheduleState extends State<MensiSchedule>
     return gruppenListeCat;
   }
 
-  int findinitalPagedisplay(List<DishGroupDate> groupedDishesDat) {
+  int findInitalPageDisplay(List<DishGroupDate> groupedDishesDat) {
     int i = 0;
     for (final gruppe in groupedDishesDat) {
       if (DateFormat("yyyy-MM-dd").format(gruppe.date) ==
@@ -375,7 +370,7 @@ class MensiScheduleState extends State<MensiSchedule>
   Widget buildDishes(List<Dish> dishes) {
     groupedDishesDat = groupByDate(dishes);
     pageController =
-        PageController(initialPage: findinitalPagedisplay(groupedDishesDat));
+        PageController(initialPage: findInitalPageDisplay(groupedDishesDat));
     return PageView.builder(
         controller: pageController,
         itemCount: groupedDishesDat.length,
@@ -388,7 +383,7 @@ class MensiScheduleState extends State<MensiSchedule>
               index; // ? remove?, weil das war mal button überbleibsel
         },
         itemBuilder: (context, index) {
-          final grouppedbycatListe =
+          final grouppedByCatList =
               groupByCat(groupedDishesDat[index].gerichteingruppe);
           return SingleChildScrollView(
             child: Column(children: [
@@ -443,7 +438,7 @@ class MensiScheduleState extends State<MensiSchedule>
                       _expansionState[panelIndex] = !isExpanded;
                     });
                   },
-                  children: buildexpansionpanels(grouppedbycatListe),
+                  children: buildExpansionPanels(grouppedByCatList),
                 ),
               )
             ]),
@@ -451,15 +446,15 @@ class MensiScheduleState extends State<MensiSchedule>
         });
   }
 
-  List<ExpansionPanel> buildexpansionpanels(
-      List<DishGroupCat> grouppedbycatListe) {
-    List<ExpansionPanel> exppanelist = [];
-    for (int i = 0; i < grouppedbycatListe.length; i++) {
-      final grouppedbycat = grouppedbycatListe[i];
-      exppanelist.add(
+  List<ExpansionPanel> buildExpansionPanels(
+      List<DishGroupCat> grouppedByCatList) {
+    List<ExpansionPanel> expandedList = [];
+    for (int i = 0; i < grouppedByCatList.length; i++) {
+      final grouppedByCat = grouppedByCatList[i];
+      expandedList.add(
         ExpansionPanel(
           canTapOnHeader: true,
-          backgroundColor: decideContainerColor(grouppedbycat.kategorie),
+          backgroundColor: decideContainerColor(grouppedByCat.kategorie),
           headerBuilder: (BuildContext context, bool isExpanded) {
             return FittedBox(
               fit: BoxFit.fitWidth,
@@ -467,7 +462,7 @@ class MensiScheduleState extends State<MensiSchedule>
                 children: [
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 4, 4, 4),
-                    child: decideIconFile(grouppedbycat.kategorie),
+                    child: decideIconFile(grouppedByCat.kategorie),
                   ),
                   const SizedBox(
                     width: 16,
@@ -475,7 +470,7 @@ class MensiScheduleState extends State<MensiSchedule>
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: Text(
-                      "${grouppedbycat.kategorie}: (${grouppedbycat.anzahlgerichte})",
+                      "${grouppedByCat.kategorie}: (${grouppedByCat.anzahlgerichte})",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: "Open Sans",
@@ -489,16 +484,16 @@ class MensiScheduleState extends State<MensiSchedule>
             );
           },
           body: ListView.builder(
-            itemCount: grouppedbycat.gerichteingruppe.length,
+            itemCount: grouppedByCat.gerichteingruppe.length,
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              Dish dish = grouppedbycat.gerichteingruppe[index];
+              Dish dish = grouppedByCat.gerichteingruppe[index];
               return InkWell(
                 onTap: () {
                   navigateToDetailRatingPage(context, dish, widget.mensiObj);
                 },
-                child: builddishBox(context, dish),
+                child: buildDishBox(context, dish),
               );
             },
           ),
@@ -506,10 +501,10 @@ class MensiScheduleState extends State<MensiSchedule>
         ),
       );
     }
-    return exppanelist;
+    return expandedList;
   }
 
-  static Widget builddishBox(BuildContext context, Dish dish) {
+  static Widget buildDishBox(BuildContext context, Dish dish) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -633,251 +628,4 @@ class MensiScheduleState extends State<MensiSchedule>
       ),
     );
   }
-}
-
-Image decideIconFile(String iconmealtype) {
-  Image icon;
-  switch (iconmealtype) {
-    case "Vegetarisches Gericht":
-      icon = Image.asset("assets/images/vegetarian-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Fleischgericht":
-      icon = Image.asset("assets/images/meat-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Fischgericht":
-      icon = Image.asset("assets/images/fish-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Veganes Gericht":
-      icon = Image.asset("assets/images/vegan-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Pastateller":
-      icon = Image.asset("assets/images/pasta-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Dessert":
-      icon = Image.asset("assets/images/dessert-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Smoothie":
-      icon = Image.asset("assets/images/smoothie3-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "WOK":
-      icon = Image.asset("assets/images/wok-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Salat":
-      icon = Image.asset("assets/images/salat-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Gemüsebeilage":
-      icon = Image.asset("assets/images/gemuesebeilage-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Sättigungsbeilage":
-      icon = Image.asset("assets/images/saettigungsbeilage-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Schneller Teller":
-      icon = Image.asset("assets/images/schneller-teller-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Hauptkomponente":
-      icon = Image.asset("assets/images/hauptkomponente-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Grill":
-      icon = Image.asset("assets/images/grill-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Pizza":
-      icon = Image.asset("assets/images/pizza-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Suppe / Eintopf":
-      icon = Image.asset("assets/images/suppe-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "mensaVital":
-      icon = Image.asset("assets/images/mensaVital-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    case "Aktion":
-      icon = Image.asset("assets/images/aktion-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-    default:
-      icon = Image.asset("assets/images/default-icon.png",
-          width: 40, fit: BoxFit.scaleDown);
-      break;
-  }
-  return icon;
-}
-
-Color decideContainerColor(String category) {
-  Color colors;
-  switch (category) {
-    case "Vegetarisches Gericht":
-      colors = const Color.fromARGB(255, 52, 187, 58);
-      break;
-    case "Fleischgericht":
-      colors = const Color.fromARGB(255, 220, 102, 13);
-      break;
-    case "Veganes Gericht":
-      colors = const Color.fromARGB(255, 125, 213, 130);
-      break;
-    case "Pastateller":
-      colors = const Color.fromARGB(255, 209, 177, 134);
-      break;
-    case "Fischgericht":
-      colors = const Color.fromARGB(255, 37, 169, 235);
-      break;
-    case "Dessert":
-      colors = const Color.fromARGB(255, 134, 107, 230);
-      break;
-    case "Smoothie":
-      colors = const Color.fromARGB(255, 230, 121, 175);
-      break;
-    case "WOK":
-      colors = const Color.fromARGB(255, 211, 183, 58);
-      break;
-    case "Salat":
-      colors = const Color.fromARGB(255, 67, 185, 77);
-      break;
-    case "Gemüsebeilage":
-      colors = const Color.fromARGB(255, 118, 199, 42);
-      break;
-    case "Sättigungsbeilage":
-      colors = const Color.fromARGB(255, 235, 219, 80);
-      break;
-    case "Schneller Teller":
-      colors = const Color.fromARGB(255, 66, 202, 161);
-      break;
-    case "Hauptkomponente":
-      colors = const Color.fromARGB(255, 41, 218, 224);
-      break;
-    case "Grill":
-      colors = const Color.fromARGB(255, 255, 178, 62);
-      break;
-    case "Pizza":
-      colors = const Color.fromARGB(255, 243, 208, 111);
-      break;
-    case "Suppe / Eintopf":
-      colors = const Color.fromARGB(255, 154, 202, 66);
-      break;
-    case "mensaVital":
-      colors = const Color.fromARGB(255, 99, 209, 8);
-      break;
-    case "Aktion":
-      colors = const Color.fromARGB(255, 221, 69, 120);
-      break;
-    default:
-      colors = Colors.white;
-      break;
-  }
-  return colors;
-}
-
-void searchGerichte(String query) async {
-  final url = 'https://www.google.com/search?q=$query&tbm=isch';
-  launchUrl(Uri.parse(url));
-}
-
-//Navigation zur Detail page
-void navigateToDetailRatingPage(
-    BuildContext context, Dish dishdetailed, Mensi mensiObj) {
-  Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) {
-      return DetailRatingPage(
-        dishdetailed: dishdetailed,
-        mensiObjForDetailPage: mensiObj,
-      );
-    },
-  ));
-}
-
-// Methode um Gerichte zu holen und umzuwandeln.
-// Future<List<Dish>> getDishesfromOle(Mensi mensiobj) async {
-// ! Caching
-// try {
-// String mealsForFritzLink = decideMensi(mensiobj.id);
-// final response = await http.get(Uri.parse(mealsForFritzLink)).timeout(
-//       const Duration(seconds: 10),
-//     );
-// if (response.statusCode == 200) {
-//   final jsondata = jsonDecode(utf8.decode(response.bodyBytes));
-//   List<Dish> listvondishes = jsondata.map<Dish>(Dish.fromJson).toList();
-//   listvondishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-// ? removeFalseInformation(listvondishes);
-//! Caching
-//   setofflineDishes(listvondishes);
-//   return listvondishes;
-// } else {
-//   throw Exception();
-// }
-//   } catch (e) {
-//    return getofflineDishes();
-//   }
-// }
-
-// Methode um Gerichte zu holen und umzuwandeln.
-Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
-  DateTime currentDate = DateTime.now();
-  DateTime dayInPast = currentDate.subtract(const Duration(days: 10));
-  DateTime dayInFuture = currentDate.add(const Duration(days: 10));
-
-  // Formatting the date as "yyyy-MM-dd"
-  String dayInPastAsString = DateFormat('yyyy-MM-dd').format(dayInPast);
-  String dayInFutureAsString = DateFormat("yyyy-MM-dd").format(dayInFuture);
-  String mealsForFritzBaseLink = decideMensi(mensiObj.id);
-  const loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
-  final getDataUrl =
-      "$mealsForFritzBaseLink/getMeals/from/$dayInPastAsString/to/$dayInFutureAsString";
-  const user = apiUsername;
-  const pw = password;
-
-  try {
-    final loginResponse = await http
-        .post(Uri.parse(loginUrl),
-            headers: {
-              'Accept': '*/*',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({
-              'apiUsername': user,
-              'password': pw,
-            }))
-        .timeout(const Duration(seconds: 10));
-
-    if (loginResponse.statusCode == 200) {
-      final token = loginResponse.body;
-      log('JWT Token: $token');
-
-      final dataResponse = await http.get(
-        Uri.parse(getDataUrl),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (dataResponse.statusCode == 200) {
-        final jsonData = jsonDecode(utf8.decode(dataResponse.bodyBytes));
-        List<Dish> listOfDishes = jsonData.map<Dish>(Dish.fromJson).toList();
-        listOfDishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-        return listOfDishes; // Return the list of dishes
-      } else {
-        log('Error when trying to get Data: ${dataResponse.statusCode}');
-      }
-    } else {
-      log('Error when trying to Login: ${loginResponse.statusCode}');
-    }
-  } catch (error) {
-    log('Exception: $error');
-  }
-
-  return []; // Return an empty list if there is an error or no data
 }

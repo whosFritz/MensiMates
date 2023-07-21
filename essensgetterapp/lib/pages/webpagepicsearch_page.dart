@@ -1,8 +1,8 @@
-import 'package:essensgetterapp/pages/mensi_schedule.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../entities/dish_class.dart';
+import '../utils/methods.dart';
 
 class WebPageSearch extends StatefulWidget {
   const WebPageSearch({super.key, required this.searchDish});
