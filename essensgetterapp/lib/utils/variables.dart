@@ -3,7 +3,6 @@ import 'package:rate_my_app/rate_my_app.dart';
 import '../entities/mensi_class.dart';
 
 late RateMyApp rateMyApp2;
-String loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
 
 const String navigationDrawerToolTip = "Navigationsleiste";
 List<Mensi> mensenListe = [

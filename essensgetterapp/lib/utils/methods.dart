@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:mensimates/utils/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -215,8 +214,7 @@ Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
       return await fetchDishesFromApi(getDataUrl, cookieToken);
     }
     if (cookieToken == null) {
-      return await fetchDishesFromApi(
-          getDataUrl, await loginAndGetToken(loginUrl));
+      return await fetchDishesFromApi(getDataUrl, await loginAndGetToken());
     }
   } catch (error) {
     log('Exception: $error');
@@ -226,10 +224,10 @@ Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
 }
 
 // Function to login and get JWT token
-Future<String> loginAndGetToken(String loginUrl) async {
+Future<String> loginAndGetToken() async {
   const user = apiUsername;
   const pw = password;
-
+  String loginUrl = "https://api.olech2412.de/mensaHub/auth/login";
   final loginResponse = await http
       .post(Uri.parse(loginUrl),
           headers: {
@@ -270,8 +268,7 @@ Future<List<Dish>> fetchDishesFromApi(
     return listOfDishes;
   } else if (dataResponse.statusCode == 401) {
     log("401: Token abgelaufen oder nicht vorhanden");
-    return await fetchDishesFromApi(
-        getDataUrl, await loginAndGetToken(loginUrl));
+    return await fetchDishesFromApi(getDataUrl, await loginAndGetToken());
   } else {
     log('Error when trying to get Data: ${dataResponse.statusCode}');
     return [];
@@ -345,7 +342,7 @@ Future<bool> sendRatingForMeal(double ratingValue, List<int> ratedDishesIDList,
         votes: dishObj.votes);
     // Convert the Dish object to JSON
     String dishJsonToSend = dishToSend.toJson();
-    String sendingToken = await loginAndGetToken(loginUrl);
+    String sendingToken = await loginAndGetToken();
     String cafeteriaMealsLink = decideMensi(mensi.id);
     final sendingResponse = await http.post(
       Uri.parse("$cafeteriaMealsLink/sendRating"),
