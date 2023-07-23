@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-<meta charset="ISO-8859-1" />
+    <meta charset="ISO-8859-1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link rel="icon" type="image/x-icon" href="favicon.png" />
     <title>Wartungsarbeiten</title>
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
+    <style>
+      /* Stil für das Banner */
+      #cookieBanner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f2f2f2;
+        padding: 16px;
+        text-align: center;
+      }
+
+      /* Stil für den "Einverstanden"-Button */
+      #cookieAcceptBtn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -23,6 +48,25 @@
         </p>
       </div>
     </div>
+    <div id="cookieBanner">
+      Diese Website verwendet Cookies. Durch die Nutzung unserer Webseite
+      erklärst du dich damit einverstanden.
+      <button class="ml-3" id="cookieAcceptBtn" type="button">
+        Ich bin einverstanden
+      </button>
+    </div>
+
+    <script>
+      // Überprüfe, ob der "Einverstanden"-Button geklickt wurde
+      document.getElementById("cookieAcceptBtn").onclick = function () {
+        // Speichere den Zustimmungsstatus in einem Cookie oder ähnlichem
+        // Hier kannst du deine eigene Logik für das Speichern des Zustimmungsstatus implementieren
+        // Zum Beispiel kannst du dafür JavaScript-Cookies verwenden (z. B. mit der js-cookie-Bibliothek).
+
+        // Verstecke das Banner
+        document.getElementById("cookieBanner").style.display = "none";
+      };
+    </script>
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
