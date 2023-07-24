@@ -261,10 +261,10 @@ Future<List<Dish>> fetchDishesFromApi(
   );
 
   if (dataResponse.statusCode == 200) {
+    // setTokenToSharedPreferences(localToken);
     final jsonData = jsonDecode(utf8.decode(dataResponse.bodyBytes));
     List<Dish> listOfDishes = jsonData.map<Dish>(Dish.fromJson).toList();
     listOfDishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
-    setTokenToSharedPreferences(localToken);
     return listOfDishes;
   } else if (dataResponse.statusCode == 401) {
     log("401: Token abgelaufen oder nicht vorhanden");
@@ -278,18 +278,13 @@ Future<List<Dish>> fetchDishesFromApi(
 Future<List<Dish>> getOfflineDishes() async {
   SharedPreferences offlineDishesGet = await SharedPreferences.getInstance();
   List<String>? listOfflineDishesStrings =
-      offlineDishesGet.getStringList('oofflineDishes');
-  /* List<String> listOfofflineDishStringss = [
-      '{"id":8435984382,"name":"Rucola-Süßkartoffel Schnitte","servingDate":"2023-02-07","category":"Veganes Gericht","price":"2,40€/ 4,00€/ 5,50€","description":"Chili-Tomatensoße, Rosmarinkartoffeln, glutenhaltiges Getreide, Weizen, Gerste, Veganes Gericht, Konservierungsstoff","rating":2.0,"responseCode":200,"votes":1}',
-      '{"id":8435984396,"name":"Kartoffel-Pfanne mit Champignon, Wirsing & Erdnusscreme","servingDate":"2023-02-07","category":"Veganes Gericht","price":"2,40€/ 4,00€/ 5,50€","description":"Erdnüsse, Soja, Veganes Gericht","rating":0.0,"responseCode":200,"votes":0}'
-    ];
-    */
+      offlineDishesGet.getStringList('offlineDishes');
   List<Dish> listOfflineDishes = [];
   for (String dishString in listOfflineDishesStrings!) {
     var decodedJson = jsonDecode(dishString);
     listOfflineDishes.add(Dish.fromJson(decodedJson));
   }
-  /* for (String dishString in listOfDishStringss) {
+  /* for (String dishString in listOfDishStrings) {
       var decodedJson = jsonDecode(dishString);
       log(decodedJson);
     }
@@ -297,9 +292,9 @@ Future<List<Dish>> getOfflineDishes() async {
   return listOfflineDishes;
 }
 
-void setOfflineDishes(List<Dish> dishesfromOle) async {
+void setOfflineDishes(List<Dish> dishesFromOle) async {
   SharedPreferences offlineDishesSet = await SharedPreferences.getInstance();
-  List<Dish> currentDishList = dishesfromOle;
+  List<Dish> currentDishList = dishesFromOle;
   List<String> listCurrentDishStrings = [];
   for (Dish dish in currentDishList) {
     listCurrentDishStrings.add(dish.toJson());
@@ -359,7 +354,7 @@ Future<bool> sendRatingForMeal(double ratingValue, List<int> ratedDishesIDList,
       log("Sending rating was successful");
       ratedDishesIDList.add(dishObj.id);
       // Then save dish to memory
-      writeListToStorage(ratedDishesIDList);
+      // writeListToStorage(ratedDishesIDList);
       return true;
     } else {
       log('Error when trying to send Data: ${sendingResponse.statusCode}');
