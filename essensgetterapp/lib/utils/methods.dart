@@ -345,7 +345,9 @@ Future<bool> sendRatingForMeal(double ratingValue, List<int> ratedDishesIDList,
         price: dishObj.price,
         category: dishObj.category,
         servingDate: dishObj.servingDate,
-        responseCode: dishObj.responseCode,
+        additionalInfo: dishObj.additionalInfo,
+        allergens: dishObj.allergens,
+        additives: dishObj.additives,
         rating: ratingValue,
         votes: dishObj.votes);
     // Convert the Dish object to JSON

@@ -7,7 +7,9 @@ class Dish {
   final String price;
   final String category;
   final DateTime servingDate;
-  final int responseCode;
+  final String additionalInfo;
+  final String allergens;
+  final String additives;
   final double rating;
   final int votes;
 
@@ -18,7 +20,9 @@ class Dish {
     required this.price,
     required this.category,
     required this.servingDate,
-    required this.responseCode,
+    required this.additionalInfo,
+    required this.allergens,
+    required this.additives,
     required this.rating,
     required this.votes,
   });
@@ -31,7 +35,9 @@ class Dish {
       price: json["price"] ?? "N/A",
       category: json["category"] ?? "N/A",
       servingDate: DateTime.parse(json["servingDate"]),
-      responseCode: json["responseCode"] ?? 200,
+      additionalInfo: json["additionalInfo"] ?? "N/A",
+      allergens: json["allergens"] ?? "N/A",
+      additives: json["additives"] ?? "N/A",
       rating: json["rating"] ?? 3.0,
       votes: json["votes"] ?? 0,
     );
@@ -50,7 +56,6 @@ class Dish {
       "price": price,
       "category": category,
       "servingDate": servingDate.toString().substring(0, 10),
-      "responseCode": responseCode,
       "rating": rating,
       "votes": votes,
     });
