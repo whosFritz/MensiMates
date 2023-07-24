@@ -31,6 +31,7 @@ dependencies:
   flutter_automation: ^2.0.0
   rate_my_app: ^2.0.0
   package_info_plus: ^4.0.2
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:

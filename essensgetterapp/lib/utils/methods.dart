@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -211,7 +212,19 @@ Future<List<Dish>> fetchDataWithJwtToken(Mensi mensiObj) async {
   try {
     String? cookieToken = await getTokenFromSharedPreferences();
     if (cookieToken != null) {
-      return await fetchDishesFromApi(getDataUrl, cookieToken);
+      DateTime expirationDate = JwtDecoder.getExpirationDate(cookieToken);
+      log("Expiration date: $expirationDate");
+      log("Current date: ${DateTime.now()}");
+      if (JwtDecoder.isExpired(cookieToken)) {
+        // Token is expired
+        log("Token is expired");
+        log("old token: $cookieToken");
+        return await fetchDishesFromApi(getDataUrl, await loginAndGetToken());
+      } else {
+        // Token is not expired
+        log("Token is not expired");
+        return await fetchDishesFromApi(getDataUrl, cookieToken);
+      }
     }
     if (cookieToken == null) {
       return await fetchDishesFromApi(getDataUrl, await loginAndGetToken());
@@ -242,7 +255,7 @@ Future<String> loginAndGetToken() async {
 
   if (loginResponse.statusCode == 200) {
     String token = loginResponse.body;
-    log('JWT Token: $token');
+    log("new Token: $token");
     return token;
   } else {
     log('Error when trying to Login: ${loginResponse.statusCode}');
@@ -261,14 +274,14 @@ Future<List<Dish>> fetchDishesFromApi(
   );
 
   if (dataResponse.statusCode == 200) {
-    // setTokenToSharedPreferences(localToken);
+    setTokenToSharedPreferences(localToken);
     final jsonData = jsonDecode(utf8.decode(dataResponse.bodyBytes));
     List<Dish> listOfDishes = jsonData.map<Dish>(Dish.fromJson).toList();
     listOfDishes.sort((a, b) => a.servingDate.compareTo(b.servingDate));
     return listOfDishes;
   } else if (dataResponse.statusCode == 401) {
     log("401: Token abgelaufen oder nicht vorhanden");
-    return await fetchDishesFromApi(getDataUrl, await loginAndGetToken());
+    return fetchDishesFromApi(getDataUrl, await loginAndGetToken());
   } else {
     log('Error when trying to get Data: ${dataResponse.statusCode}');
     return [];
@@ -354,7 +367,7 @@ Future<bool> sendRatingForMeal(double ratingValue, List<int> ratedDishesIDList,
       log("Sending rating was successful");
       ratedDishesIDList.add(dishObj.id);
       // Then save dish to memory
-      // writeListToStorage(ratedDishesIDList);
+      writeListToStorage(ratedDishesIDList);
       return true;
     } else {
       log('Error when trying to send Data: ${sendingResponse.statusCode}');
