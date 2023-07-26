@@ -63,9 +63,13 @@
       <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/macos/Flutter/ephemeral" />
       <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/windows/flutter/ephemeral" />
       <excludeFolder url="file://$MODULE_DIR$/essensgetterapp/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/mensimates/build" />
+      <excludeFolder url="file://$MODULE_DIR$/mensimates/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/mensimates/.dart_tool" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
   </component>
 </module>
