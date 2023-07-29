@@ -25,7 +25,7 @@ class MensiSchedule extends StatefulWidget {
 class MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   late Future<List<Dish>> dishesFromApi;
-  late PageController pageController;
+  PageController pageController = PageController();
   late List<DishGroupDate> groupedDishesDat;
   int indexToBeReturned = 1;
 
@@ -59,8 +59,8 @@ class MensiScheduleState extends State<MensiSchedule>
   };
 
   int compareDishGroupCat(DishGroupCat a, DishGroupCat b) {
-    int differenz = sortOrder[a.kategorie]! - sortOrder[b.kategorie]!;
-    return differenz;
+    int difference = sortOrder[a.kategorie]! - sortOrder[b.kategorie]!;
+    return difference;
   }
 
   // Initiierung
@@ -70,6 +70,13 @@ class MensiScheduleState extends State<MensiSchedule>
       dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+
+    super.dispose();
   }
 
   void skipToYesterday() {
@@ -147,12 +154,12 @@ class MensiScheduleState extends State<MensiSchedule>
                           future: dishesFromApi,
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
-                              Object? errormessage = snapshot.error;
-                              if (errormessage.toString() ==
+                              Object? errorMessage = snapshot.error;
+                              if (errorMessage.toString() ==
                                   "Failed host lookup: 'api.olech2412.de'") {
                                 return const Text("🥵 API-Error 🥵");
                               } else {
-                                return Text("🤮 $errormessage 🤮");
+                                return Text("🤮 $errorMessage 🤮");
                               }
                             } else if (snapshot.hasData &&
                                 snapshot.data!.isEmpty) {
