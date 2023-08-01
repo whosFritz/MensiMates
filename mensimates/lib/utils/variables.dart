@@ -4,8 +4,7 @@ import '../entities/mensi_class.dart';
 
 late RateMyApp rateMyApp2;
 
-const String navigationDrawerToolTip = "Navigationsleiste";
-List<Mensi> mensenListe = [
+List<Mensi> mensenList = [
   Mensi(
       id: 153,
       name: "Cafeteria Dittrichring",

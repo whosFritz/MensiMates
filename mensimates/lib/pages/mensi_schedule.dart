@@ -138,6 +138,17 @@ class MensiScheduleState extends State<MensiSchedule>
                     letterSpacing: 2),
               ),
             ),
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  tooltip: 'Mensen Menu',
+                );
+              },
+            ),
           ),
           drawer: MyNavigationDrawer(
             mensipara: widget.mensiObj,
