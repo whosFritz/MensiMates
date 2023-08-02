@@ -45,7 +45,7 @@ class Dish {
 
   @override
   String toString() {
-    return 'Dish: $name, Category: $category, Price: ${price.substring(0, 5)}';
+    return "Dish: $name, $description, $price, $category, $servingDate, $additionalInfo, $allergens, $additives, $rating, $votes";
   }
 
   String toJson() {

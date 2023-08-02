@@ -7,3 +7,7 @@
 ## 01.08.2023 - [1.4.0]
 
 - fixed tooltip bug for drawer menu by "overriding" the default leading attribute
+
+## 02.08.2023 - [1.5.0]
+
+- show user the rating he will give to the dish

@@ -25,6 +25,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   // Variablen
   Map<String, double> mapRatingValues = {};
   String pageName = "Detailansicht";
+  double ratingValue = 0.0;
 
   // TODO: look other todo and get dishes from initstate
 
@@ -35,6 +36,22 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   }
 
   final String webPageTitle = "Bewertung abgeben";
+
+  double calculateRating(Map<String, double> mapRatingValues) {
+    double sum = 0;
+    for (double rating in mapRatingValues.values) {
+      sum += rating;
+    }
+
+    double ratingValue = sum / mapRatingValues.length;
+    double roundedRatingValue = double.parse(ratingValue.toStringAsFixed(2));
+
+    setState(() {
+      ratingValue = roundedRatingValue;
+    });
+
+    return roundedRatingValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +106,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                               onRatingUpdate: (newValue) {
                                 setState(() {
                                   mapRatingValues["taste"] = newValue;
+                                  ratingValue =
+                                      calculateRating(mapRatingValues);
                                 });
                               },
                               itemBuilder: (context, index) => const Icon(
@@ -126,6 +145,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                               onRatingUpdate: (newValue) {
                                 setState(() {
                                   mapRatingValues["look"] = newValue;
+                                  ratingValue =
+                                      calculateRating(mapRatingValues);
                                 });
                               },
                               itemBuilder: (context, index) => const Icon(
@@ -163,6 +184,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                               onRatingUpdate: (newValue) {
                                 setState(() {
                                   mapRatingValues["price"] = newValue;
+                                  ratingValue =
+                                      calculateRating(mapRatingValues);
                                 });
                               },
                               itemBuilder: (context, index) => const Icon(
@@ -177,6 +200,13 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                               glowColor: const Color(0xFFFA9C00),
                             ),
                           ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 14, 0, 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text("Dein Rating ist: $ratingValue")],
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -201,15 +231,10 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                       // Restrict User from rating cause already voted
                                       showSnackBar2(context);
                                     } else {
-                                      int mapLenght = mapRatingValues.length;
-                                      if (mapLenght == 3) {
+                                      if (mapRatingValues.length == 3) {
                                         // let User rate
-                                        double sum = mapRatingValues.values
-                                            .reduce((value, element) {
-                                          return value + element;
-                                        });
-                                        double ratingValue =
-                                            sum / mapRatingValues.length;
+                                        ratingValue =
+                                            calculateRating(mapRatingValues);
                                         sendRatingForMeal(
                                                 ratingValue,
                                                 ratedDishesIDList,
