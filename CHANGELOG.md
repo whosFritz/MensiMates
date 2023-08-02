@@ -11,3 +11,7 @@
 ## 02.08.2023 - [1.5.0]
 
 - show user the rating he will give to the dish
+
+## 02.08.2023 - [1.5.0]
+
+- fixed scroll-ability in detailPage

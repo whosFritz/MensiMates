@@ -73,202 +73,196 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
             ),
           ),
           body: SafeArea(
-            child: GestureDetector(
+            child: SingleChildScrollView(
               child: Column(children: [
                 Container(
                     color: decideContainerColor(widget.dishdetailed.category),
                     child: MensiScheduleState.buildDishBox(
                         context, widget.dishdetailed)),
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Geschmack",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                      fontFamily: "Open Sans",
-                                      fontSize: 20,
-                                      color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RatingBar.builder(
-                              onRatingUpdate: (newValue) {
-                                setState(() {
-                                  mapRatingValues["taste"] = newValue;
-                                  ratingValue =
-                                      calculateRating(mapRatingValues);
-                                });
-                              },
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star_rounded,
-                                color: Color(0xFFFA9C00),
-                              ),
-                              direction: Axis.horizontal,
-                              initialRating: 0,
-                              unratedColor: const Color(0xFF9E9E9E),
-                              itemCount: 5,
-                              itemSize: 40,
-                              glowColor: const Color(0xFFFA9C00),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Aussehen",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                      fontFamily: "Open Sans",
-                                      fontSize: 20,
-                                      color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RatingBar.builder(
-                              onRatingUpdate: (newValue) {
-                                setState(() {
-                                  mapRatingValues["look"] = newValue;
-                                  ratingValue =
-                                      calculateRating(mapRatingValues);
-                                });
-                              },
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star_rounded,
-                                color: Color(0xFFFA9C00),
-                              ),
-                              direction: Axis.horizontal,
-                              initialRating: 0,
-                              unratedColor: const Color(0xFF9E9E9E),
-                              itemCount: 5,
-                              itemSize: 40,
-                              glowColor: const Color(0xFFFA9C00),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Preis-Leistung",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                      fontFamily: "Open Sans",
-                                      fontSize: 20,
-                                      color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RatingBar.builder(
-                              onRatingUpdate: (newValue) {
-                                setState(() {
-                                  mapRatingValues["price"] = newValue;
-                                  ratingValue =
-                                      calculateRating(mapRatingValues);
-                                });
-                              },
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star_rounded,
-                                color: Color(0xFFFA9C00),
-                              ),
-                              direction: Axis.horizontal,
-                              initialRating: 0,
-                              unratedColor: const Color(0xFF9E9E9E),
-                              itemCount: 5,
-                              itemSize: 40,
-                              glowColor: const Color(0xFFFA9C00),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 14, 0, 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text("Dein Rating ist: $ratingValue")],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Geschmack",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 20,
+                                    color: Colors.black),
                           ),
-                        ),
-                        Row(
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            onRatingUpdate: (newValue) {
+                              setState(() {
+                                mapRatingValues["taste"] = newValue;
+                                ratingValue = calculateRating(mapRatingValues);
+                              });
+                            },
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFFA9C00),
+                            ),
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            unratedColor: const Color(0xFF9E9E9E),
+                            itemCount: 5,
+                            itemSize: 40,
+                            glowColor: const Color(0xFFFA9C00),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Aussehen",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 20,
+                                    color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            onRatingUpdate: (newValue) {
+                              setState(() {
+                                mapRatingValues["look"] = newValue;
+                                ratingValue = calculateRating(mapRatingValues);
+                              });
+                            },
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFFA9C00),
+                            ),
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            unratedColor: const Color(0xFF9E9E9E),
+                            itemCount: 5,
+                            itemSize: 40,
+                            glowColor: const Color(0xFFFA9C00),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Preis-Leistung",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    fontFamily: "Open Sans",
+                                    fontSize: 20,
+                                    color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            onRatingUpdate: (newValue) {
+                              setState(() {
+                                mapRatingValues["price"] = newValue;
+                                ratingValue = calculateRating(mapRatingValues);
+                              });
+                            },
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star_rounded,
+                              color: Color(0xFFFA9C00),
+                            ),
+                            direction: Axis.horizontal,
+                            initialRating: 0,
+                            unratedColor: const Color(0xFF9E9E9E),
+                            itemCount: 5,
+                            itemSize: 40,
+                            glowColor: const Color(0xFFFA9C00),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 14, 0, 10),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: TextButton(
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        const Color(0xFFFA9C00)),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)))),
-                                onPressed: () {
-                                  Dish dishObj = widget.dishdetailed;
-                                  readListFromStorage()
-                                      .then((List<int> ratedDishesIDList) {
-                                    if (ratedDishesIDList
-                                        .contains(dishObj.id)) {
-                                      // Restrict User from rating cause already voted
-                                      showSnackBar2(context);
+                          children: [Text("Dein Rating ist: $ratingValue")],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xFFFA9C00)),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)))),
+                              onPressed: () {
+                                Dish dishObj = widget.dishdetailed;
+                                readListFromStorage()
+                                    .then((List<int> ratedDishesIDList) {
+                                  if (ratedDishesIDList.contains(dishObj.id)) {
+                                    // Restrict User from rating cause already voted
+                                    showSnackBar2(context);
+                                  } else {
+                                    if (mapRatingValues.length == 3) {
+                                      // let User rate
+                                      ratingValue =
+                                          calculateRating(mapRatingValues);
+                                      sendRatingForMeal(
+                                              ratingValue,
+                                              ratedDishesIDList,
+                                              dishObj,
+                                              widget.mensiObjForDetailPage)
+                                          .then((bool sendingWasSuccessful) {
+                                        if (sendingWasSuccessful) {
+                                          showSnackBar1(context);
+                                        } else {
+                                          showSnackbar4(context);
+                                        }
+                                      });
                                     } else {
-                                      if (mapRatingValues.length == 3) {
-                                        // let User rate
-                                        ratingValue =
-                                            calculateRating(mapRatingValues);
-                                        sendRatingForMeal(
-                                                ratingValue,
-                                                ratedDishesIDList,
-                                                dishObj,
-                                                widget.mensiObjForDetailPage)
-                                            .then((bool sendingWasSuccessful) {
-                                          if (sendingWasSuccessful) {
-                                            showSnackBar1(context);
-                                          } else {
-                                            showSnackbar4(context);
-                                          }
-                                        });
-                                      } else {
-                                        // Restrict user cause not rated everything
-                                        showSnackbar3(context);
-                                      }
+                                      // Restrict user cause not rated everything
+                                      showSnackbar3(context);
                                     }
-                                  });
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      30, 5, 30, 5),
-                                  child: Text("Bewerten",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Open Sans",
-                                          fontSize: 20)),
-                                ),
+                                  }
+                                });
+                              },
+                              child: const Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    30, 5, 30, 5),
+                                child: Text("Bewerten",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Open Sans",
+                                        fontSize: 20)),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ]),
@@ -293,7 +287,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
             ),
           ),
           body: SafeArea(
-            child: GestureDetector(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
