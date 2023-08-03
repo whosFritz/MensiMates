@@ -10,8 +10,8 @@ class Dish {
   final String additionalInfo;
   final String allergens;
   final String additives;
-  final double rating;
-  final int votes;
+  double rating;
+  int votes;
 
   Dish({
     required this.id,

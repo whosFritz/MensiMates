@@ -1,6 +1,12 @@
+import "dart:convert";
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
+import 'package:http/http.dart' as http;
 import "package:intl/intl.dart";
+import "package:jwt_decoder/jwt_decoder.dart";
+import "package:mensimates/api/api_links.dart";
 
 import '../entities/dish_class.dart';
 import '../entities/mensi_class.dart';
@@ -27,7 +33,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
   String pageName = "Detailansicht";
   double ratingValue = 0.0;
 
-  // TODO: look other todo and get dishes from initstate
+  // TODO: look other todo and get dishes from initState
 
   @override
   void initState() {
@@ -42,14 +48,11 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
     for (double rating in mapRatingValues.values) {
       sum += rating;
     }
-
     double ratingValue = sum / mapRatingValues.length;
     double roundedRatingValue = double.parse(ratingValue.toStringAsFixed(2));
-
     setState(() {
       ratingValue = roundedRatingValue;
     });
-
     return roundedRatingValue;
   }
 
@@ -238,6 +241,8 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
                                           .then((bool sendingWasSuccessful) {
                                         if (sendingWasSuccessful) {
                                           showSnackBar1(context);
+                                          updateDishInfo(widget.dishdetailed,
+                                              widget.mensiObjForDetailPage);
                                         } else {
                                           showSnackbar4(context);
                                         }
@@ -358,5 +363,66 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
         backgroundColor: Colors.blueGrey,
         elevation: 6,
         duration: Duration(seconds: 2)));
+  }
+
+  Future<List<Dish>> fetchByServingDate(String oneDishUrl, String token) async {
+    final dataResponse = await http.get(
+      Uri.parse(oneDishUrl),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (dataResponse.statusCode == 200) {
+      final jsonData = jsonDecode(utf8.decode(dataResponse.bodyBytes));
+      List<Dish> fetchedDishes = jsonData.map<Dish>(Dish.fromJson).toList();
+      setTokenToSharedPreferences(token);
+      return fetchedDishes;
+    } else if (dataResponse.statusCode == 401) {
+      log("401: Token abgelaufen oder nicht vorhanden");
+      return fetchByServingDate(oneDishUrl, await loginAndGetToken());
+    } else {
+      log('Error when trying to get Data: ${dataResponse.statusCode}');
+      throw Exception('Failed to load Data');
+    }
+  }
+
+  Future<void> updateDishInfo(Dish localDish, Mensi localMensi) async {
+    String baseUrlMensi = decideMensi(localMensi.id);
+    String shortedDate = DateFormat("yyyy-MM-dd").format(localDish.servingDate);
+    String oneDishUrl = "$baseUrlMensi/servingDate/$shortedDate";
+    List<Dish> updatedDishes = [];
+    Dish votedDish;
+    try {
+      String? cookieToken = await getTokenFromSharedPreferences();
+      if (cookieToken != null) {
+        DateTime expirationDate = JwtDecoder.getExpirationDate(cookieToken);
+        log("Expiration date: $expirationDate");
+        log("Current date: ${DateTime.now()}");
+        if (JwtDecoder.isExpired(cookieToken)) {
+          // Token is expired
+          log("Token is expired");
+          log("old token: $cookieToken");
+          updatedDishes =
+              await fetchByServingDate(oneDishUrl, await loginAndGetToken());
+        } else {
+          // Token is not expired
+          log("Token is not expired");
+          updatedDishes = await fetchByServingDate(oneDishUrl, cookieToken);
+        }
+      }
+      // Token is null probably because it is the first time the user is using the app
+      if (cookieToken == null) {
+        updatedDishes =
+            await fetchByServingDate(oneDishUrl, await loginAndGetToken());
+      }
+      votedDish =
+          updatedDishes.firstWhere((dish) => dish.name == localDish.name);
+      setState(() {
+        widget.dishdetailed.rating = votedDish.rating;
+        widget.dishdetailed.votes = votedDish.votes;
+      });
+    } catch (error) {
+      log('Exception: $error');
+    }
   }
 }
