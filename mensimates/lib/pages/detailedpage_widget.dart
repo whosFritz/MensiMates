@@ -49,7 +49,7 @@ class _DetailRatingPageState extends State<DetailRatingPage> {
       sum += rating;
     }
     double ratingValue = sum / mapRatingValues.length;
-    double roundedRatingValue = double.parse(ratingValue.toStringAsFixed(2));
+    double roundedRatingValue = double.parse(ratingValue.toStringAsFixed(1));
     setState(() {
       ratingValue = roundedRatingValue;
     });
