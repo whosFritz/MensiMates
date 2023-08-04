@@ -11,7 +11,13 @@
 ## 02.08.2023 - [1.5.0]
 
 - show user the rating he will give to the dish
+- rounding to 2 decimal places behind comma
 
 ## 02.08.2023 - [1.5.0]
 
 - fixed scroll-ability in detailPage
+
+## 03.08.2023 - [1.5.0]
+
+- now updates the info (rating and votes) of the dish after rating it
+- changed rounding of rating to 1 decimal places behind comma
