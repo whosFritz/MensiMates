@@ -26,3 +26,8 @@
 
 - fixed ui bug for initialPage (now shows the correct date)
 - now showing the next day where food is available
+
+## 06.08.2023 - [1.5.0]
+
+- fixed ui bug for initialPage (now shows the correct date)
+- now showing the next day where food is available
