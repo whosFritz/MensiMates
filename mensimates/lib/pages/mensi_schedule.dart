@@ -26,7 +26,6 @@ class MensiScheduleState extends State<MensiSchedule>
     with TickerProviderStateMixin {
   late Future<List<Dish>> dishesFromApi;
   PageController pageController = PageController();
-  late List<DishGroupDate> groupedDishesDat;
   int indexToBeReturned = 1;
 
   // Variablen
@@ -371,30 +370,36 @@ class MensiScheduleState extends State<MensiSchedule>
     return gruppenListeCat;
   }
 
-  int findInitalPageDisplay(List<DishGroupDate> groupedDishesDat) {
-    int i = 0;
-    for (final gruppe in groupedDishesDat) {
-      if (DateFormat("yyyy-MM-dd").format(gruppe.date) ==
-          DateFormat("yyyy-MM-dd").format(heute)) {
-        indexToBeReturned = i;
-        break;
+  DateTime toDate(DateTime date) => DateTime(date.year, date.month, date.day);
+
+  int findInitialPageDisplay(List<DishGroupDate> groupedDishesData) {
+    final DateTime heute = toDate(DateTime.now());
+    final DateTime tomorrow =
+        toDate(DateTime.now().add(const Duration(days: 1)));
+    final DateTime dayAfterTomorrow =
+        toDate(DateTime.now().add(const Duration(days: 2)));
+    List<DateTime> searchDates = [heute, tomorrow, dayAfterTomorrow];
+
+    for (int i = 0; i < groupedDishesData.length; i++) {
+      DateTime currentDate = toDate(groupedDishesData[i].date);
+      if (searchDates.contains(currentDate)) {
+        return i;
       }
-      i++;
     }
-    return indexToBeReturned;
+    return 0;
   }
 
   // Widget zur Listerstellung
   Widget buildDishes(List<Dish> dishes) {
-    groupedDishesDat = groupByDate(dishes);
-    pageController =
-        PageController(initialPage: findInitalPageDisplay(groupedDishesDat));
+    final groupedDishesDate = groupByDate(dishes);
+    int initialPageIndex = findInitialPageDisplay(groupedDishesDate);
+    pageController = PageController(initialPage: initialPageIndex);
     return PageView.builder(
         controller: pageController,
-        itemCount: groupedDishesDat.length,
+        itemCount: groupedDishesDate.length,
         onPageChanged: (int index) {
           setState(() {
-            anzeigeDatum = groupedDishesDat[index].date;
+            anzeigeDatum = groupedDishesDate[index].date;
             // * _expansionState = {};
           });
           currentPage =
@@ -402,7 +407,7 @@ class MensiScheduleState extends State<MensiSchedule>
         },
         itemBuilder: (context, index) {
           final grouppedByCatList =
-              groupByCat(groupedDishesDat[index].gerichteingruppe);
+              groupByCat(groupedDishesDate[index].gerichteingruppe);
           return SingleChildScrollView(
             child: Column(children: [
               Row(
@@ -432,7 +437,7 @@ class MensiScheduleState extends State<MensiSchedule>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(DateFormat("E dd.MM.yyyy", "de_DE")
-                                .format(groupedDishesDat[index].date))
+                                .format(groupedDishesDate[index].date))
                           ],
                         ),
                       ),
