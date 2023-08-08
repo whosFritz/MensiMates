@@ -161,9 +161,9 @@ Color decideContainerColor(String category) {
   return colors;
 }
 
-void searchGerichte(String query) async {
-  final url = 'https://www.google.com/search?q=$query&tbm=isch';
-  launchUrl(Uri.parse(url));
+Future<void> searchGerichte(String query) async {
+  final Uri url = Uri.parse('https://www.google.com/search?q=$query&tbm=isch');
+  launchUrl(url, mode: LaunchMode.externalApplication);
 }
 
 //Navigation zur Detail page

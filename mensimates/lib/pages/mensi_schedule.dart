@@ -2,7 +2,6 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import "package:intl/intl.dart";
-import 'package:mensimates/pages/webpagepicsearch_page.dart';
 
 import '../components/navigation_drawer.dart';
 import '../entities/dish_class.dart';
@@ -550,16 +549,7 @@ class MensiScheduleState extends State<MensiSchedule>
                     ),
                     IconButton(
                       onPressed: () {
-                        if (defaultTargetPlatform != TargetPlatform.android &&
-                            defaultTargetPlatform != TargetPlatform.iOS) {
-                          searchGerichte(dish.name);
-                        } else {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) {
-                              return WebPageSearch(searchDish: dish);
-                            },
-                          ));
-                        }
+                        searchGerichte(dish.name);
                       },
                       icon: const Icon(Icons.search),
                     ),
