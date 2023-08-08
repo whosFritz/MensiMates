@@ -249,11 +249,11 @@ class MensiScheduleState extends State<MensiSchedule>
   }
 
   // Methde, welche aufgerufen wird, wenn die ListView der Gerichte nach unten gezogen wird.
-  Future refresh() async {
-    setState(() {
-      dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
-    });
-  }
+  Future<void> refresh() async {
+  setState(() {
+    dishesFromApi = fetchDataWithJwtToken(widget.mensiObj);
+  });
+}
 
   Widget platformPageViewButtons() {
     if (defaultTargetPlatform != TargetPlatform.android &&
